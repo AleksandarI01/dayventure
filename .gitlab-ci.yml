@@ -54,5 +54,5 @@ deploy:
   script:
     - docker compose -f docker-compose.deploy.yml pull
     - docker compose -f docker-compose.deploy.yml down --remove-orphans
-    - docker volume rm luna-3_build || true
+    - docker volume rm dayventure_build || true
     - docker compose -f docker-compose.deploy.yml up -d

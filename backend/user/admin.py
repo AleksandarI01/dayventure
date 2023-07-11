@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    readonly_fields = ('date_joined','last_login')
+    readonly_fields = ('date_joined', 'last_login')
     # fields shown when creating a new instance
     add_fieldsets = (
         (None, {
