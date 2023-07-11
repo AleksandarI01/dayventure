@@ -1,0 +1,14 @@
+name: dayVenture
+dependencies:
+  - python=3.11.4
+  - psycopg2=2.9.3
+  - pip=23.1.2
+  - pip:
+      - django==4.2.3
+      - djangorestframework==3.14.0
+      - djangorestframework_simplejwt==5.2.2
+      - drf-yasg==1.21.6
+      - django-cors-headers==4.2.0
+      - pillow==10.0.0
+      - gunicorn==20.1.0
+      - flake8==6.0.0
