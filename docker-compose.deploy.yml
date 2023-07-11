@@ -2,7 +2,7 @@ version: '3'
 
 services:
   backend:
-    image: registry.gitlab.propulsion-home.ch/full-stack/batch-24-may-2023/luna-project/luna-3:master
+    image: registry.gitlab.propulsion-home.ch/full-stack/batch-24-may-2023/final-projects/dayventure:master
     env_file:
       - ./envs/prod.env
     volumes:
