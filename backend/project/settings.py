@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'user_registration',
     'email_scheduler',
 
+    'poi',
+    'transfer',
+
     # 3rd party apps
     'drf_yasg',
 ]
