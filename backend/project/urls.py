@@ -44,6 +44,9 @@ urlpatterns = [
    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
    path('api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
 
+   path('api/registration/', include('user_registration.urls')),
+   path('api/auth/password-reset/', include('user_registration.urls')),
+
    # main apps
    path('api/users/', include('user.urls')),
 
