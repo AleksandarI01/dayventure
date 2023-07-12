@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* * {
+    font-family: "Poppins", sans-serif;
+  } */
+  h1 {
+    @apply text-4xl font-bold;
+  }
+  h2 {
+    @apply text-3xl font-semibold;
+  }
+  h3 {
+    @apply text-2xl font-normal;
+  }
+  p {
+    @apply text-base font-light;
+  }
+}

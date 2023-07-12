@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
+
+User = get_user_model()
 
 
 @admin.register(User)
@@ -21,6 +23,6 @@ class UserAdmin(UserAdmin):
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
         ('Groups', {'fields': ('groups',)}),
     )
-    # fields which are shown when looking at an list of instances
+    # fields which are shown when looking at a list of instances
     list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_superuser')
     ordering = ('email',)
