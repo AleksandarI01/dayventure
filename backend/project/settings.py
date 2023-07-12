@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # custom apps
     'user',
+    'user_profile',
 
     # 3rd party apps
     'drf_yasg',
