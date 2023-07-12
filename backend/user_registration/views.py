@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
-# from email_scheduler.models import EmailScheduler
+from email_scheduler.models import EmailScheduler
 from user_registration.models import UserRegistration
 from user_registration.serializers import UserRegistrationSerializer, UserRegistrationValidationSerializer
 
@@ -16,7 +16,7 @@ User = get_user_model()
 
 
 def code_generator(length=6):
-    characters = '0123456789abcdefghijklmnopqrstuvwxyz'
+    characters = '0123456789abcdefghijklmnopqrstuvwxyz0123456789'
     return ''.join(random.choice(characters) for _ in range(length))
 
 
@@ -35,18 +35,18 @@ class RegisterView(CreateAPIView):
         email = request.data['email']
 
         # create new user
-        data = request.data
         if request.stream.path == '/api/registration/':
+            data = request.data.copy()
             data['username'] = request.data['email']
             serializer = self.get_serializer(data=data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
 
-        #     email_header = 'Welcome to Luna-3'
-        #     email_body = f'Welcome to Luna!\n\n Your code is: \n-->  {code}  <--'   # todo: change Texts
-        # else:
-        #     email_header = 'Luna-3 Password reset'
-        #     email_body = f'Hello again!\n\n Your code is: \n-->  {code}  <--'     # todo: when email ready
+            email_header = 'Welcome to DayVenture'
+            email_body = f'Welcome to DayVenture!\n\n Your code is: \n-->  {code}  <--'
+        else:
+            email_header = 'DayVenture Password reset'
+            email_body = f'Hello again!\n\n Your code is: \n-->  {code}  <--'
 
         user = User.objects.get(email=email)
 
@@ -55,8 +55,8 @@ class RegisterView(CreateAPIView):
         reg_instance.update_or_create(user_id=user.id, defaults={'code': code})
 
         # prepare mail with code on database
-        # mail_instance = EmailScheduler.objects.all()
-        # mail_instance.create(subject=email_header, message=email_body, recipient_list=email)
+        mail_instance = EmailScheduler.objects.all()
+        mail_instance.create(subject=email_header, message=email_body, recipient_list=email)
 
         return Response(status=status.HTTP_201_CREATED)
 
