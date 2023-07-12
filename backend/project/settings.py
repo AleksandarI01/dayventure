@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'user',
 
     # 3rd party apps
-
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +139,17 @@ MEDIA_ROOT = 'media-files/' if DEBUG else '/media-files/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user.User'
+
+# DOCUMENTATION
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,  # Change settings to True to enable Django Login option
+    'LOGIN_URL': 'admin/',  # URL For Django Login
+    'LOGOUT_URL': 'admin/logout/',  # URL For Django Logout
+    'SECURITY_DEFINITIONS': { # Allows usage of Access token to make requests on the docs.
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
