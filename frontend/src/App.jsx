@@ -1,5 +1,4 @@
 import "./App.css";
-<<<<<<< HEAD
 import { Routes, Route } from "react-router-dom";
 import Layout from "./layout";
 import Home from "./pages/Home";
@@ -11,13 +10,10 @@ import AboutUs from "./pages/AboutUs";
 import NewTrip from "./pages/NewTrip";
 import Trip from "./pages/Trip";
 import NotFound from "./pages/NotFound";
-=======
->>>>>>> 4e43fb09a68693062188d4f269abea28f7b6588c
 
 function App() {
   return (
     <>
-<<<<<<< HEAD
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
@@ -32,12 +28,6 @@ function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-=======
-      <div>
-        <p className="text-3xl font-bold underline">Hello pablo</p>
-        <p className=" text-venture-green">hellloooooo</p>
-      </div>
->>>>>>> 4e43fb09a68693062188d4f269abea28f7b6588c
     </>
   );
 }
