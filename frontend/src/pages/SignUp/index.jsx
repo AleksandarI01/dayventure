@@ -15,7 +15,7 @@ const SignUp = () => {
   }
 
   return (
-    <div>
+    <div className="h-[87.5vh] flex flex-col justify-center items-center gap-20">
       {signupStep === 'step1' && <SignUpFirstStep setEmail={setEmail} moveToNextStep={moveToNextStep} />}
       {signupStep === 'step2' && <SignUpSecondStep moveToNextStep={moveToNextStep} />}
       {signupStep === 'step3' && <SignUpThirdStep email={email} />}
