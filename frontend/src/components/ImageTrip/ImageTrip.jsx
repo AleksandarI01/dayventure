@@ -6,13 +6,13 @@ const ImageTrip = () => {
     return (
         <>
             <div
-                className="w-[272px] h-[400px] border border-solid rounded-md border-venture-gray">
+                className="card-height-width border border-solid rounded-md border-venture-gray">
                 <div className="h-[100%] w-[100% ] shrink-0 flex flex-col border border-solid rounded-md bg-cover"
                     style={{backgroundImage: `url(${Data})`}}>
                     <div className="h-[3%] w-[100% ]"></div>
                     <div className="h-[25%] w-[100%] shrink-0 flex flex-row">
-                        <div className="h-[100%] w-[50%] shrink-0 flex justify-start items-start pt-2 pl-2">
-                            <div className="h-5 w-5 z-40 shrink-0 flex justify-center items-center rounded-full bg-venture-white">
+                        <div className="h-[100%] w-[50%] shrink-0 flex justify-start items-start pt-2 pl-3">
+                            <div className="h-6 w-6 z-40 shrink-0 flex justify-center items-center rounded-full bg-venture-white">
                                 <MdLocationPin></MdLocationPin>
                             </div>
                         </div>
