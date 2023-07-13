@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from category.serializers import CategorySerializer
+
 User = get_user_model()
 
 
@@ -11,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
     banner = serializers.SerializerMethodField()
     score = serializers.SerializerMethodField()
     level = serializers.SerializerMethodField()
+    liked_categories = serializers.SerializerMethodField()
 
     def get_location(self, user):
         if hasattr(user, 'user_profile'):
@@ -44,8 +47,13 @@ class UserSerializer(serializers.ModelSerializer):
             return user.user_profile.level
         return None
 
+    def get_liked_categories(self, user):
+        if hasattr(user, 'user_profile'):
+            return CategorySerializer(user.user_profile.liked_categories, many=True).data
+        return  None
+
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'date_joined',
-                  'location', 'about', 'score', 'level', 'avatar', 'banner']
+                  'location', 'about', 'score', 'level', 'avatar', 'banner', 'liked_categories']
         read_only_fields = ['email', 'date_joined', 'id', 'score', 'level']

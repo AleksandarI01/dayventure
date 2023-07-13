@@ -22,6 +22,7 @@ from rest_framework_simplejwt import views as jwt_views
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from category.views import CategoryListView
 from project import settings
 
 schema_view = get_schema_view(
@@ -52,6 +53,7 @@ urlpatterns = [
 
    # main apps
    path('api/users/', include('user.urls')),
+   path('api/categories/', CategoryListView.as_view()),
 
 ]
 
