@@ -67,7 +67,7 @@ const TripSingleStop = () => {
             <MdOutlineKeyboardArrowDown className="text-4xl" />
           </div>
         </div>
-        <div className="flex flex-col w-10/12 0"></div>
+        <div className="flex flex-col w-10/12"></div>
       </div>
     </>
   );
