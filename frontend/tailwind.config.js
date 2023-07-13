@@ -14,9 +14,8 @@ export default {
       },
       backgroundImage: {
         KayakHomeHeader: "url(/src/assets/images/KayakHomeHeader.png)",
-      },
-      backgroundImageMet: {
-        Met: "url(/src/assets/images/MetNyc.png)",
+        TripHeader: "url(/src/assets/images/TripHeader.png)",
+        nycMini: "url(/src/assets/images/nycMini.png)",
       },
     },
   },
