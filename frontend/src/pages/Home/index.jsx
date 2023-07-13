@@ -1,5 +1,8 @@
 import SearchHeader from "../../components/SearchHeader/SearchHeader";
 import Label from "../../components/Label/Label";
+import NycMet from "../../assets/images/MetNYC.png";
+import { MdShare } from "react-icons/md";
+
 const Home = () => {
   return (
     <>
@@ -17,8 +20,8 @@ const Home = () => {
           <Label>Hiking</Label>
         </div>
       </div>
-      <div className="flex flex-row w-full justify-center border-solid border-2 border-yellow-300 py-10">
-        <div className="flex flex-col w-8/12 align-center border-2 border-red-600 py-5">
+      <div className="flex flex-row w-full justify-center ">
+        <div className="flex flex-col w-8/12 align-center">
           <div className="flex w-full  py-10">
             <h2>Popular dayventures</h2>
           </div>
@@ -40,6 +43,43 @@ const Home = () => {
                 Ghost
               </li>
             </ul>
+          </div>
+          <div className="flex w-full"></div>
+          <div className="flex flex-row w-full p-8">
+            <div className="flex flex-col w-1/3 items-center">
+              <MdShare className="text-4xl my-3" />
+              <h4>Easy Itinerary Planning</h4>
+            </div>
+            <div className="flex flex-col w-1/3 items-center">
+              <MdShare className="text-4xl my-3" />
+              <h4>Invite Your Friends</h4>
+            </div>
+            <div className="flex flex-col w-1/3 items-center">
+              <MdShare className="text-4xl my-3" />
+              <h4 className="m-2">Estimate Trip Expenses</h4>
+            </div>
+          </div>
+          <div className="flex flex-row w-full bg-gradient-to-b from-venture-white to-venture-green">
+            <div className="flex flex-col w-1/2">
+              <img src={NycMet} />
+            </div>
+            <div className="flex flex-col justify-center w-1/2">
+              <div className="py-4">
+                <h3>How it works</h3>
+                <p className="p-4">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                  in malesuada lacus. Cras non pulvinar ex, a posuere leo.
+                </p>
+                <p className="p-4">
+                  Sed congue erat vel arcu dignissim gravida. Pellentesque sit
+                  amet est urna.
+                </p>
+                <p className="p-4">
+                  Sed tempus tempor lacus eu volutpat. Donec fermentum maximus
+                  eros, sed placerat nulla congue id.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
