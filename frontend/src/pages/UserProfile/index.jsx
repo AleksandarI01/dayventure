@@ -1,9 +1,12 @@
 import Trip from "../../components/Trip/Trip.jsx"
-// import ImageTrip from "../../components/ImageTrip/ImageTrip.jsx"
-// import UserCard from "../../components/UserCard/UserCard.jsx";
 import ProfileDescription from "../../components/ProfileDescription/ProfileDescription.jsx";
+import {useState} from "react";
 
 const UserProfile = () => {
+    const [userClicked, setUserClicked] = useState(true)
+    const [styleUsers, setStyleUsers] = useState("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
+    const [styleTrips, setStyleTrips] = useState("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
+
     return (
         <>
             <div className={"w-full flex flex-col shrink-0 gap-6"}>
@@ -11,7 +14,7 @@ const UserProfile = () => {
 
                 </div>
                 <div className={"w-full flex shrink-0 justify-center items-center"}>
-                    <ProfileDescription/>
+                    <ProfileDescription setUserClicked={setUserClicked} userClicked={userClicked} styleUsers={styleUsers} styleTrips={styleTrips}/>
                 </div>
                 <div className={"w-full flex shrink-0 justify-center items-center mb-[6%]"}>
                     <Trip></Trip>
@@ -21,11 +24,6 @@ const UserProfile = () => {
 
 
             </div>
-
-            {/*<div className={"flex flex-row shrink-0 gap-2"}>*/}
-            {/*    <ImageTrip></ImageTrip>*/}
-            {/*    <UserCard></UserCard>*/}
-            {/*</div>*/}
         </>
     );
 };
