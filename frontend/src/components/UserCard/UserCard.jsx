@@ -1,5 +1,6 @@
 import Label from "../Label/Label.jsx"
 
+
 const UserCard = () => {
     const imageUrl = '../../../src/assets/island.png'
     return (
@@ -15,6 +16,7 @@ const UserCard = () => {
 
 
                     </div>
+
                     <div
                         className="h-[33%] w-[100%] shrink-0 flex flex-row gap-[0.2rem] justify-center items-center">
                         <button
@@ -37,15 +39,14 @@ const UserCard = () => {
                 </div>
                 <div className="h-[45%] w-[100%]">
                     <div className={"h-[68%] w-[100%]"}>
-                        <p>Lorem ipsum dolor sit amet, vim ut quas volumus probatus, has tantas laudem iracundia et, ad
-                            per utamur ceteros apeirian</p>
+                        <p>Lorem ipsum dolor sit amet, vim ut quas volumus probatus, has tantas laudem iracundia et, ad per utamur ceteros apeirian</p>
                     </div>
-                    <div
-                        className={"h-[30%] w-[100%] pb-[2%] flex flex-row shrink-0 gap-[0.2rem] justify-center items-center flex-wrap"}>
+                    <div className={"h-[30%] w-[100%] pb-[2%] flex flex-row shrink-0 gap-[0.2rem] justify-center items-center flex-wrap"}>
                         <Label></Label>
                         <Label></Label>
                         <Label></Label>
                     </div>
+
 
 
                 </div>
