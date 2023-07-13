@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Button from "../Button/Button";
+import InputField from '../InputField/InputField';
 import AnimatedSignUpImage from "../AnimatedSignUpImage/AnimatedSignUpImage";
+import { MdEmail } from 'react-icons/md';
 const SignUpFirstStep = ({ setEmail, moveToNextStep }) => {
   const [email, setEmailInput] = useState("");
 
@@ -17,9 +19,11 @@ const SignUpFirstStep = ({ setEmail, moveToNextStep }) => {
         </div>*/}
       <div className="flex-grow flex flex-col justify-center items-center gap-20">
         <h1>Sign Up</h1>
-        <input
+        <InputField
           type="email"
           placeholder="Email"
+          icon={MdEmail}
+          color="venture-green"
           onChange={(e) => setEmailInput(e.target.value)}
         />
         <AnimatedSignUpImage />
