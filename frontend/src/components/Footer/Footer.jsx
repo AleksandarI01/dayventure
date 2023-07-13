@@ -22,7 +22,7 @@ const SocialMedia = [
 // console.log(FaFacebook);
 const Footer = () => {
   return (
-    <footer className="flex justify-between fixed w-full p-5 left-0 bottom-0">
+    <footer className="flex justify-between relative w-full p-5 left-0 bottom-0">
       <ul className="flex gap-[4.7rem]">
         {Footermenu.map((item, idx) => (
           <li key={idx}>
