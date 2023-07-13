@@ -12,6 +12,8 @@ const initialState = {
   location: "",
   about: "",
   email: "",
+  score: 0,
+  level: 0,
   loading: false,
   error: null,
 };
@@ -36,16 +38,14 @@ const userSlice = createSlice({
       state.location = "";
       state.about = "";
       state.email = "";
+      state.score = 0;
+      state.level = 0;
       state.loading = false;
       state.error = null;
     },
 
     loadUserDetails: (state, action) => {
       state.details = action.payload;
-    },
-
-    setEmail: (state, action) => {
-      state.email = action.payload;
     },
 
     setAllInformation(state, action) {
@@ -59,6 +59,8 @@ const userSlice = createSlice({
         location,
         about,
         email,
+        score,
+        level,
       } = action.payload;
       state.id = id;
       state.firstName = firstName;
@@ -69,10 +71,12 @@ const userSlice = createSlice({
       state.location = location;
       state.about = about;
       state.email = email;
+      state.score = score;
+      state.level = level;
     },
   },
 });
 
-export const { login, logout, loadUserDetails, setEmail, setAllInformation } =
+export const { login, logout, loadUserDetails, setAllInformation } =
   userSlice.actions;
 export default userSlice.reducer;

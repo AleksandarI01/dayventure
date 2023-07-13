@@ -27,7 +27,7 @@ const Home = () => {
             <h2>Popular dayventures</h2>
           </div>
           <div className="flex w-full justify-start">
-            <ul classname="list-none flex flex-row h-full">
+            <ul className="list-none flex flex-row h-full">
               <li className="flex h-100 py-5 float-left mx-7  hover:border-b-4 border-1 border-solid border-venture-green">
                 Food
               </li>
