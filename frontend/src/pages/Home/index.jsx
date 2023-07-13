@@ -1,4 +1,5 @@
 import SearchHeader from "../../components/SearchHeader/SearchHeader";
+import ImageTrip from "../../components/ImageTrip/ImageTrip.jsx";
 import Label from "../../components/Label/Label";
 import NycMet from "../../assets/images/MetNYC.png";
 import { MdShare } from "react-icons/md";
@@ -44,7 +45,18 @@ const Home = () => {
               </li>
             </ul>
           </div>
-          <div className="flex w-full"></div>
+
+          <div className="flex flex-row w-full p-8">
+            <div className="flex flex-col w-1/3 items-center">
+              <ImageTrip className="text-4xl my-3" />
+            </div>
+            <div className="flex flex-col w-1/3 items-center">
+              <ImageTrip className="text-4xl my-3" />
+            </div>
+            <div className="flex flex-col w-1/3 items-center">
+              <ImageTrip className="text-4xl my-3" />
+            </div>
+          </div>
           <div className="flex flex-row w-full p-8">
             <div className="flex flex-col w-1/3 items-center">
               <MdShare className="text-4xl my-3" />

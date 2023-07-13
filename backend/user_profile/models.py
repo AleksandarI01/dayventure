@@ -5,11 +5,11 @@ User = get_user_model()
 
 
 def user_avatar_directory_path(instance, filename):
-    return f'{instance.user_id}/avatar/{filename}'
+    return f'user/{instance.user_id}/avatar/{filename}'
 
 
 def user_banner_directory_path(instance, filename):
-    return f'{instance.user_id}/banner/{filename}'
+    return f'user/{instance.user_id}/banner/{filename}'
 
 
 class UserProfile(models.Model):
