@@ -7,7 +7,7 @@ const Button = ({ type, onClickFunction, children }) => {
       type={type}
       onClick={onClickFunction}
     >
-      CONTINUE{/* {children} */}
+      {children}
     </button>
   );
 };

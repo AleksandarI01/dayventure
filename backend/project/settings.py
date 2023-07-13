@@ -46,6 +46,12 @@ INSTALLED_APPS = [
     'user_registration',
     'email_scheduler',
 
+    'trip',
+    'itinerary',
+    'poi',
+    'transfer',
+    'category',
+
     # 3rd party apps
     'drf_yasg',
 ]
