@@ -7,7 +7,7 @@ const Button = ({ type, onClickFunction, children }) => {
       type={type}
       onClick={onClickFunction}
     >
-      {children} 
+      {children}
     </button>
   );
 };

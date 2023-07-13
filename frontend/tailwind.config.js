@@ -12,6 +12,12 @@ export default {
         "venture-darkgray": "#979797",
         "venture-red": "#FF0000",
       },
+      backgroundImage: {
+        KayakHomeHeader: "url(/src/assets/images/KayakHomeHeader.png)",
+      },
+      backgroundImageMet: {
+        Met: "url(/src/assets/images/MetNyc.png)",
+      },
     },
   },
   plugins: [],
