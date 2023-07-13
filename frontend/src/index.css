@@ -7,18 +7,22 @@
     font-family: "Poppins", sans-serif;
   }
   h1 {
-    @apply text-4xl font-bold;
+    @apply text-5xl font-bold;
   }
   h2 {
-    @apply text-3xl font-semibold;
+    @apply text-4xl font-semibold;
   }
   h3 {
-    @apply text-2xl font-normal;
+    @apply text-3xl font-normal;
   }
   h4 {
-    @apply text-3xl font-medium;
+    @apply text-2xl font-medium;
   }
   p {
     @apply text-base font-light;
+  }
+  .header-img-wrapper {
+    background-image: backgroundImage;
+    object-fit: cover;
   }
 }
