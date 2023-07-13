@@ -1,7 +1,7 @@
 import Button from "../../components/Button/Button";
 import TripHeader from "../../components/TripHeader/TripHeader";
 import TripSingleStop from "../../components/TripSingleStop/TropSingleStop";
-
+import { AiFillPlusCircle } from "react-icons/ai";
 const Trip = () => {
   return (
     <>
@@ -22,13 +22,19 @@ const Trip = () => {
           <Button>Duplicate</Button>
           <Button>Delete</Button>
         </div>
-        <div className="flex flex-row w-10/12 justify-center">
-          <div className="flex flex-col w-2/12 align-center border-2 border-blue-600">
-            <div className="flex flex-col w-1/2 align-center border-2 border-red-500 h-20"></div>
+        <div className="flex flex-row w-10/12 justify-center ">
+          <div className="flex flex-col w-/12 align-center">
+            <div className="flex flex-col w-1/2 align-center border-r-2 border-venture-darkgray  h-full"></div>
           </div>
-          <div className="flex flex-col w-10/12 align-center border-2 border-blue-600 p-4">
+          <div className="flex flex-col w-10/12 align-center p-4">
             <TripSingleStop />
           </div>
+        </div>
+        <div className="flex flex-row w-10/12 justify-center ">
+          <div className="flex flex-row w-2/12 justify-center">
+            <AiFillPlusCircle className="text-4xl text-venture-green hover:text-venture-green-hovered" />
+          </div>
+          <div className="flex flex-col w-10/12 align-center p-4"></div>
         </div>
       </div>
     </>
