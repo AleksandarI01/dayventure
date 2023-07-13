@@ -19,7 +19,7 @@ const SocialMedia = [
   { name: "Instagram", icon: <FaInstagram />, link: "www.instagram.com" },
 ];
 
-console.log(FaFacebook);
+// console.log(FaFacebook);
 const Footer = () => {
   return (
     <footer className="flex justify-between fixed w-full p-5 left-0 bottom-0">
@@ -31,8 +31,8 @@ const Footer = () => {
         ))}
       </ul>
       <ul className="flex gap-[1.4rem]">
-        {SocialMedia.map((item) => (
-          <li>
+        {SocialMedia.map((item, idx) => (
+          <li key={idx}>
             <a href={item.link} target="_blank">
               {item.icon}
             </a>

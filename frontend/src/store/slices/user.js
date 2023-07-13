@@ -12,7 +12,6 @@ const initialState = {
   location: "",
   about: "",
   email: "",
-  phone: "",
   loading: false,
   error: null,
 };
@@ -24,6 +23,7 @@ const userSlice = createSlice({
     login: (state, action) => {
       state.accessToken = action.payload;
     },
+
     logout: (state) => {
       state.accessToken = null;
       state.details = null;
@@ -36,10 +36,10 @@ const userSlice = createSlice({
       state.location = "";
       state.about = "";
       state.email = "";
-      state.phone = "";
       state.loading = false;
       state.error = null;
     },
+
     loadUserDetails: (state, action) => {
       state.details = action.payload;
     },
@@ -47,6 +47,7 @@ const userSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload;
     },
+
     setAllInformation(state, action) {
       const {
         id,
@@ -57,7 +58,6 @@ const userSlice = createSlice({
         banner,
         location,
         about,
-        phone,
         email,
       } = action.payload;
       state.id = id;
@@ -68,7 +68,6 @@ const userSlice = createSlice({
       state.banner = banner;
       state.location = location;
       state.about = about;
-      state.phone = phone;
       state.email = email;
     },
   },
