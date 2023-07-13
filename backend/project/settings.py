@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     'poi',
     'transfer',
+    'itinerary',
 
     # 3rd party apps
     'drf_yasg',
