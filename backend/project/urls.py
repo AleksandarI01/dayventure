@@ -53,6 +53,7 @@ urlpatterns = [
 
    # main apps
    path('api/users/', include('user.urls')),
+   path('api/trips/', include('trip.urls')),
    path('api/categories/', CategoryListView.as_view()),
 
 ]

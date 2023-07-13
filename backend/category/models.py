@@ -10,4 +10,4 @@ class Category(models.Model):
     icon = models.ImageField(upload_to=category_image_directory_path, blank=True, null=True)
 
     def __str__(self):
-        return f'trip : {self.name}'
+        return f'{self.name}'

@@ -50,7 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
     def get_liked_categories(self, user):
         if hasattr(user, 'user_profile'):
             return CategorySerializer(user.user_profile.liked_categories, many=True).data
-        return  None
+        return None
 
     class Meta:
         model = User
