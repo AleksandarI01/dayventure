@@ -4,6 +4,7 @@ import UserCard from "../../components/UserCard/UserCard.jsx";
 import Trip from "../../components/Trip/Trip.jsx";
 import {useState} from "react";
 
+
 const Search = () => {
     const [userClicked, setUserClicked] = useState(true)
     const [styleUsers, setStyleUsers] = useState("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
@@ -57,7 +58,6 @@ const Search = () => {
 
                     {userClicked ?
                         <div className={"flex flex-row flex-wrap justify-center align-middle w-[90%] gap-[2%]"}>
-
                             <UserCard></UserCard>
                             <UserCard></UserCard>
                             <UserCard></UserCard>

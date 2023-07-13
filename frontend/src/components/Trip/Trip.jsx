@@ -34,11 +34,10 @@ const Trip = () => {
                         <div className="h-[35%] w-[100%]">
                             <p className="text-left pl-1">created by: Aleks 4 lv</p>
                         </div>
-                        <div className="h-[65%] w-[100%] pl-1 flex flex-row shrink-0 gap-[0.2rem] flex-wrap">
-                            <Label></Label>
-                            <Label></Label>
-                            <Label></Label>
-                            <Label></Label>
+                        <div className="h-[65%] w-[100%] pl-1 flex flex-row shrink-0 justify-center items-center gap-[0.2rem] flex-wrap">
+                            <Label>Food</Label>
+                            <Label>Sightseeing</Label>
+                            <Label>Museums</Label>
                         </div>
 
 
