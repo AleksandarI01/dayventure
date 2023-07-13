@@ -46,9 +46,10 @@ INSTALLED_APPS = [
     'user_registration',
     'email_scheduler',
 
+    'trip',
+    'itinerary',
     'poi',
     'transfer',
-    'itinerary',
     'category',
 
     # 3rd party apps
