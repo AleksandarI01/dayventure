@@ -42,9 +42,9 @@ const UserCard = () => {
                         <p>Lorem ipsum dolor sit amet, vim ut quas volumus probatus, has tantas laudem iracundia et, ad per utamur ceteros apeirian</p>
                     </div>
                     <div className={"h-[30%] w-[100%] pb-[2%] flex flex-row shrink-0 gap-[0.2rem] justify-center items-center flex-wrap"}>
-                        <Label></Label>
-                        <Label></Label>
-                        <Label></Label>
+                        <Label>SightSeeing</Label>
+                        <Label>Food</Label>
+                        <Label>Museums</Label>
                     </div>
 
 
