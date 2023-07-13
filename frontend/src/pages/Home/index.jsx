@@ -1,7 +1,7 @@
 import SearchHeader from "../../components/SearchHeader/SearchHeader";
 import ImageTrip from "../../components/ImageTrip/ImageTrip.jsx";
 import Label from "../../components/Label/Label";
-import NycMet from "../../assets/images/MetNYC.png";
+import NycMet from "../../assets/images/MetNyc.jpeg";
 import { MdShare } from "react-icons/md";
 
 const Home = () => {

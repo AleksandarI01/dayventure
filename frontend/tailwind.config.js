@@ -13,7 +13,10 @@ export default {
         "venture-red": "#FF0000",
       },
       backgroundImage: {
-        KayakHomeHeader: "url(./src/assets/images/KayakHomeHeader.png)",
+        KayakHomeHeader: "url(/src/assets/images/KayakHomeHeader.png)",
+      },
+      backgroundImageMet: {
+        Met: "url(/src/assets/images/MetNyc.png)",
       },
     },
   },
