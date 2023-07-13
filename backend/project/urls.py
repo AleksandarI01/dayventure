@@ -43,9 +43,9 @@ urlpatterns = [
    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
    # Token handling
-   path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-   path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-   path('api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
+   path('api/auth/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+   path('api/auth/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+   path('api/auth/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
 
    path('api/registration/', include('user_registration.urls')),
    path('api/auth/password-reset/', include('user_registration.urls')),

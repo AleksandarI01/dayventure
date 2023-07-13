@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-(ra^^7uubkq#-#@pa(f@6jxc9g4yn%b97+uun8f5*w$p$-hjcu
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://dayventure.propulsion-learn.ch', 'http://127.0.0.1']
-
+CSRF_TRUSTED_ORIGINS = ['https://dayventure.propulsion-learn.ch', 'http://127.0.0.1', 'http://localhost']
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -53,10 +53,13 @@ INSTALLED_APPS = [
     'category',
 
     # 3rd party apps
+    'rest_framework',
     'drf_yasg',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
