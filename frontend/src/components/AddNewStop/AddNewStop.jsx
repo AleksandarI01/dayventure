@@ -25,7 +25,7 @@ const AddNewStop = () => {
             className="flex flex-row w-full "
             placeholder={"How long you want to stay there?"}
           />
-          <Button>CONFIRM</Button>
+          <Button>SEARCH</Button>
         </div>
       </form>
     </>
