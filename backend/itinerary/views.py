@@ -44,4 +44,3 @@ class RetrieveUpdateDeleteItineraryView(RetrieveUpdateDestroyAPIView):
     @swagger_auto_schema(auto_schema=None)
     def put(self, request, *args, **kwargs):
         pass
-

@@ -1,4 +1,4 @@
-from datetime import time, timedelta
+from datetime import timedelta
 from django.db import models
 
 from poi.models import POI
