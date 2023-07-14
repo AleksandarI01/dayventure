@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'user',
     'user_profile',
     'user_registration',
-    'friendrequest'
+    'friendrequest',
     'email_scheduler',
 
     'trip',
