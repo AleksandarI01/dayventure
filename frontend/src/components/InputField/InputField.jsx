@@ -20,7 +20,7 @@ const InputField = ({ label, type, placeholder, icon: IconComponent,color, onCha
       <div>
         {label && <label className="block text-venture-gray text-sm font-bold mb-2" htmlFor={label}>{label}</label>}
         <input 
-          className="shadow appearance-none border rounded w-[244px] py-2 px-3 text-venture-darkgray leading-tight focus:outline-none focus:shadow-outline" 
+          className="shadow appearance-none border rounded w-[244px] py-2 px-3 text-venture-black leading-tight focus:outline-none focus:shadow-outline" 
           id={label} 
           type={type} 
           placeholder={placeholder} 
