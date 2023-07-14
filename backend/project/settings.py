@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'transfer',
     'category',
     'review',
+    'notification',
 
     # 3rd party apps
     'rest_framework',
