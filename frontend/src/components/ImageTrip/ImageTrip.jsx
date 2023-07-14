@@ -29,7 +29,7 @@ const ImageTrip = () => {
                     </div>
                     <div className="h-[20%] w-[100%] shrink-0 flex flex-row justify-center items-center">
 
-                        <Button></Button>
+                        <Button>DISCOVER</Button>
                     </div>
 
 
