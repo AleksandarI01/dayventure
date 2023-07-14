@@ -17,6 +17,7 @@ const Header = () => {
     SetMenuItems([
       { name: "Home", link: "/" },
       { name: "Search", link: "/search" },
+      { name: "New Trip", link: access_token ? "/new-trip" : "/login" },
       { name: "Profile", link: access_token ? "/profile" : "/login" },
     ]);
   }, [access_token]);
