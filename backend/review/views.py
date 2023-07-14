@@ -20,4 +20,3 @@ class CreateTripReviewView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user, trip=Trip.objects.get(pk=trip_id))
         return Response(serializer.data)
-
