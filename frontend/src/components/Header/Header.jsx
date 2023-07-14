@@ -2,6 +2,7 @@ import { NavLink, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/slices/user.js";
 import { useEffect, useState } from "react";
+import Button from "../Button/Button.jsx";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -38,12 +39,12 @@ const Header = () => {
           ))}
         </ul>
         {access_token ? (
-          <button
+          <Button
             className="text-base text-venture-black uppercase bg-venture-green cursor-pointer px-5 py-2 border-[none]"
             onClick={handleLogout}
           >
-            logout
-          </button>
+            Logout
+          </Button>
         ) : (
           <div className="flex gap-0.5">
             <button
