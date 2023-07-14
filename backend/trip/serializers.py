@@ -14,6 +14,7 @@ class TripSerializer(serializers.ModelSerializer):
     parent_trip = serializers.SerializerMethodField(read_only=True)
     liked_by = UserSerializer(read_only=True, many=True)
     liked_count = serializers.SerializerMethodField()
+    has_reviewed = serializers.SerializerMethodField()
 
     def get_parent_trip(self, trip):
         if trip.parent_trip is not None:
@@ -22,6 +23,11 @@ class TripSerializer(serializers.ModelSerializer):
 
     def get_liked_count(self, trip):
         return trip.liked_by.count()
+
+    def get_has_reviewed(self, trip):
+        if not trip.reviews.filter(user=self.context['request'].user):
+            return False
+        return True
 
     class Meta:
         model = Trip

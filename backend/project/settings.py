@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'poi',
     'transfer',
     'category',
+    'review',
 
     # 3rd party apps
     'rest_framework',

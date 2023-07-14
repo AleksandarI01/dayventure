@@ -147,6 +147,18 @@ class ListLikedTripsView(generics.ListAPIView):
         return user.liked_trips.all().order_by('-rating_avg', '-travel_date')
 
 
+class ListReviewedTripsView(generics.ListAPIView):
+    """
+        get:
+        Get the list of the trips the current user has reviewed/rated
+    """
+    serializer_class = TripSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.reviews.trip.all().order_by('-rating_avg', '-travel_date')
+
+
 class ListFriendsTripsView(ListAPIView):
     """
         get:
