@@ -58,6 +58,7 @@ urlpatterns = [
    path('api/trips/', include('trip.urls')),
    path('api/home/', ListTripsView.as_view()),
    path('api/categories/', CategoryListView.as_view()),
+   path('api/notifications/', include('notification.urls')),
 
 ]
 
