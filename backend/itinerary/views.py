@@ -39,7 +39,7 @@ class RetrieveUpdateDeleteItineraryView(RetrieveUpdateDestroyAPIView):
     # permission_classes = [IsLoggedInUserOrStaff]
     queryset = Itinerary.objects.all()
     serializer_class = ItinerarySerializer
-    lookup_url_kwarg = 'trip_id'
+    lookup_url_kwarg = 'itinerary_id'
 
     @swagger_auto_schema(auto_schema=None)
     def put(self, request, *args, **kwargs):
