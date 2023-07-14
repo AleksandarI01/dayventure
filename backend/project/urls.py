@@ -54,6 +54,7 @@ urlpatterns = [
 
    # main apps
    path('api/users/', include('user.urls')),
+   path('api/friends/', include('friendrequest.urls')),
    path('api/trips/', include('trip.urls')),
    path('api/home/', ListTripsView.as_view()),
    path('api/categories/', CategoryListView.as_view()),

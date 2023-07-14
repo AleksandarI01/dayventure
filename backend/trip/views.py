@@ -1,5 +1,6 @@
 # from django.shortcuts import render
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, CreateAPIView
@@ -165,9 +166,16 @@ class ListFriendsTripsView(ListAPIView):
         Get the list of trips of the current users friends own
     """
     serializer_class = TripSerializer
-    # todo: after friend requests are implemented
 
     def get_queryset(self):
-        user = self.request.user
-        queryset = Trip.objects.filter(comments__user=user).order_by('-rating_avg', '-travel_date')
+        current_user = self.request.user
+        queryset = Trip.objects.filter(Q(owner__friendrequests_sent__state='A',
+                                         owner__friendrequests_sent__receiver=current_user)
+                                       | Q(owner__friendrequests_received__state='A',
+                                           owner__friendrequests_received__sender=current_user)
+                                       ).order_by('-rating_avg', '-travel_date')
         return queryset
+
+
+filter(
+            )
