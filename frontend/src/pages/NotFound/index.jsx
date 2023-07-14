@@ -15,7 +15,7 @@ const NotFound = () => {
         <h1>Error 404</h1>
         <p>You must have taken a wrong turn.<br />Let us bring you back on track!</p>
         <img src={NotFoundImage} alt="NotFoundImage" className="h-[16vh] w-[16vh]"></img>
-        <Button onClickFunction={(e) => handleOnClick(e)}>Home</Button>
+        <Button onClickFunction={(e) => handleOnClick(e)}>Go Back</Button>
       </div>
     </>
   );
