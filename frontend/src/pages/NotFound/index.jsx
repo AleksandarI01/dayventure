@@ -38,7 +38,7 @@ const NotFound = () => {
           alt="NotFoundImage"
           className="h-[16vh] w-[16vh]"
         ></img>
-        <Button onClickFunction={handleOnClick}>Go Back</Button>
+        <Button onClickFunction={(e) => handleOnClick(e)}>Go Back</Button>
       </div>
     </>
   );

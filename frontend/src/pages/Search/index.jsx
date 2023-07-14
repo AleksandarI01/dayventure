@@ -6,20 +6,22 @@ import {useState} from "react";
 
 
 const Search = () => {
+    const activeStyleSearch = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
+    const inactiveStyleSearch = "cursor-pointer flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green"
     const [userClicked, setUserClicked] = useState(true)
-    const [styleUsers, setStyleUsers] = useState("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
-    const [styleTrips, setStyleTrips] = useState("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
+    const [styleUsers, setStyleUsers] = useState(activeStyleSearch)
+    const [styleTrips, setStyleTrips] = useState(inactiveStyleSearch)
 
     const onHandleClick = (event) => {
         event.preventDefault();
         if (event.target.id === "users") {
             setUserClicked(true)
-            setStyleUsers("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
-            setStyleTrips("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
+            setStyleUsers(activeStyleSearch)
+            setStyleTrips(inactiveStyleSearch)
         } else {
             setUserClicked(false)
-            setStyleUsers("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
-            setStyleTrips("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
+            setStyleUsers(inactiveStyleSearch)
+            setStyleTrips(activeStyleSearch)
         }
     }
 

@@ -1,21 +1,46 @@
 import Label from "../Label/Label.jsx"
 
-const ProfileDescription = () => {
+const ProfileDescription = ({
+                                setMyTripsClicked,
+                                setFriendsClicked,
+                                setMyFriendsTripsClicked,
+                                styleMyTrips,
+                                setStyleMyTrips,
+                                styleFriends,
+                                setStyleFriends,
+                                styleMyFriendsTrips,
+                                setStyleMyFriendsTrips
+                            }) => {
     const imageUrl = '../../../src/assets/island.png'
+    const activeStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
+    const inactiveStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green"
 
-    //     const onHandleClick = (event) => {
-    //     event.preventDefault();
-    //     console.log(event);
-    //     if (event.target.id === "users") {
-    //         setUserClicked(true)
-    //         setStyleUsers("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
-    //         setStyleTrips("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
-    //     } else {
-    //         setUserClicked(false)
-    //         setStyleUsers("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
-    //         setStyleTrips("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
-    //     }
-    // }
+    const onHandleClickProfile = (event) => {
+        event.preventDefault();
+        console.log(event);
+        if (event.target.id === "my-trips") {
+            setMyTripsClicked(true)
+            setFriendsClicked(false)
+            setMyFriendsTripsClicked(false)
+            setStyleMyTrips(activeStyle)
+            setStyleFriends(inactiveStyle)
+            setStyleMyFriendsTrips(inactiveStyle)
+        } else if (event.target.id == "my-friends") {
+            setMyTripsClicked(false)
+            setFriendsClicked(true)
+            setMyFriendsTripsClicked(false)
+            setStyleMyTrips(inactiveStyle)
+            setStyleFriends(activeStyle)
+            setStyleMyFriendsTrips(inactiveStyle)
+        } else {
+            setMyTripsClicked(false)
+            setFriendsClicked(false)
+            setMyFriendsTripsClicked(true)
+            setStyleMyTrips(inactiveStyle)
+            setStyleFriends(inactiveStyle)
+            setStyleMyFriendsTrips(activeStyle)
+        }
+    }
 
     return (
         <div
@@ -71,13 +96,17 @@ const ProfileDescription = () => {
                 <div className={"h-[40%] w-full flex flex-col shrink-0"}>
                     <div className="flex w-full justify-center items-center">
                         <ul className="list-none flex flex-row h-full">
-                            <li className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
+                            <li id={"my-trips"} onClick={onHandleClickProfile}
+                                className={styleMyTrips}
+                            >
                                 34 <br/>my trips
                             </li>
-                            <li id={"users"} className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
+                            <li id={"my-friends"} onClick={onHandleClickProfile}
+                                className={styleFriends}>
                                 256 <br/>friends
                             </li>
-                            <li className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
+                            <li id={"my-friends-trips"} onClick={onHandleClickProfile}
+                                className={styleMyFriendsTrips}>
                                 98 <br/>my friends' trips
                             </li>
                         </ul>

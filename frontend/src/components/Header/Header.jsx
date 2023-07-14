@@ -4,6 +4,7 @@ import { logout } from "../../store/slices/user.js";
 import { useEffect, useState } from "react";
 import { AiFillBell } from "react-icons/ai";
 import UserNotifications from "../UserNotifications/UserNotifications.jsx";
+import Button from "../Button/Button.jsx";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -53,12 +54,12 @@ const Header = () => {
               onClick={handleViewNotifications}
               className="text-2xl text-venture-black"
             />
-            <button
-              className="text-base text-venture-black uppercase bg-venture-green cursor-pointer px-5 py-2 border-[none]"
-              onClick={handleLogout}
-            >
-              logout
-            </button>
+            <Button
+            className="text-base text-venture-black uppercase bg-venture-green cursor-pointer px-5 py-2 border-[none]"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
           </div>
         ) : (
           <div className="flex gap-0.5">
