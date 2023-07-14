@@ -22,7 +22,9 @@ from rest_framework_simplejwt import views as jwt_views
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from category.views import CategoryListView
 from project import settings
+from trip.views import ListTripsView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -48,10 +50,13 @@ urlpatterns = [
    path('api/auth/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
 
    path('api/registration/', include('user_registration.urls')),
-   path('api/auth/password-reset/', include('user_registration.urls')),
+   path('api/password-reset/', include('user_registration.urls')),
 
    # main apps
    path('api/users/', include('user.urls')),
+   path('api/trips/', include('trip.urls')),
+   path('api/home/', ListTripsView.as_view()),
+   path('api/categories/', CategoryListView.as_view()),
 
 ]
 
