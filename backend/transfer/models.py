@@ -11,4 +11,4 @@ class Transfer(models.Model):
     # todo: add Google Maps stuff
 
     def __str__(self):
-        return f'registration-code : {self.means}'
+        return f'{self.means}'
