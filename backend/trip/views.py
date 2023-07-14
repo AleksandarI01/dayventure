@@ -175,7 +175,3 @@ class ListFriendsTripsView(ListAPIView):
                                            owner__friendrequests_received__sender=current_user)
                                        ).order_by('-rating_avg', '-travel_date')
         return queryset
-
-
-filter(
-            )
