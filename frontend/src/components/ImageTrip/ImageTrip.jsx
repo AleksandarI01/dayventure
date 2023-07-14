@@ -1,6 +1,6 @@
-import Button from "../Button/Button.jsx"
-import {MdLocationPin} from "react-icons/md";
-import Data from '../../assets/island.png'; // this will be a different path when we have the backend (prop)
+import Button from "../Button/Button.jsx";
+import { MdLocationPin } from "react-icons/md";
+import Data from "../../assets/island.png"; // this will be a different path when we have the backend (prop)
 
 const ImageTrip = () => {
     return (

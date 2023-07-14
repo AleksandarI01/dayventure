@@ -1,21 +1,21 @@
 import Label from "../Label/Label.jsx"
 
-const ProfileDescription = ({ userClicked, setUserClicked, styleUsers, styleTrips }) => {
+const ProfileDescription = () => {
     const imageUrl = '../../../src/assets/island.png'
 
-        const onHandleClick = (event) => {
-        event.preventDefault();
-        console.log(event);
-        if (event.target.id === "users") {
-            setUserClicked(true)
-            setStyleUsers("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
-            setStyleTrips("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
-        } else {
-            setUserClicked(false)
-            setStyleUsers("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
-            setStyleTrips("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
-        }
-    }
+    //     const onHandleClick = (event) => {
+    //     event.preventDefault();
+    //     console.log(event);
+    //     if (event.target.id === "users") {
+    //         setUserClicked(true)
+    //         setStyleUsers("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
+    //         setStyleTrips("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
+    //     } else {
+    //         setUserClicked(false)
+    //         setStyleUsers("flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
+    //         setStyleTrips("flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
+    //     }
+    // }
 
     return (
         <div
@@ -71,13 +71,13 @@ const ProfileDescription = ({ userClicked, setUserClicked, styleUsers, styleTrip
                 <div className={"h-[40%] w-full flex flex-col shrink-0"}>
                     <div className="flex w-full justify-center items-center">
                         <ul className="list-none flex flex-row h-full">
-                            <li onClick={onHandleClick} className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
+                            <li className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
                                 34 <br/>my trips
                             </li>
-                            <li id={"users"} onClick={onHandleClick} className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
+                            <li id={"users"} className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
                                 256 <br/>friends
                             </li>
-                            <li onClick={onHandleClick} className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
+                            <li className="flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green">
                                 98 <br/>my friends' trips
                             </li>
                         </ul>
