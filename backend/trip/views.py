@@ -5,7 +5,7 @@ from rest_framework import generics
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 
-from email_scheduler.models import EmailScheduler
+# from email_scheduler.models import EmailScheduler
 from trip.models import Trip
 from trip.serializers import TripSerializer
 
@@ -30,18 +30,15 @@ class CreateTripView(CreateAPIView):
 class ListCompanionTripsView(GenericAPIView):
     """
         get:
-        Get the list of trips a user is partaking
+        Get the list of trips the current user is partaking
     """
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
-                                                                                            # todo: start work here!!!!!
+
     def get(self, request, *args, **kwargs):
-        filtered_queryset = self.get_queryset().filter(restaurant=self.kwargs["restaurant_id"])
+        filtered_queryset = self.get_queryset().filter(companions=request.user)
         serializer = self.get_serializer(filtered_queryset, many=True)
-        if serializer.data:
-            return Response(serializer.data)
-        else:
-            return Response(data={"error": "restaurant has no reviews yet or does not exist"}, status=404)
+        return Response(serializer.data)
 
 
 class ListOwnerTripsView(ListAPIView):
@@ -55,92 +52,91 @@ class ListOwnerTripsView(ListAPIView):
         return Trip.objects.filter(owner=self.kwargs['user_id'])
 
 
-class ListReviewByRestaurantIdView(GenericAPIView):
-    serializer_class = ReviewSerializer
-    queryset = Review.objects.all()
+# class ListReviewByRestaurantIdView(GenericAPIView):                             # todo: what to do with this?
+#     serializer_class = TripSerializer
+#     queryset = Trip.objects.all()
+#
+#     def get(self, request, *args, **kwargs):
+#         if self.kwargs:
+#             queryset = self.get_queryset().filter(user=self.kwargs['user_id'])
+#         else:
+#             queryset = self.get_queryset().filter(user=request.user)
+#         serializer = self.get_serializer(queryset, many=True)
+#         return Response(serializer.data)
 
-    def get(self, request, *args, **kwargs):
-        if self.kwargs:
-            queryset = self.get_queryset().filter(user=self.kwargs['user_id'])
-        else:
-            queryset = self.get_queryset().filter(user=request.user)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
-
-class RetrieveUpdateDeleteReviewsView(RetrieveUpdateDestroyAPIView):
+class RetrieveUpdateDeleteTripView(RetrieveUpdateDestroyAPIView):
     """
         get:
-        Get a specific review by ID and display all the information
+        Get a specific trip by ID and display all the information
 
         patch:
-        Update a specific review (allowed only for owner or admin)
+        Update a specific trip (allowed only for owner or admin)
 
         delete:
-        Delete a specific review (allowed only for owner or admin)
+        Delete a specific trip (allowed only for owner or admin)
     """
-    permission_classes = [IsOwnerAdminOrReadOnly, ]
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    lookup_url_kwarg = 'review_id'
-
+    # permission_classes = [IsOwnerAdminOrReadOnly, ]
     # permission_classes = [IsLoggedInUserOrStaff]
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+    lookup_url_kwarg = 'trip_id'
 
     @swagger_auto_schema(auto_schema=None)
     def put(self, request, *args, **kwargs):
         pass
 
 
-class ToggleLikeReview(GenericAPIView):
+class ToggleLikeTripView(GenericAPIView):
     """
         post:
         toggle like on a review
     """
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    lookup_url_kwarg = 'review_id'
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+    lookup_url_kwarg = 'trip_id'
 
     def post(self, request, *args, **kwargs):
-        review = self.get_object()
+        trip = self.get_object()
         user = request.user
-        if user in review.liked_by.all():
-            review.liked_by.remove(user)
+        if user in trip.liked_by.all():
+            trip.liked_by.remove(user)
         else:
-            review.liked_by.add(user)
+            trip.liked_by.add(user)
 
-            # create email to review-author
-            mail_instance = EmailScheduler.objects.all()
-            subject = 'Luna-3: your review got liked'
-            message = f'Dear {review.user.username}\n\n' \
-                      f'Your review on {review.restaurant.name} just got a like.\n\n' \
-                      f'So go on, and review other restaurants!\n\n' \
-                      f'See you soon on luna3!'
-            mail_instance.create(subject=subject, message=message, recipient_list=review.user.email)
+            # # create email to review-author
+            # mail_instance = EmailScheduler.objects.all()
+            # subject = 'Luna-3: your review got liked'
+            # message = f'Dear {review.user.username}\n\n' \
+            #           f'Your review on {review.restaurant.name} just got a like.\n\n' \
+            #           f'So go on, and review other restaurants!\n\n' \
+            #           f'See you soon on luna3!'
+            # mail_instance.create(subject=subject, message=message, recipient_list=review.user.email)
 
-        return Response(self.get_serializer(review).data)
+        return Response(self.get_serializer(trip).data)
 
 
-class ListLikedReviews(generics.ListAPIView):
+class ListLikedTripsView(generics.ListAPIView):
     """
         get:
-        Get the list of the reviews the current user liked
+        Get the list of the trips the current user liked
     """
-    serializer_class = ReviewSerializer
-    # queryset = Review.objects.all()
+    serializer_class = TripSerializer
 
     def get_queryset(self):
         user = self.request.user
-        return user.likes.all()
+        return user.liked_trips.all()
 
 
-class ListCommentedReviews(ListAPIView):
+class ListFriendsTripsView(ListAPIView):
     """
         get:
-        Get the list of the reviews the current user commented
+        Get the list of trips of the current users friends own
     """
-    serializer_class = ReviewSerializer
+    serializer_class = TripSerializer
+    # todo: after friend requests are implemented
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Review.objects.filter(comments__user=user)
+        queryset = Trip.objects.filter(comments__user=user)
         return queryset

@@ -27,7 +27,7 @@ STATUS_CHOICES = [
 class Trip(models.Model):
     name = models.CharField(max_length=150)
     owner = models.ForeignKey(to=User, related_name='own_trips', on_delete=models.CASCADE)
-    companions = models.ManyToManyField(to=User, related_name='trips', blank=True, null=True)
+    companions = models.ManyToManyField(to=User, related_name='trips', blank=True)
     location = models.CharField(max_length=250)
     travel_date = models.DateField()
     total_cost = models.FloatField(default=0.0)
@@ -41,7 +41,7 @@ class Trip(models.Model):
     map_image = models.ImageField(upload_to=trip_image_directory_path, blank=True, null=True)
     rating_avg = models.FloatField(default=0)
     rating_count = models.IntegerField(default=0)
-    liked_by = models.ManyToManyField(to=User, related_name='liked_trips', blank=True, null=True)
+    liked_by = models.ManyToManyField(to=User, related_name='liked_trips', blank=True)
     create_date = models.DateTimeField(auto_now_add=True)
     mutation_date = models.DateTimeField(auto_now=True)
 
