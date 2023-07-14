@@ -2,12 +2,15 @@ import { NavLink, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/slices/user.js";
 import { useEffect, useState } from "react";
+import { AiFillBell } from "react-icons/ai";
+import UserNotifications from "../UserNotifications/UserNotifications.jsx";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const access_token = useSelector((state) => state.user.accessToken);
   const [MenuItems, SetMenuItems] = useState([]);
+  const [notifications, SetNotifications] = useState(false);
 
   useEffect(() => {
     SetMenuItems([
@@ -24,6 +27,11 @@ const Header = () => {
     navigate("/");
   };
 
+  const handleViewNotifications = (event) => {
+    event.preventDefault();
+    SetNotifications(!notifications);
+  };
+
   return (
     <header className="flex justify-between border-b-venture-black relative p-5 border-b border-solid">
       <Link to="/" className="flex gap-4">
@@ -38,12 +46,19 @@ const Header = () => {
           ))}
         </ul>
         {access_token ? (
-          <button
-            className="text-base text-venture-black uppercase bg-venture-green cursor-pointer px-5 py-2 border-[none]"
-            onClick={handleLogout}
-          >
-            logout
-          </button>
+          <div className="flex items-center gap-10">
+            {" "}
+            <AiFillBell
+              onClick={handleViewNotifications}
+              className="text-2xl text-venture-black"
+            />
+            <button
+              className="text-base text-venture-black uppercase bg-venture-green cursor-pointer px-5 py-2 border-[none]"
+              onClick={handleLogout}
+            >
+              logout
+            </button>
+          </div>
         ) : (
           <div className="flex gap-0.5">
             <button
@@ -65,6 +80,7 @@ const Header = () => {
           </div>
         )}
       </nav>
+      {notifications ? <UserNotifications /> : ""}
     </header>
   );
 };
