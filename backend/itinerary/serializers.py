@@ -1,3 +1,5 @@
+from datetime import datetime, date
+
 from rest_framework import serializers
 
 from itinerary.models import Itinerary
@@ -11,7 +13,8 @@ class ItinerarySerializer(serializers.ModelSerializer):
     end_time = serializers.SerializerMethodField()
 
     def get_end_time(self, itinerary):
-        return itinerary.start_time + itinerary.duration
+        dt = datetime.combine(date.today(), itinerary.start_time) + itinerary.duration
+        return dt.time()
 
     class Meta:
         model = Itinerary

@@ -7,16 +7,18 @@ from user.serializers import UserSerializer
 
 
 class TripSerializer(serializers.ModelSerializer):
-    owner = UserSerializer()
-    companions = UserSerializer()
-    itineraries = ItinerarySerializer()
-    categories = CategorySerializer()
-    parent_trip = serializers.SerializerMethodField()
-    liked_by = UserSerializer()
+    owner = UserSerializer(read_only=True)
+    companions = UserSerializer(read_only=True, many=True)
+    itineraries = ItinerarySerializer(many=True)
+    categories = CategorySerializer(read_only=True, many=True)
+    parent_trip = serializers.SerializerMethodField(read_only=True)
+    liked_by = UserSerializer(read_only=True, many=True)
     liked_count = serializers.SerializerMethodField()
 
     def get_parent_trip(self, trip):
-        return TripSerializer(trip.parent_trip, many=False).data
+        if trip.parent_trip is not None:
+            return TripSerializer(trip.parent_trip, many=False).data
+        return None
 
     def get_liked_count(self, trip):
         return trip.liked_by.count()

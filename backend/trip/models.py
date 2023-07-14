@@ -49,7 +49,7 @@ class Trip(models.Model):
         reviews = self.reviews.all()
         self.rating_avg = reviews.aggregate(models.Avg('rating')).get('rating__avg')
         self.review_count = reviews.count()
-        self.save(update_fields=['rating_average', 'review_count'])
+        self.save(update_fields=['rating_avg', 'review_count'])
 
     def __str__(self):
         return f'{self.id}: {self.name}'

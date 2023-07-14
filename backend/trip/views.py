@@ -12,6 +12,26 @@ from trip.serializers import TripSerializer
 User = get_user_model()
 
 
+class ListTripsView(ListAPIView):
+    """
+        get:
+        List Trips in order of their rating
+        all for /api/trips/
+        top 5 for /api/home/
+        may be filtered by query_param 'category'
+    """
+    serializer_class = TripSerializer
+
+    def get_queryset(self):
+        filter_category = self.request.query_params.get('category', None)
+        queryset = Trip.objects.all().order_by('-rating_avg')
+        if filter_category is not None:
+            queryset = queryset.filter(categories__name=filter_category)
+        if self.request._request.path == '/api/home/':
+            queryset = queryset[:5]
+        return queryset
+
+
 class CreateTripView(CreateAPIView):
     """
         post:
@@ -36,7 +56,7 @@ class ListCompanionTripsView(GenericAPIView):
     serializer_class = TripSerializer
 
     def get(self, request, *args, **kwargs):
-        filtered_queryset = self.get_queryset().filter(companions=request.user)
+        filtered_queryset = self.get_queryset().filter(companions=request.user).order_by('-travel_date')
         serializer = self.get_serializer(filtered_queryset, many=True)
         return Response(serializer.data)
 
@@ -44,25 +64,12 @@ class ListCompanionTripsView(GenericAPIView):
 class ListOwnerTripsView(ListAPIView):
     """
         get:
-        Get the list of own trips by a single user
+        Get the list of own trips by a user
     """
     serializer_class = TripSerializer
 
     def get_queryset(self):
-        return Trip.objects.filter(owner=self.kwargs['user_id'])
-
-
-# class ListReviewByRestaurantIdView(GenericAPIView):                             # todo: what to do with this?
-#     serializer_class = TripSerializer
-#     queryset = Trip.objects.all()
-#
-#     def get(self, request, *args, **kwargs):
-#         if self.kwargs:
-#             queryset = self.get_queryset().filter(user=self.kwargs['user_id'])
-#         else:
-#             queryset = self.get_queryset().filter(user=request.user)
-#         serializer = self.get_serializer(queryset, many=True)
-#         return Response(serializer.data)
+        return Trip.objects.filter(owner=self.kwargs['user_id']).order_by('-rating_avg')
 
 
 class RetrieveUpdateDeleteTripView(RetrieveUpdateDestroyAPIView):
@@ -116,6 +123,18 @@ class ToggleLikeTripView(GenericAPIView):
         return Response(self.get_serializer(trip).data)
 
 
+class ListOwnedTripsView(generics.ListAPIView):
+    """
+        get:
+        Get the list of the trips the current user owns
+    """
+    serializer_class = TripSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.own_trips.all().order_by('-travel_date')
+
+
 class ListLikedTripsView(generics.ListAPIView):
     """
         get:
@@ -125,7 +144,7 @@ class ListLikedTripsView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return user.liked_trips.all()
+        return user.liked_trips.all().order_by('-rating_avg', '-travel_date')
 
 
 class ListFriendsTripsView(ListAPIView):
@@ -138,5 +157,5 @@ class ListFriendsTripsView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Trip.objects.filter(comments__user=user)
+        queryset = Trip.objects.filter(comments__user=user).order_by('-rating_avg', '-travel_date')
         return queryset
