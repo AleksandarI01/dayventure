@@ -1,4 +1,4 @@
-from datetime import time
+from datetime import timedelta
 from django.db import models
 
 from poi.models import POI
@@ -18,7 +18,7 @@ class Itinerary(models.Model):
     poi = models.ForeignKey(to=POI, blank=True, null=True, on_delete=models.CASCADE)
     transfer = models.ForeignKey(to=Transfer, blank=True, null=True, on_delete=models.CASCADE)
     start_time = models.TimeField()
-    duration = models.TimeField(default=time(hour=1))
+    duration = models.DurationField(default=timedelta(hours=1))
     cost = models.FloatField(default=0.0)
     cost_currency = models.CharField(max_length=3, default='CHF')
 
