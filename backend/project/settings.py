@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user',
     'user_profile',
     'user_registration',
+    'friendrequest',
     'email_scheduler',
 
     'trip',
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
     'transfer',
     'category',
     'review',
+    'notification',
+    'level_limit',
 
     # 3rd party apps
     'rest_framework',

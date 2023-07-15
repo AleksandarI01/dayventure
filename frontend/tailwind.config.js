@@ -16,6 +16,8 @@ export default {
         KayakHomeHeader: "url(/src/assets/images/KayakHomeHeader.png)",
         TripHeader: "url(/src/assets/images/TripHeader.png)",
         nycMini: "url(/src/assets/images/nycMini.png)",
+        MailBox: "url(/src/assets/images/Mailbox.jpg)",
+        BgAboutUs: "url(/src/assets/images/BgAboutUs.png)",
       },
     },
   },

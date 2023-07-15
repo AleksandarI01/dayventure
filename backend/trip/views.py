@@ -1,7 +1,6 @@
-# from django.shortcuts import render
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 
@@ -123,7 +122,7 @@ class ToggleLikeTripView(GenericAPIView):
         return Response(self.get_serializer(trip).data)
 
 
-class ListOwnedTripsView(generics.ListAPIView):
+class ListOwnedTripsView(ListAPIView):
     """
         get:
         Get the list of the trips the current user owns
@@ -135,7 +134,7 @@ class ListOwnedTripsView(generics.ListAPIView):
         return user.own_trips.all().order_by('-travel_date')
 
 
-class ListLikedTripsView(generics.ListAPIView):
+class ListLikedTripsView(ListAPIView):
     """
         get:
         Get the list of the trips the current user liked
@@ -147,7 +146,7 @@ class ListLikedTripsView(generics.ListAPIView):
         return user.liked_trips.all().order_by('-rating_avg', '-travel_date')
 
 
-class ListReviewedTripsView(generics.ListAPIView):
+class ListReviewedTripsView(ListAPIView):
     """
         get:
         Get the list of the trips the current user has reviewed/rated
@@ -165,9 +164,12 @@ class ListFriendsTripsView(ListAPIView):
         Get the list of trips of the current users friends own
     """
     serializer_class = TripSerializer
-    # todo: after friend requests are implemented
 
     def get_queryset(self):
-        user = self.request.user
-        queryset = Trip.objects.filter(comments__user=user).order_by('-rating_avg', '-travel_date')
+        current_user = self.request.user
+        queryset = Trip.objects.filter(Q(owner__friendrequests_sent__state='A',
+                                         owner__friendrequests_sent__receiver=current_user)
+                                       | Q(owner__friendrequests_received__state='A',
+                                           owner__friendrequests_received__sender=current_user)
+                                       ).order_by('-rating_avg', '-travel_date')
         return queryset
