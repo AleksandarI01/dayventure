@@ -22,8 +22,18 @@ class ListTripsView(ListAPIView):
     serializer_class = TripSerializer
 
     def get_queryset(self):
+        current_user = self.request.user
         filter_category = self.request.query_params.get('category', None)
         queryset = Trip.objects.all().order_by('-rating_avg')
+        queryset = queryset.filter(Q(privacy='E')                      # todo: replace these filters with permissions?
+                                   | Q(privacy='F',
+                                       owner__friendrequests_sent__state='A',
+                                       owner__friendrequests_sent__receiver=current_user)
+                                   | Q(privacy='F',
+                                       owner__friendrequests_received__state='A',
+                                       owner__friendrequests_received__sender=current_user)
+                                   | Q(privacy='P', companions=current_user)
+                                   )
         if filter_category is not None:
             queryset = queryset.filter(categories__name=filter_category)
         if self.request._request.path == '/api/home/':
@@ -68,7 +78,18 @@ class ListOwnerTripsView(ListAPIView):
     serializer_class = TripSerializer
 
     def get_queryset(self):
-        return Trip.objects.filter(owner=self.kwargs['user_id']).order_by('-rating_avg')
+        current_user = self.request.user
+        queryset = Trip.objects.filter(owner=self.kwargs['user_id']).order_by('-rating_avg')
+        queryset = queryset.filter(Q(privacy='E')
+                                   | Q(privacy='F',
+                                       owner__friendrequests_sent__state='A',
+                                       owner__friendrequests_sent__receiver=current_user)
+                                   | Q(privacy='F',
+                                       owner__friendrequests_received__state='A',
+                                       owner__friendrequests_received__sender=current_user)
+                                   | Q(privacy='P', companions=current_user)
+                                   )
+        return queryset
 
 
 class RetrieveUpdateDeleteTripView(RetrieveUpdateDestroyAPIView):
@@ -84,7 +105,7 @@ class RetrieveUpdateDeleteTripView(RetrieveUpdateDestroyAPIView):
     """
     # permission_classes = [IsOwnerAdminOrReadOnly, ]
     # permission_classes = [IsLoggedInUserOrStaff]
-    queryset = Trip.objects.all()
+    queryset = Trip.objects.all()                 # todo: check if user is allowed by privacy?
     serializer_class = TripSerializer
     lookup_url_kwarg = 'trip_id'
 
@@ -100,15 +121,15 @@ class ToggleLikeTripView(GenericAPIView):
     """
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
-    lookup_url_kwarg = 'trip_id'
+    lookup_url_kwarg = 'trip_id'                 # todo: check if user is allowed by privacy?
 
     def post(self, request, *args, **kwargs):
         trip = self.get_object()
-        user = request.user
-        if user in trip.liked_by.all():
-            trip.liked_by.remove(user)
+        current_user = request.user
+        if current_user in trip.liked_by.all():
+            trip.liked_by.remove(current_user)
         else:
-            trip.liked_by.add(user)
+            trip.liked_by.add(current_user)
 
             # # create email to review-author
             # mail_instance = EmailScheduler.objects.all()
@@ -130,8 +151,8 @@ class ListOwnedTripsView(ListAPIView):
     serializer_class = TripSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        return user.own_trips.all().order_by('-travel_date')
+        current_user = self.request.user
+        return current_user.own_trips.all().order_by('-travel_date')
 
 
 class ListLikedTripsView(ListAPIView):
@@ -142,8 +163,18 @@ class ListLikedTripsView(ListAPIView):
     serializer_class = TripSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        return user.liked_trips.all().order_by('-rating_avg', '-travel_date')
+        current_user = self.request.user
+        queryset = current_user.liked_trips.all().order_by('-rating_avg', '-travel_date')
+        queryset = queryset.filter(Q(privacy='E')
+                                   | Q(privacy='F',
+                                       owner__friendrequests_sent__state='A',
+                                       owner__friendrequests_sent__receiver=current_user)
+                                   | Q(privacy='F',
+                                       owner__friendrequests_received__state='A',
+                                       owner__friendrequests_received__sender=current_user)
+                                   | Q(privacy='P', companions=current_user)
+                                   )
+        return queryset
 
 
 class ListReviewedTripsView(ListAPIView):
@@ -154,8 +185,18 @@ class ListReviewedTripsView(ListAPIView):
     serializer_class = TripSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        return user.reviews.trip.all().order_by('-rating_avg', '-travel_date')
+        current_user = self.request.user
+        queryset = current_user.reviews.trip.all().order_by('-rating_avg', '-travel_date')
+        queryset = queryset.filter(Q(privacy='E')
+                                   | Q(privacy='F',
+                                       owner__friendrequests_sent__state='A',
+                                       owner__friendrequests_sent__receiver=current_user)
+                                   | Q(privacy='F',
+                                       owner__friendrequests_received__state='A',
+                                       owner__friendrequests_received__sender=current_user)
+                                   | Q(privacy='P', companions=current_user)
+                                   )
+        return queryset
 
 
 class ListFriendsTripsView(ListAPIView):
@@ -172,4 +213,6 @@ class ListFriendsTripsView(ListAPIView):
                                        | Q(owner__friendrequests_received__state='A',
                                            owner__friendrequests_received__sender=current_user)
                                        ).order_by('-rating_avg', '-travel_date')
+        queryset = queryset.filter(Q(privacy__in=('E', 'F'))
+                                   | Q(privacy='P', companions=current_user))
         return queryset
