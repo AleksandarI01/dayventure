@@ -2,37 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-.card-height-width{
-  width: 272px;
-  height: 400px;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+.card-height-width {
+    width: 272px;
+    height: 400px;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 .no-style-on-focus:focus {
-  outline: none;
+    outline: none;
+}
+
+.underline-effect {
+    border-bottom-width: 0;
+    background-image: linear-gradient(transparent, transparent), linear-gradient(#fff, #fff);
+    background-size: 0 4px;
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    transition: background-size .2s ease-in-out;
+}
+
+.underline-effect-color {
+    background-image: linear-gradient(transparent, transparent), linear-gradient(#00A987, #00A987)
+}
+
+.underline-effect:hover {
+    background-size: 100% 4px;
+    background-position: 50% 100%
 }
 
 @layer base {
-  * {
-    font-family: "Poppins", sans-serif;
-  }
-  h1 {
-    @apply text-5xl font-bold;
-  }
-  h2 {
-    @apply text-4xl font-semibold;
-  }
-  h3 {
-    @apply text-3xl font-normal;
-  }
-  h4 {
-    @apply text-2xl font-medium;
-  }
-  p {
-    @apply text-base font-light;
-  }
-  .header-img-wrapper {
-    background-image: backgroundImage;
-    object-fit: cover;
-  }
+    * {
+        font-family: "Poppins", sans-serif;
+    }
+
+    h1 {
+        @apply text-5xl font-bold;
+    }
+
+    h2 {
+        @apply text-4xl font-semibold;
+    }
+
+    h3 {
+        @apply text-3xl font-normal;
+    }
+
+    h4 {
+        @apply text-2xl font-medium;
+    }
+
+    p {
+        @apply text-base font-light;
+    }
+
+    .header-img-wrapper {
+        background-image: backgroundImage;
+        object-fit: cover;
+    }
 }

@@ -7,7 +7,7 @@ import {useState} from "react";
 
 const Search = () => {
     const activeStyleSearch = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
-    const inactiveStyleSearch = "cursor-pointer flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green"
+    const inactiveStyleSearch = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
     const [userClicked, setUserClicked] = useState(true)
     const [styleUsers, setStyleUsers] = useState(activeStyleSearch)
     const [styleTrips, setStyleTrips] = useState(inactiveStyleSearch)

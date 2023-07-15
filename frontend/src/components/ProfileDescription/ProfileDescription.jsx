@@ -13,7 +13,7 @@ const ProfileDescription = ({
                             }) => {
     const imageUrl = '../../../src/assets/island.png'
     const activeStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
-    const inactiveStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green"
+    const inactiveStyle = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
 
     const onHandleClickProfile = (event) => {
         event.preventDefault();
@@ -25,7 +25,7 @@ const ProfileDescription = ({
             setStyleMyTrips(activeStyle)
             setStyleFriends(inactiveStyle)
             setStyleMyFriendsTrips(inactiveStyle)
-        } else if (event.target.id == "my-friends") {
+        } else if (event.target.id === "my-friends") {
             setMyTripsClicked(false)
             setFriendsClicked(true)
             setMyFriendsTripsClicked(false)
