@@ -36,7 +36,7 @@ class FriendrequestListView(ListAPIView):
 
     """
         get:
-        List all the friends requests
+        List all the friend requests
 
     """
     def get_queryset(self):

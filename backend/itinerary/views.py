@@ -12,7 +12,7 @@ class CreateItineraryView(CreateAPIView):
         post:
         Create a new Itinerary for a Trip
     """
-    queryset = Itinerary.objects.all()
+    queryset = Itinerary.objects.all()             # todo: permission: user = trip.owner
     serializer_class = ItinerarySerializer
 
     def post(self, request, *args, **kwargs):
@@ -37,10 +37,12 @@ class RetrieveUpdateDeleteItineraryView(RetrieveUpdateDestroyAPIView):
     """
     # permission_classes = [IsOwnerAdminOrReadOnly, ]
     # permission_classes = [IsLoggedInUserOrStaff]
-    queryset = Itinerary.objects.all()
+    queryset = Itinerary.objects.all()                       # todo: permission: user = trip.owner  or readonly
     serializer_class = ItinerarySerializer
     lookup_url_kwarg = 'itinerary_id'
 
     @swagger_auto_schema(auto_schema=None)
     def put(self, request, *args, **kwargs):
         pass
+
+# todo: View to change sequence
