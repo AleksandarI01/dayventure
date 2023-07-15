@@ -7,7 +7,7 @@ import {useState} from "react";
 
 const Home = () => {
     const activeStylePopular = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
-    const inactiveStylePopular = "cursor-pointer flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green"
+    const inactiveStylePopular = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
     const [sightseeingClicked, setSightseeingClicked] = useState(true)
     const [culinaryClicked, setCulinaryClicked] = useState(false)
     const [shoppingClicked, setShoppingClicked] = useState(false)

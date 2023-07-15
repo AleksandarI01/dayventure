@@ -8,8 +8,8 @@ const UserProfile = () => {
     const [friendsClicked, setFriendsClicked] = useState(false)
     const [myFriendsTripsClicked, setMyFriendsTripsClicked] = useState(false)
     const [styleMyTrips, setStyleMyTrips] = useState("cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green")
-    const [styleFriends, setStyleFriends] = useState("cursor-pointer flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
-    const [styleMyFriendsTrips, setStyleMyFriendsTrips] = useState("cursor-pointer flex h-100 py-5 float-left mx-7 hover:border-b-4 border-1 border-solid border-venture-green")
+    const [styleFriends, setStyleFriends] = useState("underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7")
+    const [styleMyFriendsTrips, setStyleMyFriendsTrips] = useState("underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7")
 
     return (
         <>
