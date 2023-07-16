@@ -52,11 +52,11 @@ const Header = () => {
             {" "}
             <AiFillBell
               onClick={handleViewNotifications}
-              className="text-2xl text-venture-black"
+              className="text-2xl text-venture-black cursor-pointer"
             />
             <Button
             className="text-base text-venture-black uppercase bg-venture-green cursor-pointer px-5 py-2 border-[none]"
-            onClick={handleLogout}
+            onClickFunction={handleLogout}
           >
             Logout
           </Button>

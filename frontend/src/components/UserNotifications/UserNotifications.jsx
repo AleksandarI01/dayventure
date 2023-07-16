@@ -8,12 +8,12 @@ const UserNotifications = () => {
           <h5>FRIEND REQUESTS</h5>
         </div>
         <div className="flex flex-row justify-center pb-5">
-          <div class="flex flex-col w-full">
+          <div className="flex flex-col w-full">
             <FriendRequest />
           </div>
         </div>
         <div className="flex flex-row justify-center">
-          <div class="flex flex-col w-full pb-2">
+          <div className="flex flex-col w-full pb-2">
             <h5>YOU GOT INVITED TO A TRIP</h5>
           </div>
         </div>
@@ -23,7 +23,7 @@ const UserNotifications = () => {
           </div>
           <div className="flex flex-col items-start  w-9/12">
             <div className="flex flex-row">
-              <h6>Creacted by: Alex Ilic</h6>
+              <h6>Created by: Alex Ilic</h6>
             </div>
             <div className="flex flex-row">
               <p>To: Belgrade, Serbia</p>
