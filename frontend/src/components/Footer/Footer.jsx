@@ -5,11 +5,11 @@ import { FaInstagram } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 const Footermenu = [
-  { name: "About us", link: "/aboutus" },
+  { name: "About us", link: "/about-us" },
   { name: "Press", link: "/press" },
   { name: "Blog", link: "/blog" },
   { name: "Ios", link: "/ios" },
-  { name: "Andriod", link: "/andriod" },
+  { name: "Android", link: "/android" },
 ];
 
 const SocialMedia = [
@@ -26,7 +26,7 @@ const Footer = () => {
       <ul className="flex gap-[4.7rem]">
         {Footermenu.map((item, idx) => (
           <li key={idx}>
-            <NavLink to={item.link}>{item.name}</NavLink>
+            <NavLink to={item.link} className={"hover:text-venture-green-hovered"}>{item.name}</NavLink>
           </li>
         ))}
       </ul>
