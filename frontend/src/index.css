@@ -34,6 +34,26 @@
     background-position: 50% 100%
 }
 
+.loading-spinner {
+    border: 8px solid #00A987;
+    border-top: 8px solid #06C9A2;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    vertical-align: center;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 @layer base {
     * {
         font-family: "Poppins", sans-serif;
