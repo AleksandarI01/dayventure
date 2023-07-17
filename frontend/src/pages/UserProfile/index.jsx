@@ -26,24 +26,37 @@ const UserProfile = () => {
                                         styleMyFriendsTrips={styleMyFriendsTrips}
                                         setStyleMyFriendsTrips={setStyleMyFriendsTrips}/>
                 </div>
-                {myTripsClicked ? <div className={"w-full flex shrink-0 justify-center items-center mb-[6%]"}>
-                    <Trip></Trip>
-                    <Trip></Trip>
-                    <Trip></Trip>
-                </div> : friendsClicked === true ?
-                    <div className={"w-full flex shrink-0 justify-center items-center mb-[6%]"}>
-                        <UserCard></UserCard>
-                        <UserCard></UserCard>
-                        <UserCard></UserCard>
-                    </div> : myFriendsTripsClicked === true ?
-                        <div className={"w-full flex shrink-0 justify-center items-center mb-[6%]"}>
-                            <Trip></Trip>
-                            <Trip></Trip>
-                            <Trip></Trip>
-                            <Trip></Trip>
-                            <Trip></Trip>
-                            <Trip></Trip>
-                        </div> : null}
+                <div className={"flex flex-row justify-center align-middle items-center"}>
+                    <div
+                        className={"w-[90%] flex justify-center align-middle pb-[3%] pt-[2%]"}>
+                        {myTripsClicked ?
+                            <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
+                                <Trip></Trip>
+                                <Trip></Trip>
+                                <Trip></Trip>
+                                <Trip></Trip>
+                                <Trip></Trip>
+                                <Trip></Trip>
+                                <Trip></Trip>
+                                <Trip></Trip>
+                                <Trip></Trip>
+
+                            </div> : friendsClicked === true ?
+                                <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
+                                    <UserCard></UserCard>
+                                    <UserCard></UserCard>
+                                    <UserCard></UserCard>
+                                </div> : myFriendsTripsClicked === true ?
+                                    <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
+                                        <Trip></Trip>
+                                        <Trip></Trip>
+                                        <Trip></Trip>
+                                        <Trip></Trip>
+                                        <Trip></Trip>
+                                        <Trip></Trip>
+                                    </div> : null}
+                    </div>
+                </div>
             </div>
         </>
     )
