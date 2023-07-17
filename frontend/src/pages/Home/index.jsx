@@ -121,25 +121,29 @@ const Home = () => {
                         </ul>
                     </div>
 
-                    {sightseeingClicked ? <div className="flex flex-row w-full p-8">
-                        <div className="flex flex-col w-1/3 items-center">
-                            <ImageTrip className="text-4xl my-3"/>
-                        </div>
-                        <div className="flex flex-col w-1/3 items-center">
-                            <ImageTrip className="text-4xl my-3"/>
-                        </div>
-                        <div className="flex flex-col w-1/3 items-center">
-                            <ImageTrip className="text-4xl my-3"/>
-                        </div>
-                    </div> : culinaryClicked ? <div className="flex flex-row w-full p-8">
-                        <p>culinary clicked!</p>
-                    </div> : shoppingClicked ? <div className="flex flex-row w-full p-8">
-                        <p>shopping clicked!</p>
-                    </div> : nightlifeClicked ? <div className="flex flex-row w-full p-8">
-                        <p>nightlife clicked!</p>
-                    </div> : adventureClicked ? <div className="flex flex-row w-full p-8">
-                        <p>adventure clicked!</p>
-                    </div> : null}
+                    <div className={"w-full flex justify-center align-middle pb-[3%] pt-[2%]"}>
+                        {sightseeingClicked ?
+                            <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
+                                <ImageTrip></ImageTrip>
+                                <ImageTrip></ImageTrip>
+                                <ImageTrip></ImageTrip>
+                                <ImageTrip></ImageTrip>
+                                <ImageTrip></ImageTrip>
+                                <ImageTrip></ImageTrip>
+                                <ImageTrip></ImageTrip>
+                                <ImageTrip></ImageTrip>
+                                <ImageTrip></ImageTrip>
+                            </div>
+                            : culinaryClicked ? <div className="flex flex-row w-full p-8">
+                                <p>culinary clicked!</p>
+                            </div> : shoppingClicked ? <div className="flex flex-row w-full p-8">
+                                <p>shopping clicked!</p>
+                            </div> : nightlifeClicked ? <div className="flex flex-row w-full p-8">
+                                <p>nightlife clicked!</p>
+                            </div> : adventureClicked ? <div className="flex flex-row w-full p-8">
+                                <p>adventure clicked!</p>
+                            </div> : null}
+                    </div>
 
                     <div className="flex flex-row w-full p-8">
                         <div className="flex flex-col w-1/3 items-center">

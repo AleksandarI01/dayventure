@@ -58,8 +58,9 @@ const Search = () => {
                 </div>
                 <div className={"w-full flex justify-center align-middle pb-[12%] pt-[2%]"}>
 
+
                     {userClicked ?
-                        <div className={"flex flex-row flex-wrap justify-center align-middle w-[90%] gap-[2%]"}>
+                        <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
                             <UserCard></UserCard>
                             <UserCard></UserCard>
                             <UserCard></UserCard>
@@ -72,7 +73,7 @@ const Search = () => {
                             <UserCard></UserCard>
 
                         </div> :
-                        <div className={"flex flex-row flex-wrap justify-center align-middle w-[90%] gap-[2%]"}>
+                        <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
 
                             <Trip></Trip>
                             <Trip></Trip>
@@ -83,11 +84,13 @@ const Search = () => {
 
                         </div>}
 
+
                 </div>
             </div>
 
         </>
-    );
+    )
+        ;
 };
 
 export default Search;
