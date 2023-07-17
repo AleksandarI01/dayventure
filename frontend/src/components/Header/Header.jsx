@@ -9,7 +9,7 @@ import Button from "../Button/Button.jsx";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const access_token = useSelector((state) => state.user.accessToken);
+  const accessToken = useSelector((state) => state.user.accessToken);
   const [MenuItems, SetMenuItems] = useState([]);
   const [notifications, SetNotifications] = useState(false);
 
@@ -17,10 +17,10 @@ const Header = () => {
     SetMenuItems([
       { name: "Home", link: "/" },
       { name: "Search", link: "/search" },
-      { name: "New Trip", link: access_token ? "/new-trip" : "/login" },
-      { name: "Profile", link: access_token ? "/profile" : "/login" },
+      { name: "New Trip", link: accessToken ? "/new-trip" : "/login" },
+      { name: "Profile", link: accessToken ? "/profile" : "/login" },
     ]);
-  }, [access_token]);
+  }, [accessToken]);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -47,7 +47,7 @@ const Header = () => {
             </li>
           ))}
         </ul>
-        {access_token ? (
+        {accessToken ? (
           <div className="flex items-center gap-10">
             {" "}
             <AiFillBell

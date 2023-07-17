@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Icon from '../Icon/Icon';
 
-const InputField = ({ label, type, placeholder, icon: IconComponent,color, onChange }) => {
-  const [value, setValue] = useState("");
+const InputField = ({ label, type, placeholder, icon: IconComponent, color, onChange, value: superValue = "", disabled = false }) => {
+  const [value, setValue] = useState(superValue);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -26,6 +26,7 @@ const InputField = ({ label, type, placeholder, icon: IconComponent,color, onCha
           placeholder={placeholder} 
           value={value}
           onChange={handleChange}
+          disabled={disabled}
         />
       </div>
     </div>
