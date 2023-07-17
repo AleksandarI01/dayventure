@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SignUpFirstStep from "../../components/SignUp/SignUpFirstStep";
 import SignUpSecondStep from "../../components/SignUp/SignUpSecondStep";
 import SignUpThirdStep from "../../components/SignUp/SignUpThirdStep";
@@ -23,7 +23,7 @@ const SignUp = () => {
         <SignUpFirstStep setEmail={setEmail} moveToNextStep={moveToNextStep} />
       )}
       {signupStep === "step2" && (
-        <SignUpSecondStep moveToNextStep={moveToNextStep} />
+        <SignUpSecondStep email={email} moveToNextStep={moveToNextStep} />
       )}
       {signupStep === "step3" && <SignUpThirdStep email={email} />}
       {signupStep === "step1" && (

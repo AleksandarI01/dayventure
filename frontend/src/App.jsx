@@ -17,37 +17,35 @@ import {login, logout, setAllInformation} from "./store/slices/user.js";
 import {useDispatch, useSelector} from "react-redux";
 
 function App() {
-    const access_token = useSelector((state) => state.user.accessToken);
+    const accessToken = useSelector((state) => state.user.accessToken);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const refreshToken = localStorage.getItem("refreshToken");
         if (refreshToken) {
             axiosDayVenture
-                .post("auth/token/refresh/", {
+                .post("/auth/token/refresh/", {
                     refresh: refreshToken,
                 })
                 .then((response) => {
                     dispatch(login(response.data.access));
-                    console.log('logged in')
                 })
                 .catch((error) => {
                     console.error(error);
 
-                    localStorage.removeItem("refresh_token");
+                    localStorage.removeItem("refreshToken");
                     dispatch(logout());
                 });
         } else {
             dispatch(logout());
-            console.log('logged in')
         }
     }, [dispatch]);
 
     useEffect(() => {
-        if (access_token) {
-            const config = {headers: {Authorization: `Bearer ${access_token}`}};
+        if (accessToken) {
+            const config = {headers: {Authorization: `Bearer ${accessToken}`}};
             axiosDayVenture
-                .get("users/me/", config)
+                .get("/users/me/", config)
                 .then((res) => {
                     dispatch(
                         setAllInformation({
@@ -64,15 +62,14 @@ function App() {
                             level: res.data.level,
                         })
                     );
-                    console.log('got me')
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
-    }, [access_token, dispatch]);
+    }, [accessToken, dispatch]);
 
-    if (access_token || access_token === null) {
+    if (accessToken || accessToken === null) {
         return (
             <>
                 <Routes>
