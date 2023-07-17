@@ -1,41 +1,31 @@
 import Label from "../Label/Label.jsx"
+import {useState} from "react";
 
-const ProfileDescription = ({
-                                setMyTripsClicked,
-                                setFriendsClicked,
-                                setMyFriendsTripsClicked,
-                                styleMyTrips,
-                                setStyleMyTrips,
-                                styleFriends,
-                                setStyleFriends,
-                                styleMyFriendsTrips,
-                                setStyleMyFriendsTrips
-                            }) => {
+const ProfileDescription = ({setSelectedView, setResults}) => {
     const imageUrl = '../../../src/assets/island.png'
     const activeStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
     const inactiveStyle = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
+    const [styleMyTrips, setStyleMyTrips] = useState(activeStyle)
+    const [styleFriends, setStyleFriends] = useState(inactiveStyle)
+    const [styleMyFriendsTrips, setStyleMyFriendsTrips] = useState(inactiveStyle)
+
 
     const onHandleClickProfile = (event) => {
         event.preventDefault();
         console.log(event);
+        setResults([])
         if (event.target.id === "my-trips") {
-            setMyTripsClicked(true)
-            setFriendsClicked(false)
-            setMyFriendsTripsClicked(false)
+            setSelectedView('myTrips')
             setStyleMyTrips(activeStyle)
             setStyleFriends(inactiveStyle)
             setStyleMyFriendsTrips(inactiveStyle)
         } else if (event.target.id === "my-friends") {
-            setMyTripsClicked(false)
-            setFriendsClicked(true)
-            setMyFriendsTripsClicked(false)
+            setSelectedView('friends')
             setStyleMyTrips(inactiveStyle)
             setStyleFriends(activeStyle)
             setStyleMyFriendsTrips(inactiveStyle)
-        } else {
-            setMyTripsClicked(false)
-            setFriendsClicked(false)
-            setMyFriendsTripsClicked(true)
+        } else if (event.target.id === "my-friends-trips") {
+            setSelectedView('friendsTrips')
             setStyleMyTrips(inactiveStyle)
             setStyleFriends(inactiveStyle)
             setStyleMyFriendsTrips(activeStyle)
