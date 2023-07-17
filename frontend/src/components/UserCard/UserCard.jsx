@@ -1,7 +1,7 @@
 import Label from "../Label/Label.jsx"
 
 
-const UserCard = () => {
+const UserCard = ({user}) => {
     const imageUrl = '../../../src/assets/island.png'
     return (
         <>
@@ -10,9 +10,9 @@ const UserCard = () => {
                 <div className="h-[55%] w-[100%]">
                     <div
                         className="h-[67%] w-[100%] shrink-0 flex flex-col justify-center items-center">
-                        <img className={"h-20 w-20 rounded-full"} src={imageUrl} alt={"profile picture"}/>
-                        <p>Stefan L.</p>
-                        <p>Rome, Italy</p>
+                        <img className={"h-20 w-20 rounded-full"} src={user?.avatar ? user.avatar : imageUrl} alt={"profile picture"}/>
+                        <p>{user.first_name} {user.last_name}</p>
+                        <p>{user.location}</p>
 
 
                     </div>
@@ -39,12 +39,10 @@ const UserCard = () => {
                 </div>
                 <div className="h-[45%] w-[100%]">
                     <div className={"h-[68%] w-[100%]"}>
-                        <p>Lorem ipsum dolor sit amet, vim ut quas volumus probatus, has tantas laudem iracundia et, ad per utamur ceteros apeirian</p>
+                        <p>{user.about}</p>
                     </div>
                     <div className={"h-[30%] w-[100%] pb-[2%] flex flex-row shrink-0 gap-[0.2rem] justify-center items-center flex-wrap"}>
-                        <Label>SightSeeing</Label>
-                        <Label>Food</Label>
-                        <Label>Museums</Label>
+                        {user.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
                     </div>
 
 
