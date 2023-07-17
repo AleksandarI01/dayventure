@@ -16,7 +16,7 @@ class ListTripsView(ListAPIView):
         get:
         List Trips in order of their rating
         all for /api/trips/
-        top 5 for /api/home/
+        top 6 for /api/home/
         may be filtered by query_param 'category'
     """
     serializer_class = TripSerializer
@@ -37,7 +37,7 @@ class ListTripsView(ListAPIView):
         if filter_category is not None:
             queryset = queryset.filter(categories__name=filter_category)
         if self.request._request.path == '/api/home/':
-            queryset = queryset[:5]
+            queryset = queryset[:6]
         return queryset
 
 
