@@ -7,6 +7,7 @@ from rest_framework.response import Response
 # from email_scheduler.models import EmailScheduler
 from trip.models import Trip
 from trip.serializers import TripSerializer
+from user.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -216,3 +217,52 @@ class ListFriendsTripsView(ListAPIView):
         queryset = queryset.filter(Q(privacy__in=('E', 'F'))
                                    | Q(privacy='P', companions=current_user))
         return queryset
+
+
+class GeneralSearchListView(ListAPIView):
+    """
+        get:
+        Search for ‘trips’ or ‘users’
+        EXAMPLE - /api/search/?type=trips&search_string=Bern
+        additional filter for 'category' on trips
+    """
+
+    def get_serializer_class(self):
+        search_type = self.request.query_params.get('type', None)
+        if search_type == 'trips':
+            return TripSerializer
+        if search_type == 'users':
+            return UserSerializer
+        return TripSerializer
+
+    def get_queryset(self):
+        search_type = self.request.query_params.get('type', None)
+        search_string = self.request.query_params.get('search_string', None)
+        search_category = self.request.query_params.get('category', None)
+        current_user = self.request.user
+
+        if search_type == 'trips':
+            queryset = Trip.objects.all().order_by('-rating_avg')
+            queryset = queryset.filter(Q(privacy='E')
+                                       | Q(privacy='F',
+                                           owner__friendrequests_sent__state='A',
+                                           owner__friendrequests_sent__receiver=current_user)
+                                       | Q(privacy='F',
+                                           owner__friendrequests_received__state='A',
+                                           owner__friendrequests_received__sender=current_user)
+                                       | Q(privacy='P', companions=current_user)
+                                       )
+            if search_string is not None:
+                queryset = queryset.filter(name__icontains=search_string)
+            if search_category is not None:
+                queryset = queryset.filter(categories=search_category)
+            return queryset
+
+        if search_type == 'users':
+            queryset = User.objects.all()
+            if search_string is not None:
+                queryset = queryset.filter(Q(username__icontains=search_string) |
+                                           Q(first_name__icontains=search_string) |
+                                           Q(last_name__icontains=search_string))
+            return queryset
+        return
