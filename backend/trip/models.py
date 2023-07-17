@@ -32,7 +32,7 @@ class Trip(models.Model):
     travel_date = models.DateField()
     total_cost = models.FloatField(default=0.0)
     cost_currency = models.CharField(max_length=3, default='CHF')
-    categories = models.ManyToManyField(to=Category)
+    categories = models.ManyToManyField(to=Category, related_name='trips')
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='P')
     privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default='P')
     parent_trip = models.ForeignKey(to='Trip', related_name='child_trips', blank=True, null=True,

@@ -24,7 +24,7 @@ from drf_yasg import openapi
 
 from category.views import CategoryListView
 from project import settings
-from trip.views import ListTripsView
+from trip.views import ListTripsView, GeneralSearchListView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -59,6 +59,7 @@ urlpatterns = [
    path('api/home/', ListTripsView.as_view()),
    path('api/categories/', CategoryListView.as_view()),
    path('api/notifications/', include('notification.urls')),
+   path('api/search/', GeneralSearchListView.as_view()),
 
 ]
 
