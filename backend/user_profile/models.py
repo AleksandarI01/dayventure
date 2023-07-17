@@ -22,7 +22,7 @@ class UserProfile(models.Model):
     about = models.TextField(max_length=250, blank=True)
     score = models.IntegerField(default=0)
     level = models.IntegerField(default=1)
-    liked_categories = models.ManyToManyField(to=Category)
+    liked_categories = models.ManyToManyField(to=Category, related_name='liked_by')
 
     def __str__(self):
         return f"{self.user.username}"
