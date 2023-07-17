@@ -1,5 +1,4 @@
 import Button from "../../components/Button/Button";
-import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import nycMini from "../../assets/images/nycMini.png";
 import AddNewStop from "../../components/AddNewStop/AddNewStop";
@@ -23,13 +22,13 @@ const Trip = () => {
   ]);
   const history = useHistory();
 
-  const handleDeleteTrip = (event) => {
-    event.preventDefault();
-    // Perform the deletion logic here
-    console.log("I WANT TO DELETE THE TRIP");
-    // Redirect to the user profile page
-    history.push("/user-profile"); // Replace "/user-profile" with the actual route for the user profile page
-  };
+  // const handleDeleteTrip = (event) => {
+  //   event.preventDefault();
+  //   // Perform the deletion logic here
+  //   console.log("I WANT TO DELETE THE TRIP");
+  //   // Redirect to the user profile page
+  //   history.push("/user-profile"); // Replace "/user-profile" with the actual route for the user profile page
+  // };
 
   const handleAddNewStopClick = (event) => {
     event.preventDefault();
