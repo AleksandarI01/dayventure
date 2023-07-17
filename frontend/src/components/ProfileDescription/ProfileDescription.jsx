@@ -1,8 +1,8 @@
 import Label from "../Label/Label.jsx"
 import {useState} from "react";
 
-const ProfileDescription = ({setSelectedView, setResults}) => {
-    const imageUrl = '../../../src/assets/island.png'
+const ProfileDescription = ({user, setSelectedView, setResults}) => {
+    const defaultImage = '../../../src/assets/island.png'
     const activeStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
     const inactiveStyle = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
     const [styleMyTrips, setStyleMyTrips] = useState(activeStyle)
@@ -38,9 +38,11 @@ const ProfileDescription = ({setSelectedView, setResults}) => {
             <div className={"h-[100%] w-[25%] flex flex-col shrink-0 border-r border-solid border-venture-gray"}>
                 <div
                     className="h-[65%] w-[100%] pt-[2%] shrink-0 flex flex-col gap-[0.2rem] justify-center items-center">
-                    <img className={"h-20 w-20 rounded-full"} src={imageUrl} alt={"profile picture"}/>
-                    <p className={"pt-[2%]"}>Stefan L.</p>
-                    <p>Rome, Italy</p>
+                    <img className={"h-20 w-20 rounded-full"} src={user?.avatar ? user.avatar : defaultImage } alt={"profile picture"}/>
+                        {user?.first_name || user?.last_name ? <p className={"pt-[2%]"}>{user.first_name} {user.last_name}</p>
+                                                            : <p className={"pt-[2%]"}>{user?.username}</p>
+                        }
+                    <p>{user?.location}</p>
 
 
                 </div>
@@ -63,8 +65,7 @@ const ProfileDescription = ({setSelectedView, setResults}) => {
                             <p className={"text-left p-2"}>About</p>
                         </div>
                         <div className={"w-full h-[85] flex flex-col align-start justify-start"}>
-                            <p className={"text-left p-2"}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                do eiusmod tempor incid aliqua. Ut enim ad minim veniam, qu</p>
+                            <p className={"text-left p-2"}>{user?.about}</p>
                         </div>
                     </div>
                     <div className={"h-full w-[50%] flex flex-col shrink-0"}>
@@ -73,16 +74,13 @@ const ProfileDescription = ({setSelectedView, setResults}) => {
                         </div>
                         <div
                             className={"w-full h-[85] p-1 flex flex-row gap-[0.2rem] align-start justify-start flex-wrap"}>
-                            <Label>Food</Label>
-                            <Label>Museums</Label>
-                            <Label>Sightseeing</Label>
-                            <Label>Beach</Label>
-                            <Label>Restaurants</Label>
+                        {user?.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
                         </div>
 
 
                     </div>
                 </div>
+                {/* todo: get these numbers from backend!*/}
                 <div className={"h-[40%] w-full flex flex-col shrink-0"}>
                     <div className="flex w-full justify-center items-center">
                         <ul className="list-none flex flex-row h-full">

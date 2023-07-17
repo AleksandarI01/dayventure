@@ -6,10 +6,12 @@ import {useSelector} from "react-redux";
 import {axiosDayVenture} from "../../axios/index.js";
 
 const UserProfile = () => {
+    const defaultImage = '../../../src/assets/island.png'
     const accessToken = useSelector((state) => state.user.accessToken);
 
-    const [results, setResults] = useState([])
     const [selectedView, setSelectedView] = useState('myTrips')
+    const [results, setResults] = useState([])
+    const [user, setUser] = useState({})
 
     useEffect(() => {
         let url = '/trips/'
@@ -30,7 +32,6 @@ const UserProfile = () => {
         axiosDayVenture
             .get(url, config)
             .then((res) => {
-                console.log(res.data);
                 setResults(res.data)
             })
             .catch((error) => {
@@ -39,13 +40,29 @@ const UserProfile = () => {
 
     }, [accessToken, selectedView])
 
+    useEffect(() => {
+        let url = '/users/me/'
+        const config = {headers: {Authorization: `Bearer ${accessToken}`}};
+        axiosDayVenture
+            .get(url, config)
+            .then((res) => {
+                setUser(res.data);
+                console.log(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+    }, [accessToken, selectedView])
+//todo: styling of banner picture
     return (
         <>
             <div className={"w-full flex flex-col shrink-0 gap-6"}>
                 <div className={"bg-red-400 w-full h-48 bg-no-repeat bg-cover"}>
+                    <img src={user?.banner ? user.banner : defaultImage } alt="user banner picture"/>
                 </div>
                 <div className={"w-full flex shrink-0 justify-center items-center"}>
-                    <ProfileDescription setSelectedView={setSelectedView} setResults={setResults}/>
+                    <ProfileDescription user={user} setSelectedView={setSelectedView} setResults={setResults}/>
                 </div>
                 {selectedView === 'myTrips' || selectedView === 'friendsTrips' ?
                     <div className={"w-full flex shrink-0 justify-center items-center mb-[6%]"}>
