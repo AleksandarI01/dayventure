@@ -1,15 +1,9 @@
 import SearchHeader from "../../components/SearchHeader/SearchHeader";
-import ImageTrip from "../../components/ImageTrip/ImageTrip.jsx";
 import Label from "../../components/Label/Label";
 import NycMet from "../../assets/images/MetNyc.jpeg";
 import { MdShare } from "react-icons/md";
 import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import SwiperContainer from "../../components/SwiperContainer/SwiperContainer";
 
 const Home = () => {
   const activeStylePopular =
@@ -26,8 +20,6 @@ const Home = () => {
   const [styleShopping, setStyleShopping] = useState(inactiveStylePopular);
   const [styleNightlife, setStyleNightlife] = useState(inactiveStylePopular);
   const [styleAdventure, setStyleAdventure] = useState(inactiveStylePopular);
-
-
 
   const onHandlePopularClick = (event) => {
     event.preventDefault();
@@ -150,48 +142,17 @@ const Home = () => {
             </ul>
           </div>
 
-          <div
-            className={
-              "w-full flex justify-center align-middle pb-[3%] pt-[2%]"
-            }
-          >
+          <div className="flex flex-row w-full p-8">
             {sightseeingClicked ? (
-              <div className="flex items-center w-full justify-center p-8 gap-20">
-                <Swiper
-                  modules={[Navigation, Autoplay]}
-                  centeredSlides
-                  slidesPerView={3}
-                  spaceBetween={20}
-                  autoplay={{ delay: 3000 }}
-                  loop={true}
-                >
-                  <SwiperSlide style={{ width: "fit-content" }}>
-                    <ImageTrip />
-                  </SwiperSlide>
-                  <SwiperSlide style={{ width: "fit-content" }}>
-                    <ImageTrip />
-                  </SwiperSlide>
-                  <SwiperSlide style={{ width: "fit-content" }}>
-                    <ImageTrip />
-                  </SwiperSlide>
-                </Swiper>
-              </div>
+              <SwiperContainer />
             ) : culinaryClicked ? (
-              <div className="flex flex-row w-full p-8">
-                <p>culinary clicked!</p>
-              </div>
+              <SwiperContainer />
             ) : shoppingClicked ? (
-              <div className="flex flex-row w-full p-8">
-                <p>shopping clicked!</p>
-              </div>
+              <SwiperContainer />
             ) : nightlifeClicked ? (
-              <div className="flex flex-row w-full p-8">
-                <p>nightlife clicked!</p>
-              </div>
+              <SwiperContainer />
             ) : adventureClicked ? (
-              <div className="flex flex-row w-full p-8">
-                <p>adventure clicked!</p>
-              </div>
+              <SwiperContainer />
             ) : null}
           </div>
 
