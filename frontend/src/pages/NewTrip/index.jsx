@@ -1,11 +1,27 @@
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import TripHeader from "../../components/TripHeader/TripHeader";
+import GoogleMapReact from "google-map-react";
 
 const NewTrip = () => {
+  const coordinates = { lat: 0, lng: 0 };
+  console.log(import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY);
+
   return (
     <>
       <div className="flex flex-col items-center w-full ">
+        <div className="w-full h-80">
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY,
+            }}
+            defaultCenter={coordinates}
+            center={coordinates}
+            defaultZoom={14}
+            margin={[50, 50, 50, 50]}
+          ></GoogleMapReact>
+        </div>
         <div className="flex flex-row w-4/12 justify-center py-8 border-b-2 border-venture-green">
           <h2>CREATE A NEW DAYVENTURE</h2>
         </div>

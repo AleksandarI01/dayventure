@@ -4,6 +4,7 @@ import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { MdRemoveCircle } from "react-icons/md";
 import { MdModeOfTravel } from "react-icons/md";
+
 const TripSingleStop = () => {
   return (
     <>
