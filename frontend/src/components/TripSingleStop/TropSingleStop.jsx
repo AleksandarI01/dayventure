@@ -8,16 +8,45 @@ import { MdRemoveCircle } from "react-icons/md";
 import { MdModeOfTravel } from "react-icons/md";
 import ShowDirections from "../ShowDirections/ShowDirections";
 
-const TripSingleStop = ({ trip }) => {
+const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
   console.log(trip, "TRIP");
   const [directions, setDirections] = useState(false);
   const [arrowClicked, setArrowClicked] = useState(false);
+  const [moveUp, setMoveUp] = useState([]);
+  const [remove, setRemove] = useState([]);
+  const [moveDown, setMoveDown] = useState([]);
 
   const handleDirectionsClick = (event) => {
     event.preventDefault();
     console.log("click");
     setDirections(!directions);
     setArrowClicked(!arrowClicked);
+  };
+
+  const handleMoveUp = (index) => {
+    if (index > 0) {
+      const updatedTripStop = [...tripstop];
+      const temp = updatedTripStop[index];
+      updatedTripStop[index] = updatedTripStop[index - 1];
+      updatedTripStop[index - 1] = temp;
+      setTripStop(updatedTripStop);
+    }
+  };
+
+  const handleMoveDown = (index) => {
+    if (index < tripstop.length - 1) {
+      const updatedTripStop = [...tripstop];
+      const temp = updatedTripStop[index];
+      updatedTripStop[index] = updatedTripStop[index + 1];
+      updatedTripStop[index + 1] = temp;
+      setTripStop(updatedTripStop);
+    }
+  };
+
+  const handleRemove = (index) => {
+    const updatedTripStop = [...tripstop];
+    updatedTripStop.splice(index, 1);
+    setTripStop(updatedTripStop);
   };
 
   const firstStop = {
@@ -67,13 +96,19 @@ const TripSingleStop = ({ trip }) => {
         </div>
         <div className="flex flex-col w-1/12 justify-center ">
           <div className="flex flex-row w-full justify-center">
-            <MdOutlineKeyboardArrowUp className="text-7xl text-venture-green" />
+            <button onClick={() => handleMoveUp(tripstop.indexOf(trip))}>
+              <MdOutlineKeyboardArrowUp className="text-7xl text-venture-green" />
+            </button>
           </div>
           <div className="flex flex-row w-full justify-center">
-            <MdRemoveCircle className="text-4xl text-venture-red" />
+            <button onClick={() => handleRemove(tripstop.indexOf(trip))}>
+              <MdRemoveCircle className="text-4xl text-venture-red" />
+            </button>
           </div>
           <div className="flex flex-row w-full justify-center">
-            <MdOutlineKeyboardArrowDown className="text-7xl text-venture-green" />
+            <button onClick={() => handleMoveDown(tripstop.indexOf(trip))}>
+              <MdOutlineKeyboardArrowDown className="text-7xl text-venture-green" />
+            </button>
           </div>
         </div>
       </div>
