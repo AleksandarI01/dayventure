@@ -1,4 +1,4 @@
-const Label = ({ type, onClickFunction = null, children }) => {
+const Label = ({ type, onClickFunction = null, children, active = false}) => {
   return (
     <>
       <div className={"bg-venture-darkgray h-5 rounded-full px-3 py-0.5 mx-1"} onClick={onClickFunction} id={children}>
@@ -7,5 +7,5 @@ const Label = ({ type, onClickFunction = null, children }) => {
     </>
   );
 };
-
+// todo: highlight if active = true gets passed
 export default Label;

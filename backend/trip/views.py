@@ -26,15 +26,19 @@ class ListTripsView(ListAPIView):
         current_user = self.request.user
         filter_category = self.request.query_params.get('category', None)
         queryset = Trip.objects.all().order_by('-rating_avg')
-        queryset = queryset.filter(Q(privacy='E')                      # todo: replace these filters with permissions?
-                                   | Q(privacy='F',
-                                       owner__friendrequests_sent__state='A',
-                                       owner__friendrequests_sent__receiver=current_user)
-                                   | Q(privacy='F',
-                                       owner__friendrequests_received__state='A',
-                                       owner__friendrequests_received__sender=current_user)
-                                   | Q(privacy='P', companions=current_user)
-                                   )
+        if current_user.id is not None:
+            queryset = queryset.filter(Q(privacy='E')
+                                       | Q(privacy='F',
+                                           owner__friendrequests_sent__state='A',
+                                           owner__friendrequests_sent__receiver=current_user)
+                                       | Q(privacy='F',
+                                           owner__friendrequests_received__state='A',
+                                           owner__friendrequests_received__sender=current_user)
+                                       | Q(privacy__in=('P', 'F'), companions=current_user)
+                                       | Q(privacy__in=('P', 'F'), owner=current_user)
+                                       )
+        else:
+            queryset = queryset.filter(privacy='E')
         if filter_category is not None:
             queryset = queryset.filter(categories__name=filter_category)
         if self.request._request.path == '/api/home/':
@@ -81,15 +85,19 @@ class ListOwnerTripsView(ListAPIView):
     def get_queryset(self):
         current_user = self.request.user
         queryset = Trip.objects.filter(owner=self.kwargs['user_id']).order_by('-rating_avg')
-        queryset = queryset.filter(Q(privacy='E')
-                                   | Q(privacy='F',
-                                       owner__friendrequests_sent__state='A',
-                                       owner__friendrequests_sent__receiver=current_user)
-                                   | Q(privacy='F',
-                                       owner__friendrequests_received__state='A',
-                                       owner__friendrequests_received__sender=current_user)
-                                   | Q(privacy='P', companions=current_user)
-                                   )
+        if current_user.id is not None:
+            queryset = queryset.filter(Q(privacy='E')
+                                       | Q(privacy='F',
+                                           owner__friendrequests_sent__state='A',
+                                           owner__friendrequests_sent__receiver=current_user)
+                                       | Q(privacy='F',
+                                           owner__friendrequests_received__state='A',
+                                           owner__friendrequests_received__sender=current_user)
+                                       | Q(privacy__in=('P', 'F'), companions=current_user)
+                                       | Q(privacy__in=('P', 'F'), owner=current_user)
+                                       )
+        else:
+            queryset = queryset.filter(privacy='E')
         return queryset
 
 
@@ -243,19 +251,23 @@ class GeneralSearchListView(ListAPIView):
 
         if search_type == 'trips':
             queryset = Trip.objects.all().order_by('-rating_avg')
-            queryset = queryset.filter(Q(privacy='E')
-                                       | Q(privacy='F',
-                                           owner__friendrequests_sent__state='A',
-                                           owner__friendrequests_sent__receiver=current_user)
-                                       | Q(privacy='F',
-                                           owner__friendrequests_received__state='A',
-                                           owner__friendrequests_received__sender=current_user)
-                                       | Q(privacy='P', companions=current_user)
-                                       )
+            if current_user.id is not None:
+                queryset = queryset.filter(Q(privacy='E')
+                                           | Q(privacy='F',
+                                               owner__friendrequests_sent__state='A',
+                                               owner__friendrequests_sent__receiver=current_user)
+                                           | Q(privacy='F',
+                                               owner__friendrequests_received__state='A',
+                                               owner__friendrequests_received__sender=current_user)
+                                           | Q(privacy__in=('P', 'F'), companions=current_user)
+                                           | Q(privacy__in=('P', 'F'), owner=current_user)
+                                           )
+            else:
+                queryset = queryset.filter(privacy='E')
             if search_string is not None:
                 queryset = queryset.filter(name__icontains=search_string)
             if search_category is not None:
-                queryset = queryset.filter(categories=search_category)
+                queryset = queryset.filter(categories__name=search_category)
             return queryset
 
         if search_type == 'users':

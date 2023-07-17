@@ -4,12 +4,17 @@ import UserCard from "../../components/UserCard/UserCard.jsx";
 import Trip from "../../components/Trip/Trip.jsx";
 import {useEffect, useState} from "react";
 import {axiosDayVenture} from "../../axios/index.js";
+import {useSelector} from "react-redux";
+import config from "tailwindcss/defaultConfig.js";
 
 
 const Search = () => {
     const activeStyleSearch = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
     const inactiveStyleSearch = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
-    const [userClicked, setUserClicked] = useState('trips')
+
+    const accessToken = useSelector((state) => state.user.accessToken);
+
+    const [searchType, setSearchType] = useState('trips')
     const [styleUsers, setStyleUsers] = useState(inactiveStyleSearch)
     const [styleTrips, setStyleTrips] = useState(activeStyleSearch)
     const [categories, setCategories] = useState([])
@@ -38,31 +43,44 @@ const Search = () => {
 
     const handleTypeClick = (e) => {
         e.preventDefault();
+        setResults([])
         if (e.target.id === "users") {
-            setUserClicked('users')
-            setStyleUsers(activeStyleSearch)
-            setStyleTrips(inactiveStyleSearch)
+            setSearchType('users');
+            setStyleUsers(activeStyleSearch);
+            setStyleTrips(inactiveStyleSearch);
+            setSelectedCategory(null);
         } else {
-            setUserClicked('trips')
-            setStyleUsers(inactiveStyleSearch)
-            setStyleTrips(activeStyleSearch)
+            setSearchType('trips');
+            setStyleUsers(inactiveStyleSearch);
+            setStyleTrips(activeStyleSearch);
         }
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        let url = `/search/?type=${userClicked}`
+    const fetchSearchResults = () => {
+        let config = null
+        if (accessToken) {
+            config = {headers: {Authorization: `Bearer ${accessToken}`}};
+        }
+        let url = `/search/?type=${searchType}`
         if (searchString) url += `&search_string=${searchString}`
         if (selectedCategory) url += `&category=${selectedCategory}`
         axiosDayVenture
-            .get(url)
+            .get(url, config)
             .then((res) => {
                 console.log(res.data);
                 setResults(res.data)
             })
             .catch((error) => {
                 console.log(error);
-            })    }
+            })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        fetchSearchResults();
+    }
+
+        useEffect(fetchSearchResults, [searchType])
 
 
     return (
@@ -75,7 +93,12 @@ const Search = () => {
 
                     <SearchHeader value={searchString} onChangeFunction={e => setSearchString(e.target.value)} onSubmitFunction={handleSubmit}/>
                     <div className="flex flex-row py-3">
-                        {userClicked === 'trips' ? categories.map((cat) => <Label key={cat.id} onClickFunction={clickCategory}>{cat.name}</Label>) : null }
+                        {searchType === 'trips' ?
+                            categories.map((cat) => <Label key={cat.id}
+                                                           onClickFunction={clickCategory}
+                                                           active={cat.name === selectedCategory}>
+                                {cat.name}</Label>)
+                            : null }
                     </div>
                 </div>
                 <div className="flex w-full justify-center pt-[1%]">
@@ -91,13 +114,15 @@ const Search = () => {
                     </ul>
                 </div>
                 <div className={"w-full flex justify-center align-middle pb-[12%] pt-[2%]"}>
-                    {userClicked === 'users' ?
+                    {searchType === 'users' ?
                         <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
                             {results.map((user) => <UserCard key={user.id} user={user}/>)}
                         </div> :
                         <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
-                            {results.map((trip) => <Trip key={trip.id}/>)}
+                            {results.map((trip) => <Trip key={trip.id} trip={trip}/>)}
                         </div>}
+                    {results.length === 0 ? <h2>no results for this search</h2> : null // todo: make this look pretty
+                        }
                 </div>
             </div>
 
