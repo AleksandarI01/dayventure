@@ -14,6 +14,9 @@ class UserSerializer(serializers.ModelSerializer):
     score = serializers.SerializerMethodField()
     level = serializers.SerializerMethodField()
     liked_categories = serializers.SerializerMethodField()
+    trips_count = serializers.SerializerMethodField()
+    friends_count = serializers.SerializerMethodField()
+    friends_trips_count = serializers.SerializerMethodField()
 
     def get_location(self, user):
         if hasattr(user, 'user_profile'):
@@ -51,6 +54,16 @@ class UserSerializer(serializers.ModelSerializer):
         if hasattr(user, 'user_profile'):
             return CategorySerializer(user.user_profile.liked_categories, many=True).data
         return None
+
+    def get_trips_count(self, user):
+        return user.own_trips.count()
+
+    def get_friends_count(self, user):
+        pass
+
+    def get_friends_trips_count(self):
+        pass
+
 
     class Meta:
         model = User
