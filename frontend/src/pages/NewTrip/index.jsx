@@ -6,7 +6,6 @@ import GoogleMapReact from "google-map-react";
 
 const NewTrip = () => {
   const coordinates = { lat: 0, lng: 0 };
-  console.log(import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY);
 
   return (
     <>
@@ -38,10 +37,7 @@ const NewTrip = () => {
         <div className="flex flex-row w-6/12 justify-center py-8">
           <form className="flex flex-col justify-center w-full gap-5">
             <div className="flex flex-row justify-center gap-5 ">
-              <InputField
-                className="flex flex-row w-full "
-                placeholder={"How long you want to stay there?"}
-              />
+              <InputField className="flex flex-row w-full " placeholder={""} />
               <Button>CONFIRM</Button>
             </div>
           </form>
@@ -66,6 +62,90 @@ const NewTrip = () => {
             <Button>CONFIRM</Button>
           </div>
         </form>
+        <div className="flex flex-row w-6/12 justify-center py-8 b">
+          <div className="flex flex-row w-full justify-start h-8 rounded-full bg-venture-green">
+            <div class="flex flex-col">
+              <MdOutlineKeyboardArrowDown className="text-5xl text-venture-white" />
+            </div>
+            <h5 className="flex flex-row items-center text-venture-white font-extrabold">
+              PICK UP TO 3 CATEGORIES
+            </h5>
+          </div>
+        </div>
+        <form className="flex justify-center w-full py-8 gap-5">
+          <div className="grid grid-rows-4 grid-flow-col gap-4">
+            <div className="flex flex-row justify-start">
+              <input className="mx-1" type="checkbox" />
+              Culinary
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Shopping
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Historical
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Adventure
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Sightseeing
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Night-Life{" "}
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Sports
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Relaxation
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Culture
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Nature
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Music
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Architecture
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Family-Friendly
+            </div>
+            <div className="flex flex-row justify-start">
+              {" "}
+              <input className="mx-1" type="checkbox" />
+              Romantic
+            </div>
+          </div>
+        </form>
+        <Button>CONFIRM</Button>
         <div className="flex flex-row w-6/12 justify-center py-8">
           <div className="flex flex-row w-full justify-start h-8 rounded-full bg-venture-green">
             <div class="flex flex-col">
