@@ -5,10 +5,10 @@ import AddNewStop from "../../components/AddNewStop/AddNewStop";
 import TripSingleStop from "../../components/TripSingleStop/TropSingleStop";
 import { AiFillPlusCircle } from "react-icons/ai";
 import GoogleMapReact from "google-map-react";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 const Trip = () => {
-  const selectedItems = useSelector((state) => console.log(state.newTrip, "Lydia use the selector like this"))
+  const selectedItems = useSelector((state) => state.newTrip);
   const [addNewStop, setAddNewStop] = useState(false);
   const coordinates = { lat: 76.09, lng: -86.09 };
   const [tripstop, setTripStop] = useState([
@@ -22,15 +22,6 @@ const Trip = () => {
       poiGMImage: nycMini,
     },
   ]);
-  // const history = useHistory();
-
-  // const handleDeleteTrip = (event) => {
-  //   event.preventDefault();
-  //   // Perform the deletion logic here
-  //   console.log("I WANT TO DELETE THE TRIP");
-  //   // Redirect to the user profile page
-  //   history.push("/user-profile"); // Replace "/user-profile" with the actual route for the user profile page
-  // };
 
   const handleAddNewStopClick = (event) => {
     event.preventDefault();
@@ -52,8 +43,11 @@ const Trip = () => {
           ></GoogleMapReact>
         </div>
         <div className="flex flex-col w-10/12 align-center p-4">
-          <h1 className="p-4">My NYC Trip</h1>
+          <h1 className="p-4">{selectedItems.tripName}</h1>
           <h2 className="p-2">Created by: UseName</h2>
+          <h4 className="p-2">
+            Happening on: {selectedItems.dayOfTrip} at {selectedItems.startTime}{" "}
+          </h4>
         </div>
         <div className="flex flex-col w-10/12 align-center">
           <h2 className="p-4">Star Rating by Aleks</h2>
