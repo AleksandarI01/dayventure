@@ -20,7 +20,7 @@ const newTripSlice = createSlice({
         add_trip: (state, action) => {
             state.tripName = action.payload.tripName
             state.startTime = action.payload.startTime
-            state.description = action.payload
+            // state.description = action.payload
             console.log(action.payload, "ACTION")
         },
     },
