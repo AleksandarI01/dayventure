@@ -75,6 +75,7 @@ class ListCompanionTripsView(GenericAPIView):
         serializer = self.get_serializer(filtered_queryset, many=True)
         return Response(serializer.data)
 
+
 class RemoveTripCompanionView(GenericAPIView):
     """
         patch:
@@ -87,7 +88,6 @@ class RemoveTripCompanionView(GenericAPIView):
     def patch(self, request, *args, **kwargs):
         trip = self.get_object()
         current_user = request.user
-        companions = trip.companions.all()
         if current_user in trip.companions.all():
             trip.companions.remove(current_user)
         return Response(status=status.HTTP_200_OK)
