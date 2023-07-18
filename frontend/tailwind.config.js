@@ -18,6 +18,7 @@ export default {
         nycMini: "url(/src/assets/images/nycMini.png)",
         MailBox: "url(/src/assets/images/Mailbox.jpg)",
         BgAboutUs: "url(/src/assets/images/BgAboutUs.png)",
+        Avatar: "url(/src/assets/images/Avatar.png)",
       },
     },
   },
