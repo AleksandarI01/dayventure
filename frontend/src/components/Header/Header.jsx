@@ -58,6 +58,7 @@ const Header = () => {
     e.preventDefault();
     dispatch(logout());
     localStorage.removeItem("refreshToken");
+    setShowNotifications(false)
     navigate("/");
   };
 
