@@ -1,4 +1,4 @@
-const Label = ({ type, onClickFunction = null, children, active = false}) => {
+const Label = ({ type, onClickFunction = null, children, active = false, clickable = false}) => {
   return (
     <>
       <div className={"bg-venture-darkgray h-5 rounded-full px-3 py-0.5 mx-1"} onClick={onClickFunction} id={children}>

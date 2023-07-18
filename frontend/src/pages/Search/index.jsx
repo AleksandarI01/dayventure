@@ -102,7 +102,8 @@ const Search = () => {
                         {searchType === 'trips' ?
                             categories.map((cat) => <Label key={cat.id}
                                                            onClickFunction={clickCategory}
-                                                           active={cat.name === selectedCategory}>
+                                                           active={cat.name === selectedCategory}
+                                                           clickable={true}>
                                 {cat.name}</Label>)
                             : null }
                     </div>

@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import SwiperContainer from "../../components/SwiperContainer/SwiperContainer";
 import {axiosDayVenture} from "../../axios/index.js";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
   const activeStylePopular = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green";
@@ -16,7 +17,9 @@ const Home = () => {
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [trips, setTrips] = useState([])
+  const [searchString, setSearchString] = useState('')
 
+  const navigate = useNavigate()
 
   useEffect(() => {
     axiosDayVenture
@@ -49,9 +52,19 @@ const Home = () => {
   }, [accessToken, selectedCategory])
 
   const clickSearchCategory = (e) => {
-    console.log(e.target.id) // todo: navigate to search-page, pass over category
-    const cat = e.target.id === '. . .' ? null : e.target.id;
-    }
+    console.log(e.target.id)
+    let link = '/search/'
+    e.target.id === '. . .' ? link += '?' : link += `?category=${e.target.id}&`;
+    searchString ? link += `search_string=${searchString}` : null;
+    navigate(link)
+  }
+
+  const enterSearch = (e) => {
+    e.preventDefault()
+    console.log('go to search...')
+    navigate(searchString ? `/search/?search_string=${searchString}` : '/search/')
+  }
+
 
   const handlePopularClick = (e) => {
     e.preventDefault();
@@ -64,11 +77,12 @@ const Home = () => {
         <h1 className="flex text-venture-white my-6">
           ORGANIZE YOUR PERFECT DAY-TRIP
         </h1>
-        <SearchHeader />
+        <SearchHeader onSubmitFunction={enterSearch} value={searchString} onChangeFunction={(e) => setSearchString(e.target.value)} />
         <div className="flex flex-row py-3">
           {categories.sort((catA, catB) => catB.liked_count - catA.liked_count)
               .slice(0,6).map((cat) => <Label key={cat.id}
-                                              onClickFunction={clickSearchCategory}>
+                                              onClickFunction={clickSearchCategory}
+                                              clickable={true}>
                 {cat.name}</Label>)
           }
           <Label onClickFunction={clickSearchCategory}>. . .</Label>
