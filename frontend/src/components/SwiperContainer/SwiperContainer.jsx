@@ -6,9 +6,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import ImageTrip from '../ImageTrip/ImageTrip';
 
-const slides = new Array(6).fill({});  // Create an array of 6 empty objects
-
-const SwiperContainer = () => {
+const SwiperContainer = ({trips}) => {
   return (
     <div className="flex justify-center items-center w-full">
       <Swiper
@@ -41,9 +39,9 @@ const SwiperContainer = () => {
     },
   }}
 >
-  {slides.map((slide, index) => (
-    <SwiperSlide key={index} className="flex justify-center items-center">
-      <ImageTrip />
+  {trips.map((trip) => (
+    <SwiperSlide key={trip.id} className="flex justify-center items-center">
+      <ImageTrip trip={trip}/>
     </SwiperSlide>
   ))}
 </Swiper>

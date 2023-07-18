@@ -5,20 +5,17 @@ import { MdShare } from "react-icons/md";
 import {useEffect, useState} from "react";
 import SwiperContainer from "../../components/SwiperContainer/SwiperContainer";
 import {axiosDayVenture} from "../../axios/index.js";
+import {useSelector} from "react-redux";
 
 const Home = () => {
-  const activeStylePopular =
-    "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green";
-  const inactiveStylePopular =
-    "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7";
-  const [sightseeingClicked, setSightseeingClicked] = useState(true);
-  const [culinaryClicked, setCulinaryClicked] = useState(false);
-  const [shoppingClicked, setShoppingClicked] = useState(false);
-  const [nightlifeClicked, setNightlifeClicked] = useState(false);
-  const [adventureClicked, setAdventureClicked] = useState(false);
+  const activeStylePopular = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green";
+  const inactiveStylePopular = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7";
+
+  const accessToken = useSelector((state) => state.user.accessToken);
 
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [trips, setTrips] = useState([])
 
 
   useEffect(() => {
@@ -28,50 +25,37 @@ const Home = () => {
           const cats = res.data.sort((catA, catB) => catB.trip_count - catA.trip_count)
           setCategories(cats);
           setSelectedCategory(cats[0].name)
-          console.log(cats)
         })
         .catch((error) => {
           console.log(error);
         })
   }, [])
 
+  useEffect(() => {
+    let config = null
+    if (accessToken) {
+      config = {headers: {Authorization: `Bearer ${accessToken}`}};
+    }
+    let url = selectedCategory ? `/home/?category=${selectedCategory}` : '/home/'
+    axiosDayVenture
+        .get(url, config)
+        .then((res) => {
+          setTrips(res.data)
+        })
+            .catch((error) => {
+                console.log(error);
+            })
+
+  }, [accessToken, selectedCategory])
+
   const clickSearchCategory = (e) => {
-    console.log(e.target.id)
+    console.log(e.target.id) // todo: navigate to search-page, pass over category
+    const cat = e.target.id === '. . .' ? null : e.target.id;
     }
 
-  const handlePopularClick = (event) => {
-    event.preventDefault();
-    if (event.target.id === "popular-sightseeing") {
-      setSightseeingClicked(true);
-      setCulinaryClicked(false);
-      setShoppingClicked(false);
-      setNightlifeClicked(false);
-      setAdventureClicked(false);
-    } else if (event.target.id === "popular-culinary") {
-      setSightseeingClicked(false);
-      setCulinaryClicked(true);
-      setShoppingClicked(false);
-      setNightlifeClicked(false);
-      setAdventureClicked(false);
-    } else if (event.target.id === "popular-shopping") {
-      setSightseeingClicked(false);
-      setCulinaryClicked(false);
-      setShoppingClicked(true);
-      setNightlifeClicked(false);
-      setAdventureClicked(false);
-    } else if (event.target.id === "popular-nightlife") {
-      setSightseeingClicked(false);
-      setCulinaryClicked(false);
-      setShoppingClicked(false);
-      setNightlifeClicked(true);
-      setAdventureClicked(false);
-    } else {
-      setSightseeingClicked(false);
-      setCulinaryClicked(false);
-      setShoppingClicked(false);
-      setNightlifeClicked(false);
-      setAdventureClicked(true);
-    }
+  const handlePopularClick = (e) => {
+    e.preventDefault();
+    setSelectedCategory(e.target.id)
   };
 
   return (
@@ -83,10 +67,11 @@ const Home = () => {
         <SearchHeader />
         <div className="flex flex-row py-3">
           {categories.sort((catA, catB) => catB.liked_count - catA.liked_count)
-              .slice(0,7).map((cat) => <Label key={cat.id}
+              .slice(0,6).map((cat) => <Label key={cat.id}
                                               onClickFunction={clickSearchCategory}>
                 {cat.name}</Label>)
           }
+          <Label onClickFunction={clickSearchCategory}>. . .</Label>
         </div>
       </div>
       <div className="flex flex-row w-full justify-center ">
@@ -96,31 +81,22 @@ const Home = () => {
           </div>
           <div className="flex w-full justify-start">
             <ul className="list-none flex flex-row h-full">
-              {categories.slice(0,5).map((cat) => {
-                (<li
-                    key={cat.id}
-                    id={cat.name}
-                    className={cat.name === selectedCategory ? activeStylePopular : inactiveStylePopular}
-                    onClick={handlePopularClick}
-                >
-                  {cat.name}
-                </li>)
-              })}
+              {categories.sort((catA, catB) => catB.trip_count - catA.trip_count)
+                  .slice(0,5).map((cat) =>
+                      <li
+                          key={cat.id}
+                          id={cat.name}
+                          className={cat.name === selectedCategory ? activeStylePopular : inactiveStylePopular}
+                          onClick={handlePopularClick}
+                      >
+                        {cat.name}
+                      </li>
+                  )}
             </ul>
           </div>
 
           <div className="flex flex-row w-full p-8">
-            {sightseeingClicked ? (
-              <SwiperContainer />
-            ) : culinaryClicked ? (
-              <SwiperContainer />
-            ) : shoppingClicked ? (
-              <SwiperContainer />
-            ) : nightlifeClicked ? (
-              <SwiperContainer />
-            ) : adventureClicked ? (
-              <SwiperContainer />
-            ) : null}
+              <SwiperContainer trips={trips}/>
           </div>
 
           <div className="flex flex-row w-full p-8">
