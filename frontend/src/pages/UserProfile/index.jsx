@@ -4,6 +4,7 @@ import ProfileDescription from "../../components/ProfileDescription/ProfileDescr
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {axiosDayVenture} from "../../axios/index.js";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner.jsx";
 
 const UserProfile = () => {
     const defaultImage = '../../../src/assets/island.png'
@@ -12,8 +13,10 @@ const UserProfile = () => {
     const [selectedView, setSelectedView] = useState('myTrips')
     const [results, setResults] = useState([])
     const [user, setUser] = useState({})
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        setLoading(true)
         let url = '/trips/'
         switch (selectedView) {
             case 'myTrips':
@@ -33,6 +36,7 @@ const UserProfile = () => {
             .get(url, config)
             .then((res) => {
                 setResults(res.data)
+                setLoading(false)
             })
             .catch((error) => {
                 console.log(error);
@@ -72,7 +76,9 @@ const UserProfile = () => {
                     <div className={"w-full flex shrink-0 justify-center items-center mb-[6%]"}>
                             {results.map((user) => <UserCard key={user.id} user={user}/>)}
                     </div> : null }
-                {results.length === 0 ? <h2>nothing to see here 😢</h2> : null // todo: make this look pretty
+                {results.length === 0 ?
+                    loading ? <LoadingSpinner/>
+                        : <h2>nothing to see here 😢</h2> : null // todo: make this look pretty
                 }
             </div>
         </>

@@ -80,22 +80,21 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
 
                     </div>
                 </div>
-                {/* todo: get these numbers from backend!*/}
                 <div className={"h-[40%] w-full flex flex-col shrink-0"}>
                     <div className="flex w-full justify-center items-center">
                         <ul className="list-none flex flex-row h-full">
                             <li id={"my-trips"} onClick={onHandleClickProfile}
                                 className={styleMyTrips}
                             >
-                                34 <br/>my trips
+                                {user?.trips_count} <br/>my trips
                             </li>
                             <li id={"my-friends"} onClick={onHandleClickProfile}
                                 className={styleFriends}>
-                                256 <br/>friends
+                                {user?.friends_count} <br/>friends
                             </li>
                             <li id={"my-friends-trips"} onClick={onHandleClickProfile}
                                 className={styleMyFriendsTrips}>
-                                98 <br/>my friends' trips
+                                {user?.friends_trips_count} <br/>my friends' trips
                             </li>
                         </ul>
                     </div>
