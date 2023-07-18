@@ -4,8 +4,8 @@ from user.serializers import UserSerializer
 
 
 class FriendrequestSerializer(serializers.ModelSerializer):
-    sending_user = UserSerializer(read_only=True)
-    receiving_user = UserSerializer(read_only=True)
+    sender = UserSerializer(read_only=True)
+    receiver = UserSerializer(read_only=True)
 
     class Meta:
         model = Friendrequest

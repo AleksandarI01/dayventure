@@ -8,7 +8,7 @@ from email_scheduler.models import EmailScheduler
 
 
 class Command(BaseCommand):
-    help = 'This command will send emails that are due. Usually executed every 10 seconds by cron!'
+    help = 'This command will every 10 seconds send emails that are due.'
 
     def handle(self, *args, **options):
         while True:
