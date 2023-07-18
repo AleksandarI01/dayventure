@@ -5,7 +5,8 @@ import Trip from "../../components/Trip/Trip.jsx";
 import {useEffect, useState} from "react";
 import {axiosDayVenture} from "../../axios/index.js";
 import {useSelector} from "react-redux";
-import config from "tailwindcss/defaultConfig.js";
+// import config from "tailwindcss/defaultConfig.js";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner.jsx";
 
 
 const Search = () => {
@@ -21,6 +22,7 @@ const Search = () => {
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [searchString, setSearchString] = useState('')
     const [results, setResults] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         axiosDayVenture
@@ -44,6 +46,7 @@ const Search = () => {
     const handleTypeClick = (e) => {
         e.preventDefault();
         setResults([])
+        setLoading(true)
         if (e.target.id === "users") {
             setSearchType('users');
             setStyleUsers(activeStyleSearch);
@@ -57,6 +60,7 @@ const Search = () => {
     }
 
     const fetchSearchResults = () => {
+        setLoading(true)
         let config = null
         if (accessToken) {
             config = {headers: {Authorization: `Bearer ${accessToken}`}};
@@ -67,8 +71,8 @@ const Search = () => {
         axiosDayVenture
             .get(url, config)
             .then((res) => {
-                console.log(res.data);
                 setResults(res.data)
+                setLoading(false)
             })
             .catch((error) => {
                 console.log(error);
@@ -80,7 +84,7 @@ const Search = () => {
         fetchSearchResults();
     }
 
-        useEffect(fetchSearchResults, [searchType])
+        useEffect(fetchSearchResults, [accessToken, searchType, selectedCategory])
 
 
     return (
@@ -121,7 +125,9 @@ const Search = () => {
                         <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
                             {results.map((trip) => <Trip key={trip.id} trip={trip}/>)}
                         </div>}
-                    {results.length === 0 ? <h2>no results for this search</h2> : null // todo: make this look pretty
+                    {results.length === 0 ?
+                        loading ? <LoadingSpinner/>
+                            : <h2>no results for this search</h2> : null // todo: make this look pretty
                         }
                 </div>
             </div>
