@@ -2,8 +2,9 @@ import SearchHeader from "../../components/SearchHeader/SearchHeader";
 import Label from "../../components/Label/Label";
 import NycMet from "../../assets/images/MetNyc.jpeg";
 import { MdShare } from "react-icons/md";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import SwiperContainer from "../../components/SwiperContainer/SwiperContainer";
+import {axiosDayVenture} from "../../axios/index.js";
 
 const Home = () => {
   const activeStylePopular =
@@ -15,13 +16,30 @@ const Home = () => {
   const [shoppingClicked, setShoppingClicked] = useState(false);
   const [nightlifeClicked, setNightlifeClicked] = useState(false);
   const [adventureClicked, setAdventureClicked] = useState(false);
-  const [styleSightseeing, setStyleSightseeing] = useState(activeStylePopular);
-  const [styleCulinary, setStyleCulinary] = useState(inactiveStylePopular);
-  const [styleShopping, setStyleShopping] = useState(inactiveStylePopular);
-  const [styleNightlife, setStyleNightlife] = useState(inactiveStylePopular);
-  const [styleAdventure, setStyleAdventure] = useState(inactiveStylePopular);
 
-  const onHandlePopularClick = (event) => {
+  const [categories, setCategories] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState(null)
+
+
+  useEffect(() => {
+    axiosDayVenture
+        .get("/categories/")
+        .then((res) => {
+          const cats = res.data.sort((catA, catB) => catB.trip_count - catA.trip_count)
+          setCategories(cats);
+          setSelectedCategory(cats[0].name)
+          console.log(cats)
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+  }, [])
+
+  const clickSearchCategory = (e) => {
+    console.log(e.target.id)
+    }
+
+  const handlePopularClick = (event) => {
     event.preventDefault();
     if (event.target.id === "popular-sightseeing") {
       setSightseeingClicked(true);
@@ -29,55 +47,30 @@ const Home = () => {
       setShoppingClicked(false);
       setNightlifeClicked(false);
       setAdventureClicked(false);
-      setStyleSightseeing(activeStylePopular);
-      setStyleCulinary(inactiveStylePopular);
-      setStyleShopping(inactiveStylePopular);
-      setStyleNightlife(inactiveStylePopular);
-      setStyleAdventure(inactiveStylePopular);
     } else if (event.target.id === "popular-culinary") {
       setSightseeingClicked(false);
       setCulinaryClicked(true);
       setShoppingClicked(false);
       setNightlifeClicked(false);
       setAdventureClicked(false);
-      setStyleSightseeing(inactiveStylePopular);
-      setStyleCulinary(activeStylePopular);
-      setStyleShopping(inactiveStylePopular);
-      setStyleNightlife(inactiveStylePopular);
-      setStyleAdventure(inactiveStylePopular);
     } else if (event.target.id === "popular-shopping") {
       setSightseeingClicked(false);
       setCulinaryClicked(false);
       setShoppingClicked(true);
       setNightlifeClicked(false);
       setAdventureClicked(false);
-      setStyleSightseeing(inactiveStylePopular);
-      setStyleCulinary(inactiveStylePopular);
-      setStyleShopping(activeStylePopular);
-      setStyleNightlife(inactiveStylePopular);
-      setStyleAdventure(inactiveStylePopular);
     } else if (event.target.id === "popular-nightlife") {
       setSightseeingClicked(false);
       setCulinaryClicked(false);
       setShoppingClicked(false);
       setNightlifeClicked(true);
       setAdventureClicked(false);
-      setStyleSightseeing(inactiveStylePopular);
-      setStyleCulinary(inactiveStylePopular);
-      setStyleShopping(inactiveStylePopular);
-      setStyleNightlife(activeStylePopular);
-      setStyleAdventure(inactiveStylePopular);
     } else {
       setSightseeingClicked(false);
       setCulinaryClicked(false);
       setShoppingClicked(false);
       setNightlifeClicked(false);
       setAdventureClicked(true);
-      setStyleSightseeing(inactiveStylePopular);
-      setStyleCulinary(inactiveStylePopular);
-      setStyleShopping(inactiveStylePopular);
-      setStyleNightlife(inactiveStylePopular);
-      setStyleAdventure(activeStylePopular);
     }
   };
 
@@ -89,12 +82,11 @@ const Home = () => {
         </h1>
         <SearchHeader />
         <div className="flex flex-row py-3">
-          <Label>Hospitality</Label>
-          <Label>Museum</Label>
-          <Label>Shopping</Label>
-          <Label>Food</Label>
-          <Label>Sport</Label>
-          <Label>Hiking</Label>
+          {categories.sort((catA, catB) => catB.liked_count - catA.liked_count)
+              .slice(0,7).map((cat) => <Label key={cat.id}
+                                              onClickFunction={clickSearchCategory}>
+                {cat.name}</Label>)
+          }
         </div>
       </div>
       <div className="flex flex-row w-full justify-center ">
@@ -104,41 +96,16 @@ const Home = () => {
           </div>
           <div className="flex w-full justify-start">
             <ul className="list-none flex flex-row h-full">
-              <li
-                id={"popular-sightseeing"}
-                className={styleSightseeing}
-                onClick={onHandlePopularClick}
-              >
-                Sightseeing
-              </li>
-              <li
-                id={"popular-culinary"}
-                className={styleCulinary}
-                onClick={onHandlePopularClick}
-              >
-                Culinary
-              </li>
-              <li
-                id={"popular-shopping"}
-                className={styleShopping}
-                onClick={onHandlePopularClick}
-              >
-                Shopping
-              </li>
-              <li
-                id={"popular-nightlife"}
-                className={styleNightlife}
-                onClick={onHandlePopularClick}
-              >
-                Nightlife
-              </li>
-              <li
-                id={"popular-adventure"}
-                className={styleAdventure}
-                onClick={onHandlePopularClick}
-              >
-                Adventure
-              </li>
+              {categories.slice(0,5).map((cat) => {
+                (<li
+                    key={cat.id}
+                    id={cat.name}
+                    className={cat.name === selectedCategory ? activeStylePopular : inactiveStylePopular}
+                    onClick={handlePopularClick}
+                >
+                  {cat.name}
+                </li>)
+              })}
             </ul>
           </div>
 
