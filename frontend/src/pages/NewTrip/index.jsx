@@ -10,7 +10,9 @@ import GoogleMapReact from "google-map-react";
 import { Autocomplete } from "@react-google-maps/api";
 
 const NewTrip = () => {
+  const [placeId, setPlaceId] = useState("");
   const [tripName, setTripName] = useState("");
+  const [activityName, setActivityName] = useState("");
   const currentDate = new Date().toISOString().split("T")[0];
   const [dayOfTrip, setdayOfTrip] = useState(currentDate);
   const currentTime = new Date().toLocaleTimeString([], {
@@ -19,36 +21,76 @@ const NewTrip = () => {
   });
 
   const [startTime, setStartTime] = useState(currentTime);
+  const [endTime, setEndTime] = useState(currentTime);
   const [coordinates, setCoordinates] = useState({
     lat: 46.807405,
     lng: 8.223595,
   });
   const [meetingPoint, setMeetingPoint] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [googleCategories, setGoogleCategories] = useState("");
   const dispatch = useDispatch();
   //const selectedItems = useSelector((state) => console.log(state.newTrip, "USESELECT"))
   const navigate = useNavigate();
   const coords = { lat: 46.807405, lng: 8.223595 };
   const [autocomplete, setAutocomplete] = useState(null);
+  const [error, setError] = useState("");
 
   const handleAddTrip = (e) => {
     e.preventDefault();
-    if (tripName.trim()) {
-      dispatch(
-        add_trip({
-          tripName: tripName,
-          startTime: startTime,
-          dayOfTrip: dayOfTrip,
-          startTime: startTime,
-        })
-      );
+
+    // Validate form fields
+    if (
+      !tripName.trim() ||
+      !dayOfTrip ||
+      !startTime ||
+      !endTime ||
+      !meetingPoint ||
+      selectedCategories.length === 0
+    ) {
+      setError("Please fill in all the required fields.");
+      return;
     }
+    // Clear the error state if all fields are populated
+    setError("");
+
+    dispatch(
+      add_trip({
+        placeId: placeId,
+        tripName: tripName,
+        activityName: activityName,
+        startTime: startTime,
+        dayOfTrip: dayOfTrip,
+        endTime: endTime,
+        meetingPoint: meetingPoint,
+        categories: googleCategories,
+        // lat: lat,
+        // lng: lng,
+        // formattedAddress: formattedAddress,
+        // photo: photo,
+        // categories: categories,
+        // rating: rating,
+        // website: website,
+        // openingHours: openingHours,
+      })
+    );
     navigate("/trip");
+  };
+
+  const handleCheckboxChange = (category) => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(selectedCategories.filter((c) => c !== category));
+    } else if (
+      selectedCategories.length < 3 ||
+      selectedCategories.length === 0
+    ) {
+      setSelectedCategories([...selectedCategories, category]);
+    }
   };
 
   const handleOnChangeMeetingPoint = (e) => {
     e.preventDefault;
-    console.log(e, "EEEEE");
+    setActivityName(e.target.value);
   };
 
   const onLoad = (autoC) => {
@@ -56,12 +98,30 @@ const NewTrip = () => {
   };
 
   const onPlaceChanged = () => {
+    const placeId = autocomplete.getPlace().place_id;
     const lat = autocomplete.getPlace().geometry.location.lat();
     const lng = autocomplete.getPlace().geometry.location.lng();
+    const activityName = autocomplete.getPlace().name;
+    console.log(activityName, "ACTIVITY NAME");
     const formattedAddress = autocomplete.getPlace().formatted_address;
+    const photos = autocomplete.getPlace().photos[0];
+    const categories = autocomplete.getPlace().types[0];
+    const rating = autocomplete.getPlace().rating;
+    const website = autocomplete.getPlace().website;
+    if (autocomplete.getPlace().openingHours) {
+      const openingHours = autocomplete.getPlace().opening_hours?.weekday_text;
+    } else {
+      const openingHours = {};
+    }
+    console.log(autocomplete.getPlace());
+    setActivityName(activityName);
     setMeetingPoint(formattedAddress);
     setCoordinates({ lat, lng });
+    setGoogleCategories(categories);
+    setPlaceId(placeId);
   };
+
+  console.log(meetingPoint);
 
   return (
     <>
@@ -112,7 +172,7 @@ const NewTrip = () => {
                 />
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
-                <label>Meeting time</label>
+                <label>First activity start time</label>
                 <InputField
                   type={"time"}
                   value={startTime}
@@ -122,14 +182,23 @@ const NewTrip = () => {
                 />
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
+                <label>First activity end time</label>
+                <InputField
+                  type={"time"}
+                  value={endTime}
+                  onChange={(e) => setEndTime(e)}
+                  className="flex flex-row w-full "
+                />
+              </div>
+              <div className="flex flex-row justify-center gap-5 items-baseline">
                 <label>Meeting Point</label>
                 <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-                  <InputField
+                  <input
                     type="text"
                     className="flex flex-row w-full"
                     placeholder={"Where do you want to go?"}
-                    // value={meetingPoint}
-                    // onChange={handleOnChangeMeetingPoint}
+                    value={activityName}
+                    onChange={handleOnChangeMeetingPoint}
                   />
                 </Autocomplete>
               </div>
@@ -139,76 +208,203 @@ const NewTrip = () => {
               <div className="flex flex-row justify-center">
                 <div className="grid grid-rows-4 grid-flow-col gap-4">
                   <div className="flex flex-row justify-start">
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Culinary")}
+                      onChange={() => handleCheckboxChange("Culinary")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Culinary")
+                      }
+                    />
                     Culinary
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Shopping")}
+                      onChange={() => handleCheckboxChange("Shopping")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Shopping")
+                      }
+                    />
                     Shopping
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Historical")}
+                      onChange={() => handleCheckboxChange("Historical")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Historical")
+                      }
+                    />
                     Historical
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Adventure")}
+                      onChange={() => handleCheckboxChange("Adventure")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Adventure")
+                      }
+                    />
                     Adventure
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Sightseeing")}
+                      onChange={() => handleCheckboxChange("Sightseeing")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Sightseeing")
+                      }
+                    />
                     Sightseeing
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Night-Life")}
+                      onChange={() => handleCheckboxChange("Night-Life")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Night-Life")
+                      }
+                    />
                     Night-Life{" "}
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Sports")}
+                      onChange={() => handleCheckboxChange("Sports")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Sports")
+                      }
+                    />
                     Sports
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Relaxation")}
+                      onChange={() => handleCheckboxChange("Relaxation")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Relaxation")
+                      }
+                    />
                     Relaxation
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Culture")}
+                      onChange={() => handleCheckboxChange("Culture")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Culture")
+                      }
+                    />
                     Culture
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Nature")}
+                      onChange={() => handleCheckboxChange("Nature")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Nature")
+                      }
+                    />
                     Nature
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Music")}
+                      onChange={() => handleCheckboxChange("Music")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Music")
+                      }
+                    />
                     Music
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Architecture")}
+                      onChange={() => handleCheckboxChange("Architecture")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Architecture")
+                      }
+                    />
                     Architecture
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Family-Friendly")}
+                      onChange={() => handleCheckboxChange("Family-Friendly")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Family-Friendly")
+                      }
+                    />
                     Family-Friendly
                   </div>
                   <div className="flex flex-row justify-start">
                     {" "}
-                    <input className="mx-1" type="checkbox" />
+                    <input
+                      className="mx-1"
+                      type="checkbox"
+                      checked={selectedCategories.includes("Romantic")}
+                      onChange={() => handleCheckboxChange("Romantic")}
+                      disabled={
+                        selectedCategories.length >= 3 &&
+                        !selectedCategories.includes("Romantic")
+                      }
+                    />
                     Romantic
                   </div>
                 </div>
               </div>
+              {error && <p className="text-red-600">{error}</p>}
               <Button type={"submit"}>CONFIRM</Button>
             </div>
           </form>
