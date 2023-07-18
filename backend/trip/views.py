@@ -36,9 +36,9 @@ class ListTripsView(ListAPIView):
                                            owner__friendrequests_received__sender=current_user)
                                        | Q(privacy__in=('P', 'F'), companions=current_user)
                                        | Q(privacy__in=('P', 'F'), owner=current_user)
-                                       )
+                                       ).distinct()
         else:
-            queryset = queryset.filter(privacy='E')
+            queryset = queryset.filter(privacy='E').distinct()
         if filter_category is not None:
             queryset = queryset.filter(categories__name=filter_category)
         if self.request._request.path == '/api/home/':
@@ -95,9 +95,9 @@ class ListOwnerTripsView(ListAPIView):
                                            owner__friendrequests_received__sender=current_user)
                                        | Q(privacy__in=('P', 'F'), companions=current_user)
                                        | Q(privacy__in=('P', 'F'), owner=current_user)
-                                       )
+                                       ).distinct()
         else:
-            queryset = queryset.filter(privacy='E')
+            queryset = queryset.filter(privacy='E').distinct()
         return queryset
 
 
@@ -182,7 +182,7 @@ class ListLikedTripsView(ListAPIView):
                                        owner__friendrequests_received__state='A',
                                        owner__friendrequests_received__sender=current_user)
                                    | Q(privacy='P', companions=current_user)
-                                   )
+                                   ).distinct()
         return queryset
 
 
@@ -204,7 +204,7 @@ class ListReviewedTripsView(ListAPIView):
                                        owner__friendrequests_received__state='A',
                                        owner__friendrequests_received__sender=current_user)
                                    | Q(privacy='P', companions=current_user)
-                                   )
+                                   ).distinct()
         return queryset
 
 
@@ -223,7 +223,7 @@ class ListFriendsTripsView(ListAPIView):
                                            owner__friendrequests_received__sender=current_user)
                                        ).order_by('-rating_avg', '-travel_date')
         queryset = queryset.filter(Q(privacy__in=('E', 'F'))
-                                   | Q(privacy='P', companions=current_user))
+                                   | Q(privacy='P', companions=current_user)).distinct()
         return queryset
 
 
@@ -261,9 +261,9 @@ class GeneralSearchListView(ListAPIView):
                                                owner__friendrequests_received__sender=current_user)
                                            | Q(privacy__in=('P', 'F'), companions=current_user)
                                            | Q(privacy__in=('P', 'F'), owner=current_user)
-                                           )
+                                           ).distinct()
             else:
-                queryset = queryset.filter(privacy='E')
+                queryset = queryset.filter(privacy='E').distinct()
             if search_string is not None:
                 queryset = queryset.filter(name__icontains=search_string)
             if search_category is not None:
@@ -275,6 +275,7 @@ class GeneralSearchListView(ListAPIView):
             if search_string is not None:
                 queryset = queryset.filter(Q(username__icontains=search_string) |
                                            Q(first_name__icontains=search_string) |
-                                           Q(last_name__icontains=search_string))
+                                           Q(last_name__icontains=search_string)
+                                           ).distinct()
             return queryset
         return
