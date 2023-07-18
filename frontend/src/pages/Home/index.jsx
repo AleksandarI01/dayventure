@@ -85,7 +85,7 @@ const Home = () => {
                                               clickable={true}>
                 {cat.name}</Label>)
           }
-          <Label onClickFunction={clickSearchCategory}>. . .</Label>
+          <Label onClickFunction={clickSearchCategory} clickable={true}>. . .</Label>
         </div>
       </div>
       <div className="flex flex-row w-full justify-center ">

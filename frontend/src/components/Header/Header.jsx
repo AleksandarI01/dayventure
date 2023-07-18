@@ -5,13 +5,18 @@ import { useEffect, useState } from "react";
 import { AiFillBell } from "react-icons/ai";
 import UserNotifications from "../UserNotifications/UserNotifications.jsx";
 import Button from "../Button/Button.jsx";
+import {axiosDayVenture} from "../../axios/index.js";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.user.accessToken);
   const [MenuItems, SetMenuItems] = useState([]);
-  const [notifications, SetNotifications] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
+  const [notificationNumber, setNotificationNumber] = useState(0);
+  const [loadNotifications, setLoadNotifications] = useState(0)
 
   useEffect(() => {
     SetMenuItems([
@@ -22,16 +27,44 @@ const Header = () => {
     ]);
   }, [accessToken]);
 
+  useEffect(() => {
+    if (accessToken) {
+      setNotificationNumber(0)
+        const config = {headers: {Authorization: `Bearer ${accessToken}`}};
+      axiosDayVenture
+          .get("/friends/requests/", config)
+          .then((res) => {
+            setFriendRequests(res.data);
+            setNotificationNumber(prevState => prevState + res.data.length);
+            console.log(res.data)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      axiosDayVenture
+          .get("/notifications/", config)
+          .then((res) => {
+            setNotifications(res.data);
+            setNotificationNumber(prevState => prevState + res.data.length)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+
+    }
+  }, [accessToken, loadNotifications])
+
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
     localStorage.removeItem("refreshToken");
+    setShowNotifications(false)
     navigate("/");
   };
 
   const handleViewNotifications = (event) => {
     event.preventDefault();
-    SetNotifications(!notifications);
+    setShowNotifications(!showNotifications);
   };
 
   return (
@@ -49,11 +82,11 @@ const Header = () => {
         </ul>
         {accessToken ? (
           <div className="flex items-center gap-10">
-            {" "}
             <AiFillBell
               onClick={handleViewNotifications}
               className="text-2xl text-venture-black cursor-pointer"
             />
+              {notificationNumber > 0 ? <p>{notificationNumber}</p>: null}  {/*todo: show this in red circle over bell icon*/}
             <Button
             className="text-base text-venture-white uppercase bg-venture-green cursor-pointer px-5 py-2 border-[none]"
             onClickFunction={handleLogout}
@@ -82,7 +115,7 @@ const Header = () => {
           </div>
         )}
       </nav>
-      {notifications ? <UserNotifications /> : ""}
+      {showNotifications ? <UserNotifications notifications={notifications} friendRequests={friendRequests} setLoadNotifications={setLoadNotifications}/> : ""}
     </header>
   );
 };

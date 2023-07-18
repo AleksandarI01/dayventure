@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 
@@ -32,4 +33,4 @@ class PatchNotificationView(GenericAPIView):
         notification = self.get_object()
         notification.done_date = datetime.now()
         notification.save()
-        return Response(self.get_serializer(notification).data)
+        return Response(status=status.HTTP_200_OK)
