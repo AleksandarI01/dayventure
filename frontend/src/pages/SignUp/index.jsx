@@ -2,8 +2,8 @@ import {useState} from "react";
 import SignUpFirstStep from "../../components/SignUp/SignUpFirstStep";
 import SignUpSecondStep from "../../components/SignUp/SignUpSecondStep";
 import SignUpThirdStep from "../../components/SignUp/SignUpThirdStep";
-import ProcessBar from "../../components/ProcessBar/ProcessBar.jsx";
 import {useNavigate} from "react-router-dom";
+import ProcessBar from "../../components/ProcessBar/ProcessBar.jsx";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -19,14 +19,15 @@ const SignUp = () => {
     };
 
     return (
-        <div className="h-[87.5vh] flex flex-col justify-center items-center gap-12">
+        // <div className="h-[87.5vh] flex flex-col justify-center items-center gap-12">
+        <div className="h-[85vh] w-full flex flex-col justify-center items-center gap-12">
             {signupStep === "step1" && (
-                <SignUpFirstStep setEmail={setEmail} moveToNextStep={moveToNextStep}/>
+                <SignUpFirstStep signupStep={signupStep} setEmail={setEmail} moveToNextStep={moveToNextStep}/>
             )}
             {signupStep === "step2" && (
-                <SignUpSecondStep email={email} moveToNextStep={moveToNextStep}/>
+                <SignUpSecondStep signupStep={signupStep} email={email} moveToNextStep={moveToNextStep}/>
             )}
-            {signupStep === "step3" && <SignUpThirdStep email={email}/>}
+            {signupStep === "step3" && <SignUpThirdStep signupStep={signupStep} email={email}/>}
             {signupStep === "step1" && (
                 <p>
                     Already have an account?
@@ -36,7 +37,9 @@ const SignUp = () => {
                     </strong>
                 </p>
             )}
-            <ProcessBar signupStep={signupStep}/>
+            <div className={"h-[15vh] w-[20%]"}>
+                <ProcessBar signupStep={signupStep}/>
+            </div>
         </div>
     );
 };
