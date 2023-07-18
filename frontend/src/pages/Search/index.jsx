@@ -24,6 +24,8 @@ const Search = () => {
     const [results, setResults] = useState([])
     const [loading, setLoading] = useState(true)
 
+    // todo: accept searchString and/or categories via navigate (from home)
+
     useEffect(() => {
         axiosDayVenture
             .get("/categories/")
@@ -100,7 +102,8 @@ const Search = () => {
                         {searchType === 'trips' ?
                             categories.map((cat) => <Label key={cat.id}
                                                            onClickFunction={clickCategory}
-                                                           active={cat.name === selectedCategory}>
+                                                           active={cat.name === selectedCategory}
+                                                           clickable={true}>
                                 {cat.name}</Label>)
                             : null }
                     </div>
