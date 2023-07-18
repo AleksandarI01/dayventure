@@ -5,8 +5,10 @@ import AddNewStop from "../../components/AddNewStop/AddNewStop";
 import TripSingleStop from "../../components/TripSingleStop/TropSingleStop";
 import { AiFillPlusCircle } from "react-icons/ai";
 import GoogleMapReact from "google-map-react";
+import {useSelector} from "react-redux";
 
 const Trip = () => {
+  const selectedItems = useSelector((state) => console.log(state.newTrip, "Lydia use the selector like this"))
   const [addNewStop, setAddNewStop] = useState(false);
   const coordinates = { lat: 76.09, lng: -86.09 };
   const [tripstop, setTripStop] = useState([

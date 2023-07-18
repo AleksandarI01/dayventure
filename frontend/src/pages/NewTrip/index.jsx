@@ -3,9 +3,9 @@ import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import {MdOutlineKeyboardArrowDown} from "react-icons/md";
 import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {add_trip} from "../../store/slices/newTrip";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 //import TripHeader from "../../components/TripHeader/TripHeader";
 //import GoogleMapReact from "google-map-react";
 //import { Autocomplete } from "@react-google-maps/api";
@@ -17,7 +17,8 @@ const NewTrip = () => {
     //const [categories, setCategories] = useState([])
     //const [dayOfTrip, set dayOfTrip] = useState('')
     const dispatch = useDispatch()
-    const selectedItems = useSelector((state) => console.log(state.newTrip, "USESELECT"))
+    //const selectedItems = useSelector((state) => console.log(state.newTrip, "USESELECT"))
+    const navigate = useNavigate()
     //const coordinates = { lat: 46.807405, lng: 8.223595 };
 
     const handleAddTrip = (e) => {
@@ -30,6 +31,7 @@ const NewTrip = () => {
                 })
             );
         }
+        navigate("/trip")
     }
 
 
@@ -69,18 +71,18 @@ const NewTrip = () => {
                                 onChange={(e) => setTripName(e)}
                                 id={"tripName"}
                                 className="flex flex-row w-full "
-                                placeholder={"Write the name of your trip"}
+                                placeholder={"name of your trip"}
                             />
                             <InputField
                                 type={"text"}
                                 value={startTime}
                                 onChange={(e) => setStartTime(e)}
                                 className="flex flex-row w-full "
-                                placeholder={"START TIME"}
+                                placeholder={"start time"}
                             />
-                            <Link to="/" type={"submit"} className="flex gap-4">
-                                <Button >CONFIRM</Button>
-                            </Link>
+                            {/*<Link to="/trip" className="flex gap-4">*/}
+                                <Button type={"submit"}>CONFIRM</Button>
+                            {/*</Link>*/}
                         </div>
                     </form>
                 </div>
