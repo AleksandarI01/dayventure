@@ -1,9 +1,9 @@
-import React, { useState } from "react";
 import Button from "../Button/Button";
 import AnimatedSignUpImage from "../AnimatedSignUpImage/AnimatedSignUpImage";
 
-const SignUpSecondStep = ({ moveToNextStep }) => {
-  const handleOnClick = () => {
+const SignUpSecondStep = ({ email, moveToNextStep }) => {
+  const handleOnClick = (e) => {
+    e.preventDefault()
     moveToNextStep();
   };
 
@@ -14,7 +14,7 @@ const SignUpSecondStep = ({ moveToNextStep }) => {
         <p>
           We've sent a confirmation code to your email
           <br />
-          johnsmith@gmail.com
+          {email}
         </p>
         <AnimatedSignUpImage />
         <Button onClickFunction={handleOnClick}>CONTINUE</Button>

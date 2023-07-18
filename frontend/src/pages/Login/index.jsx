@@ -55,7 +55,7 @@ const Login = () => {
                             type="email"
                             value={email}
                             required
-                            onChange={(e) => setEmail(e)}
+                            onChange={setEmail}
                             placeholder="Email"
                             icon={MdAccountCircle}
                             color={"venture-green"}
@@ -64,7 +64,7 @@ const Login = () => {
                             type="password"
                             value={password}
                             required
-                            onChange={(e) => setPassword(e)}
+                            onChange={setPassword}
                             placeholder="Password"
                             icon={MdLock}
                             color={"venture-green"}

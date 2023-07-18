@@ -10,11 +10,10 @@ import {add_trip} from "../../store/slices/newTrip";
 //import { Autocomplete } from "@react-google-maps/api";
 
 const NewTrip = () => {
-    const [newTrip, setNewTrip] = useState({})
-    const [newTripTest, setNewTripTest] = useState({})
+    const [newTrip, setNewTrip] = useState('')
+    const [newTripTest, setNewTripTest] = useState('')
     const dispatch = useDispatch()
     const selectedItems = useSelector((state) => console.log(state.newTrip, "USESELECT"))
-    // state.newTrip.items
     //const coordinates = { lat: 46.807405, lng: 8.223595 };
 
     const handleAddTrip = (e) => {
@@ -34,28 +33,24 @@ const NewTrip = () => {
         setNewTrip(e)
 
     }
-        const handleInputTest = (e) => {
+    const handleInputTest = (e) => {
         // console.log(e)
 
         setNewTripTest(e)
     }
-
 
     return (
         <>
             <div className="flex flex-col items-center w-full ">
                 <div className="w-full h-80">
                     {/*<GoogleMapReact*/}
-                    {/*  bootstrapURLKeys={{*/}
-                    {/*    key: import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY,*/}
-                    {/*  }}*/}
-                    {/*  defaultCenter={coordinates}*/}
-                    {/*  center={coordinates}*/}
-                    {/*  defaultZoom={7}*/}
-                    {/*  margin={[50, 50, 50, 50]}*/}
-                    {/*  options={''}*/}
-                    {/*  onChange={''}*/}
-                    {/*  onChildClick={''}*/}
+                    {/*    bootstrapURLKeys={{*/}
+                    {/*        key: import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY,*/}
+                    {/*    }}*/}
+                    {/*    defaultCenter={coordinates}*/}
+                    {/*    center={coordinates}*/}
+                    {/*    defaultZoom={7}*/}
+                    {/*    margin={[50, 50, 50, 50]}*/}
                     {/*></GoogleMapReact>*/}
                 </div>
                 <div className="flex flex-row w-4/12 justify-center py-8 border-b-2 border-venture-green">
@@ -84,7 +79,7 @@ const NewTrip = () => {
                             />
                             <InputField
                                 type={"text"}
-                                value={newTrip}
+                                value={newTripTest}
                                 onChange={handleInputTest}
                                 className="flex flex-row w-full "
                                 placeholder={"START TIME"}
@@ -92,20 +87,6 @@ const NewTrip = () => {
                             <Button type={"submit"}>CONFIRM</Button>
                         </div>
                     </form>
-
-                </div>
-                <div className="flex flex-row w-6/12 justify-center py-8">
-                    <form className="flex flex-col justify-center w-full gap-5" onSubmit={handleAddTrip}>
-                        <div className="flex flex-row justify-center gap-5 ">
-                            <InputField
-                                type={"text"}
-                                className="flex flex-row w-full "
-                                placeholder={"How long you want to stay there?"}
-                            />
-                            <Button type={"submit"}>CONFIRM</Button>
-                        </div>
-                    </form>
-
                 </div>
                 <div className="flex flex-row w-6/12 justify-center py-8 b">
                     <div className="flex flex-row w-full justify-start h-8 rounded-full bg-venture-green">
