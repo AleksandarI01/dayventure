@@ -1,41 +1,99 @@
 #root {
-  /* max-width: 1280px; */
-  margin: 0 auto;
-  text-align: center;
+    /* max-width: 1280px; */
+    margin: 0 auto;
+    text-align: center;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
 }
+
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+    filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+    filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+
+/* ProcessBar Section */
+
+.step-process {
+    transition: color 1.5s ease, border-color 1.5s ease;
+    height: 2rem;
+    width: 2rem;
+    border: 1px solid #EBEBEB;
+    border-radius: 50%;
+    color: #EBEBEB;
+}
+
+.step-process.active {
+    height: 2rem;
+    width: 2rem;
+    border: 1px solid #00A987;
+    border-radius: 50%;
+    color: #00A987;
+}
+
+.step-process-line {
+    transition: border-color 1.5s ease;
+    width: 7rem;
+    border: 1px solid #EBEBEB;
+}
+
+.step-process-line.active {
+    width: 7rem;
+    border: 1px solid #00A987;
+}
+
+
+/* Label section*/
+
+.default-label {
+    background-color: #979797;
+}
+
+.clickable-label {
+    cursor: pointer;
+    background-color: #979797;
+}
+
+.clickable-label:hover {
+    cursor: pointer;
+    background-color: #06C9A2;
+}
+
+.active-label {
+    cursor: pointer;
+    background-color: #00A987;
+}
+.active-label:hover {
+    background-color: #06C9A2;
 }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+    a:nth-of-type(2) .logo {
+        animation: logo-spin infinite 20s linear;
+    }
 }
 
 .card {
-  padding: 2em;
+    padding: 2em;
 }
 
 .read-the-docs {
-  color: #888;
+    color: #888;
 }

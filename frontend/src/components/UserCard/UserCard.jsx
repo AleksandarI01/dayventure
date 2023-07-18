@@ -10,7 +10,7 @@ const UserCard = ({user}) => {
                 <div className="h-[55%] w-[100%]">
                     <div
                         className="h-[67%] w-[100%] shrink-0 flex flex-col justify-center items-center">
-                        <img className={"h-20 w-20 rounded-full"} src={user?.avatar ? user.avatar : imageUrl} alt={"profile picture"}/>
+                        <img className={"h-20 w-20 rounded-full"} src={user?.avatar || imageUrl} alt={"profile picture"}/>
                         {user.first_name || user.last_name ? <p>{user.first_name} {user.last_name}</p>
                                                             : <p>{user.username}</p>
                         }

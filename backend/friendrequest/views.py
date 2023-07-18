@@ -39,15 +39,12 @@ class FriendrequestListView(ListAPIView):
         List all the friend requests
 
     """
+    serializer_class = FriendrequestSerializer
+
     def get_queryset(self):
         current_user = self.request.user
-        result = Friendrequest.objects.filter(
-            Q(receiver=current_user)
-            | Q(sender=current_user))
-
+        result = Friendrequest.objects.filter(state='P', receiver=current_user)
         return result
-
-    serializer_class = FriendrequestSerializer
 
 
 class FriendrequestPostView(CreateAPIView):

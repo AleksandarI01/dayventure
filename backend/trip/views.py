@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 
@@ -73,6 +74,23 @@ class ListCompanionTripsView(GenericAPIView):
         filtered_queryset = self.get_queryset().filter(companions=request.user).order_by('-travel_date')
         serializer = self.get_serializer(filtered_queryset, many=True)
         return Response(serializer.data)
+
+
+class RemoveTripCompanionView(GenericAPIView):
+    """
+        patch:
+        Remove the current user from the list of companions
+    """
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+    lookup_url_kwarg = 'trip_id'
+
+    def patch(self, request, *args, **kwargs):
+        trip = self.get_object()
+        current_user = request.user
+        if current_user in trip.companions.all():
+            trip.companions.remove(current_user)
+        return Response(status=status.HTTP_200_OK)
 
 
 class ListOwnerTripsView(ListAPIView):
