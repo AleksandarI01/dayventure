@@ -20,7 +20,7 @@ const Trip = () => {
       poiGMImage: nycMini,
     },
   ]);
-  const history = useHistory();
+  // const history = useHistory();
 
   // const handleDeleteTrip = (event) => {
   //   event.preventDefault();
@@ -60,7 +60,7 @@ const Trip = () => {
           <Button>Share</Button>
           <Button>Add Friend</Button>
           <Button>Duplicate</Button>
-          <Button onClickFunction={handleDeleteTrip}>Delete</Button>
+          <Button onClick={""}>Delete</Button>
         </div>
         <div className="flex flex-row w-10/12 justify-center ">
           <div className="flex flex-col w-/12 align-center">
