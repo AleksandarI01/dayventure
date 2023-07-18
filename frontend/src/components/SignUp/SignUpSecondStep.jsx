@@ -1,5 +1,4 @@
 import Button from "../Button/Button";
-import AnimatedSignUpImage from "../AnimatedSignUpImage/AnimatedSignUpImage";
 
 const SignUpSecondStep = ({ email, moveToNextStep }) => {
   const handleOnClick = (e) => {
@@ -16,7 +15,6 @@ const SignUpSecondStep = ({ email, moveToNextStep }) => {
           <br />
           {email}
         </p>
-        <AnimatedSignUpImage />
         <Button onClickFunction={handleOnClick}>CONTINUE</Button>
       </div>
     </>

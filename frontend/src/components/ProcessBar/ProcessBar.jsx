@@ -1,4 +1,4 @@
-const ProcessBar = ( {signupStep} ) => {
+const ProcessBar = ({signupStep}) => {
 
     return (
         <div className="w-full flex flex-row justify-center align-middle items-center">
