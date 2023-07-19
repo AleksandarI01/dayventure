@@ -6,6 +6,7 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { MdRemoveCircle } from "react-icons/md";
 import { MdModeOfTravel } from "react-icons/md";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import ShowDirections from "../ShowDirections/ShowDirections";
 
 const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
@@ -76,22 +77,26 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
           <img className="" src={nycMini} />
         </div>
         <div className="flex flex-col w-6/12 ">
-          <div className="flex flex-row">
+          <div className="flex flex-row items-baseline ">
             <div className="flex flex-col w-9/12 p-2 ">
-              <div className="flex flex-row w-9/12">
-                <h4>{trip.poiGMName}</h4>
+              <div className="flex flex-row w-full ">
+                <h5>{trip.poiGMName}</h5>
               </div>
               <div className="flex flex-row w-9/12 "></div>
             </div>
-
-            <div className="flex flex-row w-6/12 p-1 gap-1 ">
-              {trip.poiGMCategories.map((label) => {
-                return <Label>{label}</Label>;
-              })}
+            <div className="flex flex-row justify-end w-6/12 p-1 gap-1 ">
+              <Label>{trip.poiGMCategories}</Label>
             </div>
           </div>
-          <div className="flex flex-row w-12/12 my-2 ">
-            <p className="text-xs text-left">{trip.poiGMDescription}</p>
+          <div className="flex flex-row p-2 ">
+            <div className="flex flex-col w-1/12">
+              <FaMapMarkerAlt />
+            </div>
+            <div className="flex flex-col w-11/12">
+              <p className="text-sm font-extralight">
+                {trip.poiGMMeetingPoint}
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex flex-col w-1/12 justify-center ">
