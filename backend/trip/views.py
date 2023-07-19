@@ -283,7 +283,9 @@ class GeneralSearchListView(ListAPIView):
             else:
                 queryset = queryset.filter(privacy='E').distinct()
             if search_string is not None:
-                queryset = queryset.filter(name__icontains=search_string)
+                queryset = queryset.filter(Q(name__icontains=search_string)
+                                           | Q(location__icontains=search_string)
+                                           | Q(itineraries__poi__name__icontains=search_string))
             if search_category is not None:
                 queryset = queryset.filter(categories__name=search_category)
             return queryset
