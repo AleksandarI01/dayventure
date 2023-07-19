@@ -13,8 +13,10 @@ const UserNotifications = ({
 }) => {
   return (
     <>
-      <div className=" absolute top-20 right-2 w-11/12 sm:right-4 sm:w-9/12 md:right-6 md:w-1/2 lg:right-10 lg:w-2/5 xl:right-13 xl:max-w-xl border-2 rounded bg-venture-white pr-1 pl-1 pb-1 pt-2 mt-2"
-      >
+      <div className="absolute top-20 right-4 min-w-[450px] rounded bg-venture-white pr-1 pl-1 pb-1 pt-2 mt-2">
+
+
+
         <div className="flex justify-around bg-venture-green text-venture-white rounded p-1">
           <h4>Notifications ({notifications.length + friendRequests.length})</h4>
           <button>Mark all as Read</button>
