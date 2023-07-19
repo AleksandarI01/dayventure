@@ -72,7 +72,7 @@ const UserProfile = () => {
         <>
             <div className={"w-full flex flex-col shrink-0 gap-6"}>
                 <div className={"bg-red-400 w-full h-48 bg-no-repeat bg-cover"}>
-                    <img src={user?.banner ? user.banner : defaultImage } alt="user banner picture"/>
+                    <img className={"w-full h-full bg-no-repeat bg-cover"} src={user?.banner ? user.banner : defaultImage } alt="user banner picture"/>
                 </div>
                 <div className={"w-full flex shrink-0 justify-center items-center"}>
                     <ProfileDescription user={user} setSelectedView={setSelectedView} setResults={setResults}/>
@@ -86,8 +86,8 @@ const UserProfile = () => {
                             {results.map((user) => <UserCard key={user.id} user={user}/>)}
                     </div> : null }
                 {results.length === 0 ?
-                    loading ? <LoadingSpinner/>
-                        : <h2>nothing to see here 😢</h2> : null // todo: make this look pretty
+                    loading ? <div className={"h-[2rem] w-[100%] flex flex-row justify-center align-middle items-end"}><LoadingSpinner/></div>
+                        : <div className={"h-[12rem] flex flex-row justify-center align-middle items-start"}><h2>nothing to see here 😢</h2></div> : null // todo: make this look pretty
                 }
             </div>
             {isModalOpen && <ProfileEditModal setIsModalOpen={setIsModalOpen} />}
