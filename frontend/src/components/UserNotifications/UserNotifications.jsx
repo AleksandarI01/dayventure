@@ -13,7 +13,7 @@ const UserNotifications = ({
 }) => {
   return (
     <>
-      <div className="absolute top-20 right-4 min-w-[450px] rounded bg-venture-white pr-1 pl-1 pb-1 pt-2 mt-2">
+      <div className="z-[9998] absolute top-20 right-4 min-w-[450px] rounded bg-venture-white pr-1 pl-1 pb-1 pt-2 mt-2">
 
 
 

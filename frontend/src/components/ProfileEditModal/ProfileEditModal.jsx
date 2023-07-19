@@ -96,6 +96,7 @@ function ProfileEditModal({ setIsModalOpen }) {
           alignItems: "center",
           justifyContent: "center",
           height: "100%",
+          zIndex: "9999",
         },
         content: {
           position: "relative",
