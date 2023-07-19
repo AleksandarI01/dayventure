@@ -19,8 +19,8 @@ class UserSerializer(serializers.ModelSerializer):
     trips_count = serializers.SerializerMethodField()
     friends_count = serializers.SerializerMethodField()
     friends_trips_count = serializers.SerializerMethodField()
-    sent_friendrequest_status = serializers.SerializerMethodField()
-    received_friendrequest_status = serializers.SerializerMethodField()
+    sent_friendrequest_state = serializers.SerializerMethodField()
+    received_friendrequest_state = serializers.SerializerMethodField()
 
     def get_location(self, user):
         if hasattr(user, 'user_profile'):
@@ -76,7 +76,7 @@ class UserSerializer(serializers.ModelSerializer):
         trips = trips.filter(Q(privacy__in=('E', 'F')) | Q(privacy='P', companions=user)).distinct()
         return trips.count()
 
-    def get_sent_friendrequest_status(self, user):
+    def get_sent_friendrequest_state(self, user):
         if self.context['request'].user.id is None:
             return None
         friendrequest = user.friendrequests_received.filter(sender=self.context['request'].user).first()
@@ -84,7 +84,7 @@ class UserSerializer(serializers.ModelSerializer):
             return None
         return friendrequest.state
 
-    def get_received_friendrequest_status(self, user):
+    def get_received_friendrequest_state(self, user):
         if self.context['request'].user.id is None:
             return None
         friendrequest = user.friendrequests_sent.filter(receiver=self.context['request'].user).first()
@@ -97,7 +97,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'date_joined',
                   'location', 'about', 'score', 'level', 'avatar', 'banner', 'liked_categories',
                   'trips_count', 'friends_count', 'friends_trips_count',
-                  'sent_friendrequest_status', 'received_friendrequest_status']
+                  'sent_friendrequest_state', 'received_friendrequest_state']
         read_only_fields = ['email', 'date_joined', 'id', 'score', 'level',
                             'trips_count', 'friends_count', 'friends_trips_count',
-                            'sent_friendrequest_status', 'received_friendrequest_status']
+                            'sent_friendrequest_state', 'received_friendrequest_state']

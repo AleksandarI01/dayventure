@@ -1,8 +1,16 @@
 import Label from "../Label/Label.jsx"
+import {useState} from "react";
 
 
 const UserCard = ({user}) => {
     const imageUrl = '../../../src/assets/island.png'
+    const [friendRequestState, setFriendRequestState] = useState(user.sent_friendrequest_state === 'A' ? 'AS'
+                                                                            : user.received_friendrequest_status === 'A' ? 'AR'
+                                                                            : user.sent_friendrequest_state === 'P' ? 'PS'
+                                                                            : user.received_friendrequest_status === 'P' ? 'PR'
+                                                                            : user.sent_friendrequest_state === 'R' ? 'R'
+                                                                            : 'O')
+
     return (
         <>
             <div
@@ -15,29 +23,25 @@ const UserCard = ({user}) => {
                                                             : <p>{user.username}</p>
                         }
                         <p>{user.location}</p>
-
-
                     </div>
 
                     <div
                         className="h-[33%] w-[100%] shrink-0 flex flex-row gap-[0.2rem] justify-center items-center">
-                        <button
-                            className={
-                                "bg-venture-green rounded-full px-2 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"
-                            }
-                        >
-                            Following
-                        </button>
+                        {/*<button*/}
+                        {/*    className={*/}
+                        {/*        "bg-venture-green rounded-full px-2 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"*/}
+                        {/*    }*/}
+                        {/*>*/}
+                        {/*    Following*/}
+                        {/*</button>*/}
                         <button
                             className={
                                 "bg-venture-green rounded-full px-5 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"
                             }
                         >
-                            Friend
+                            Send a Friend Request
                         </button>
-
                     </div>
-
                 </div>
                 <div className="h-[45%] w-[100%]">
                     <div className={"h-[68%] w-[100%]"}>
@@ -46,14 +50,8 @@ const UserCard = ({user}) => {
                     <div className={"h-[30%] w-[100%] pb-[2%] flex flex-row shrink-0 gap-[0.2rem] justify-center items-center flex-wrap"}>
                         {user.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
                     </div>
-
-
-
                 </div>
-
-
             </div>
-
         </>
     );
 };
