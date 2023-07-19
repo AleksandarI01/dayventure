@@ -8,5 +8,5 @@ const Label = ({ type, onClickFunction = null, children, active = false, clickab
     </>
   );
 };
-// todo: highlight if active = true gets passed
+
 export default Label;
