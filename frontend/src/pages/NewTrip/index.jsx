@@ -54,6 +54,7 @@ const NewTrip = () => {
     // Clear the error state if all fields are populated
     setError("");
 
+    //
     dispatch(
       add_trip({
         placeId: placeId,
