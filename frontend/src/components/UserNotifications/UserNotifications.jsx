@@ -2,7 +2,6 @@ import React from "react";
 import FriendRequest from "../FriendRequest/FriendRequest";
 import Notification from "../Notification/Notification.jsx";
 
-
 const getBorderStyle = (index, arrayLength) =>
   index < arrayLength - 1 ? "border-b border-gray-200 pb-2" : "";
 
@@ -13,12 +12,11 @@ const UserNotifications = ({
 }) => {
   return (
     <>
-      <div className="z-[9998] absolute top-20 right-4 min-w-[450px] rounded bg-venture-white pr-1 pl-1 pb-1 pt-2 mt-2">
-
-
-
+      <div className="z-[9998] absolute top-20 right-4 min-w-[450px] rounded shadow  bg-venture-white pr-1 pl-1 pb-1 pt-2 mt-2">
         <div className="flex justify-around bg-venture-green text-venture-white rounded p-1">
-          <h4>Notifications ({notifications.length + friendRequests.length})</h4>
+          <h4>
+            Notifications ({notifications.length + friendRequests.length})
+          </h4>
           <button>Mark all as Read</button>
         </div>
         <div className="flex flex-row justify-center py-2 ">
