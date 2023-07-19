@@ -36,6 +36,7 @@ const NewTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const coords = { lat: 46.807405, lng: 8.223595 };
+  const [photos, setPhotos] = useState("");
   const [autocomplete, setAutoComplete] = useState(null);
   const [error, setError] = useState("");
 
@@ -70,7 +71,7 @@ const NewTrip = () => {
         lat: coordinates.lat,
         lng: coordinates.lng,
         // formattedAddress: formattedAddress,
-        // photo: photo,
+        photos: photos,
         rating: rating,
         website: website,
         phoneNumber: phoneNumber,

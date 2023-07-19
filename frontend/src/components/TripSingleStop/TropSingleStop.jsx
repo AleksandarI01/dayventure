@@ -65,7 +65,17 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
     poiGMPhoneNumber: trip.phoneNumber,
   };
 
-  
+  const formatTextOfCategory = (text) => {
+    if (text.includes("_or_")) {
+      text = text.split("_or_")[0];
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+    return text
+      .replace(/_/g, " ")
+      .split(" ")
+      .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
+      .join(" ");
+  };
 
   return (
     <>
@@ -94,7 +104,7 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
               <div className="flex flex-row w-9/12 "></div>
             </div>
             <div className="flex flex-row justify-end w-6/12 p-1 gap-1 ">
-              <Label>{trip.poiGMCategories}</Label>
+              <Label>{formatTextOfCategory(trip.poiGMCategories)}</Label>
             </div>
           </div>
 

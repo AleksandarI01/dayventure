@@ -23,7 +23,7 @@ const Trip = () => {
       poiGMDescription:
         "Times Square is a major commercial intersection, tourist destination, entertainment hub, and neighborhood in Midtown Manhattan, New York City, United States. It is formed by the junction of Broad, ... REad More",
       poiGMCategories: selectedItems.categories,
-      poiGMImage: nycMini,
+      poiGMImage: selectedItems.photos,
       poiGMPhoneNumber: selectedItems.phoneNumber,
       poiGMWebsite: selectedItems.website,
       poiGMRating: selectedItems.rating,

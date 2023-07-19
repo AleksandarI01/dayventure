@@ -6,7 +6,7 @@ import InputField from "../../components/InputField/InputField";
 const AddNewStop = ({ trip, tripstop, setTripStop }) => {
   const [autocomplete, setAutoComplete] = useState(null);
   const [activityName, setActivityName] = useState("");
-  
+
   const [activityDurationTime, setActivityDurationTime] = useState("");
   const [placeId, setPlaceId] = useState("");
   const [tripName, setTripName] = useState("");
@@ -29,6 +29,7 @@ const AddNewStop = ({ trip, tripstop, setTripStop }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [website, setWebsite] = useState("");
   const [rating, setRating] = useState(0);
+  const [photos, setPhotos] = useState("");
   const [openingHours, setOpeningHours] = useState([]);
   const coords = { lat: 46.807405, lng: 8.223595 };
   const [error, setError] = useState("");
@@ -43,10 +44,12 @@ const AddNewStop = ({ trip, tripstop, setTripStop }) => {
         endTime: startTime,
         poiGMName: activityName,
         poiGMCategories: googleCategories,
+        poiGMImage: selectedItems.photos,
         poiGMNLat: coordinates.lat,
         poiGMNLng: coordinates.lng,
         poiGMMeetingPoint: meetingPoint,
         poiGMPhoneNumber: phoneNumber,
+        poiGMImage: photos,
         poiGMWebsite: website,
         poiGMRating: rating,
         poiGMOpeningHours: openingHours,
@@ -94,6 +97,7 @@ const AddNewStop = ({ trip, tripstop, setTripStop }) => {
       setWebsite(website);
       setRating(rating);
       setOpeningHours(openingHours);
+      setPhotos(photos);
     } else {
       // Handle the case when autocomplete is null (optional)
       console.error("Autocomplete is not ready yet.");

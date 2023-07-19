@@ -1,6 +1,8 @@
 import Trip from "../../components/Trip/Trip.jsx"
 import UserCard from "../../components/UserCard/UserCard.jsx"
+import Modal from 'react-modal';
 import ProfileDescription from "../../components/ProfileDescription/ProfileDescription.jsx";
+import ProfileEditModal from '../../components/ProfileEditModal/ProfileEditModal';
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {axiosDayVenture} from "../../axios/index.js";
@@ -14,6 +16,7 @@ const UserProfile = () => {
     const [results, setResults] = useState([])
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         setLoading(true)
@@ -58,12 +61,18 @@ const UserProfile = () => {
             })
 
     }, [accessToken, selectedView])
+
+    const onEditProfileClick = () => {
+        setIsModalOpen(true);
+      };
+
+
 //todo: styling of banner picture
     return (
         <>
             <div className={"w-full flex flex-col shrink-0 gap-6"}>
                 <div className={"bg-red-400 w-full h-48 bg-no-repeat bg-cover"}>
-                    <img src={user?.banner ? user.banner : defaultImage } alt="user banner picture"/>
+                    <img className={"w-full h-full bg-no-repeat bg-cover"} src={user?.banner ? user.banner : defaultImage } alt="user banner picture"/>
                 </div>
                 <div className={"w-full flex shrink-0 justify-center items-center"}>
                     <ProfileDescription user={user} setSelectedView={setSelectedView} setResults={setResults}/>
@@ -77,10 +86,11 @@ const UserProfile = () => {
                             {results.map((user) => <UserCard key={user.id} user={user}/>)}
                     </div> : null }
                 {results.length === 0 ?
-                    loading ? <LoadingSpinner/>
-                        : <h2>nothing to see here 😢</h2> : null // todo: make this look pretty
+                    loading ? <div className={"h-[2rem] w-[100%] flex flex-row justify-center align-middle items-end"}><LoadingSpinner/></div>
+                        : <div className={"h-[12rem] flex flex-row justify-center align-middle items-start"}><h2>nothing to see here 😢</h2></div> : null // todo: make this look pretty
                 }
             </div>
+            {isModalOpen && <ProfileEditModal setIsModalOpen={setIsModalOpen} />}
         </>
     )
         ;
