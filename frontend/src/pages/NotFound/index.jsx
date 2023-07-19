@@ -12,17 +12,10 @@ const NotFound = () => {
     localStorage.setItem("prevLocation", location.pathname);
   }, [location]);
 
-  const handleOnClick = (e) => {
-    e.preventDefault();
-    // If there's a previous location, navigate to it
-    let prevLocation = localStorage.getItem("prevLocation");
-    console.log("PrevLocation: ", prevLocation);
-    if (prevLocation) {
-      navigate(prevLocation);
-    } else {
-      navigate("/");
-    }
-  };
+  const handleOnClick = () => {
+    navigate(-1);
+   };
+
 
   return (
     <>
@@ -38,7 +31,10 @@ const NotFound = () => {
           alt="NotFoundImage"
           className="h-[16vh] w-[16vh]"
         ></img>
-        <Button onClickFunction={handleOnClick}>Go Back</Button>
+        <div className={"flex flex-row gap-[2rem] justify-center"}>
+          <Button onClickFunction={handleOnClick}>Go Back</Button>
+          <Button onClickFunction={() => navigate("/")}>Home</Button>
+        </div>
       </div>
     </>
   );

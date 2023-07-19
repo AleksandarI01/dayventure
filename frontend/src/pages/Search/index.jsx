@@ -120,7 +120,7 @@ const Search = () => {
                         </li>
                     </ul>
                 </div>
-                <div className={"w-full flex justify-center align-middle pb-[12%] pt-[2%]"}>
+                <div className={"w-full flex flex-col justify-center align-middle items-center pb-[12%] pt-[2%]"}>
                     {searchType === 'users' ?
                         <div className={"w-[80%] grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-[2.4rem]"}>
                             {results.map((user) => <UserCard key={user.id} user={user}/>)}
@@ -129,8 +129,8 @@ const Search = () => {
                             {results.map((trip) => <Trip key={trip.id} trip={trip}/>)}
                         </div>}
                     {results.length === 0 ?
-                        loading ? <LoadingSpinner/>
-                            : <h2>no results for this search</h2> : null // todo: make this look pretty
+                        loading ? <div className={"h-[8rem] w-[100%] flex flex-row justify-center align-middle items-end"}><LoadingSpinner/></div>
+                            : <div className={"h-[12rem] w-[100%] flex flex-row justify-center align-middle items-center"}><h2>no results for this search</h2></div> : null
                         }
                 </div>
             </div>
