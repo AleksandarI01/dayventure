@@ -40,10 +40,11 @@ const NewTrip = () => {
   const [googlePhoto, setGooglePhoto] = useState("");
   const [googleRating, setGoogleRating] = useState(0);
   const [website, setWebsite] = useState("");
-  const [openingHours, setOpeningHours] = useState("");
   //const selectedItems = useSelector((state) => console.log(state.newTrip, "USESELECT"))
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [openingHours, setOpeningHours] = useState([]);
   const coords = { lat: 46.807405, lng: 8.223595 };
-  const [autocomplete, setAutocomplete] = useState(null);
+  const [autocomplete, setAutoComplete] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -138,14 +139,14 @@ const NewTrip = () => {
         endTime: endTime,
         meetingPoint: meetingPoint,
         categories: googleCategories,
-        // lat: lat,
-        // lng: lng,
+        lat: coordinates.lat,
+        lng: coordinates.lng,
         // formattedAddress: formattedAddress,
-        // photo: photo,
-        // categories: categories,
-        // rating: rating,
-        // website: website,
-        // openingHours: openingHours,
+        photos: photos,
+        rating: rating,
+        website: website,
+        phoneNumber: phoneNumber,
+        openingHours: openingHours,
       })
     );
 
@@ -168,7 +169,7 @@ const NewTrip = () => {
   };
 
   const onLoad = (autoC) => {
-    setAutocomplete(autoC);
+    setAutoComplete(autoC);
   };
 
   const onPlaceChanged = () => {
@@ -176,19 +177,23 @@ const NewTrip = () => {
     const lat = autocomplete.getPlace().geometry.location.lat();
     const lng = autocomplete.getPlace().geometry.location.lng();
     const activityName = autocomplete.getPlace().name;
-    console.log(activityName, "ACTIVITY NAME");
+    // console.log(activityName, "ACTIVITY NAME");
     const formattedAddress = autocomplete.getPlace().formatted_address;
     const photo = autocomplete.getPlace().photos[0].getUrl();
     const categories = autocomplete.getPlace().types[0];
     const rating = autocomplete.getPlace().rating;
     const website = autocomplete.getPlace().website;
-    let openingHours = {}
-    if (autocomplete.getPlace().openingHours) {
-      openingHours = autocomplete.getPlace().opening_hours?.weekday_text;
-    }
     const localityArray = autocomplete.getPlace().address_components
     const locality = localityArray.filter(item => item.types.includes('locality'))[0].short_name
         + ', ' + localityArray.filter(item => item.types.includes('country'))[0].long_name
+    // console.log(website, "WEBSITE");
+    const phoneNumber = autocomplete.getPlace().international_phone_number;
+    // console.log(phoneNumber, "international_phone_number");
+    const openingHours = autocomplete.getPlace().opening_hours?.weekday_text;
+    // console.log(
+    //   autocomplete.getPlace().opening_hours?.weekday_text,
+    //   "OPENING HOURS"
+    // );
     console.log(autocomplete.getPlace());
 
     setActivityName(activityName);
@@ -201,9 +206,8 @@ const NewTrip = () => {
     setGooglePhoto(photo)
     setWebsite(website)
     setOpeningHours(openingHours)
+    setPhoneNumber(phoneNumber);
   };
-
-  console.log(meetingPoint);
 
   return (
     <>

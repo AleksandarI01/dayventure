@@ -11,8 +11,9 @@ const initialState = {
   lat: 0,
   lng: 0,
   formattedAddress: "",
+  phoneNumber: "",
   photos: "",
-  openingHours: "",
+  openingHours: [],
   description: "",
   createdBy: "",
   categories: [],
@@ -37,6 +38,7 @@ const newTripSlice = createSlice({
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;
       state.formattedAddress = action.payload.formattedAddress;
+      state.phoneNumber = action.payload.phoneNumber;
       state.photos = action.payload.photos;
       state.categories = action.payload.categories;
       state.rating = action.payload.rating;
