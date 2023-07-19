@@ -1,7 +1,7 @@
 import React from "react";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { add_trip } from "../../store/slices/newTrip";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import { Autocomplete } from "@react-google-maps/api";
 
 const NewTrip = () => {
   const [placeId, setPlaceId] = useState("");
+  const [userPosition, setUserPosition] = useState(null);
   const [tripName, setTripName] = useState("");
   const [activityName, setActivityName] = useState("");
   const currentDate = new Date().toISOString().split("T")[0];
@@ -60,7 +61,7 @@ const NewTrip = () => {
 
     dispatch(
       add_trip({
-        placeId: placeId,
+        place_id: placeId,
         tripName: tripName,
         activityName: activityName,
         startTime: startTime,
@@ -101,25 +102,41 @@ const NewTrip = () => {
     setAutoComplete(autoC);
   };
 
+  const getUserPosition = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserPosition({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting user position:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    getUserPosition();
+  }, []);
+
   const onPlaceChanged = () => {
     const placeId = autocomplete.getPlace().place_id;
     const lat = autocomplete.getPlace().geometry.location.lat();
     const lng = autocomplete.getPlace().geometry.location.lng();
     const activityName = autocomplete.getPlace().name;
-    // console.log(activityName, "ACTIVITY NAME");
     const formattedAddress = autocomplete.getPlace().formatted_address;
     const photos = autocomplete.getPlace().photos[0];
     const categories = autocomplete.getPlace().types[0];
     const rating = autocomplete.getPlace().rating;
     const website = autocomplete.getPlace().website;
-    // console.log(website, "WEBSITE");
     const phoneNumber = autocomplete.getPlace().international_phone_number;
-    // console.log(phoneNumber, "international_phone_number");
     const openingHours = autocomplete.getPlace().opening_hours?.weekday_text;
-    // console.log(
-    //   autocomplete.getPlace().opening_hours?.weekday_text,
-    //   "OPENING HOURS"
-    // );
+    console.log(placeId, "PLACE ID");
     console.log(autocomplete.getPlace());
     setActivityName(activityName);
     setMeetingPoint(formattedAddress);
@@ -140,9 +157,9 @@ const NewTrip = () => {
             bootstrapURLKeys={{
               key: import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY,
             }}
-            defaultCenter={coords}
-            center={coords}
-            defaultZoom={7}
+            defaultCenter={userPosition || coords}
+            center={userPosition || coords}
+            defaultZoom={16}
             margin={[50, 50, 50, 50]}
             options={""}
             onChange={""}
