@@ -4,7 +4,7 @@ import nycMini from "../../assets/images/nycMini.png";
 import AddNewStop from "../../components/AddNewStop/AddNewStop";
 import TripSingleStop from "../../components/TripSingleStop/TropSingleStop";
 import { AiFillPlusCircle } from "react-icons/ai";
-import GoogleMapReact from "google-map-react";
+import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 import { useSelector } from "react-redux";
 
 const Trip = () => {
@@ -17,11 +17,17 @@ const Trip = () => {
       startTime: selectedItems.startTime,
       endTime: selectedItems.endTime,
       poiGMName: selectedItems.activityName,
+      poiGMNLat: selectedItems.lat,
+      poiGMNLng: selectedItems.lng,
       poiGMMeetingPoint: selectedItems.meetingPoint,
       poiGMDescription:
         "Times Square is a major commercial intersection, tourist destination, entertainment hub, and neighborhood in Midtown Manhattan, New York City, United States. It is formed by the junction of Broad, ... REad More",
       poiGMCategories: selectedItems.categories,
       poiGMImage: nycMini,
+      poiGMPhoneNumber: selectedItems.phoneNumber,
+      poiGMWebsite: selectedItems.website,
+      poiGMRating: selectedItems.rating,
+      poiGMOpeningHours: selectedItems.openingHours,
     },
   ]);
 
@@ -89,7 +95,11 @@ const Trip = () => {
             <div className="flex flex-col w-1/12 "></div>
             {addNewStop ? (
               <div className="flex flex-col w-9/12 ">
-                <AddNewStop setTripStop={setTripStop} />
+                <AddNewStop
+                  trip={selectedItems}
+                  tripstop={tripstop}
+                  setTripStop={setTripStop}
+                />
               </div>
             ) : (
               ""
