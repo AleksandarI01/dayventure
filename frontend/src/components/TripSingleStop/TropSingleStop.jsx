@@ -7,6 +7,10 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { MdRemoveCircle } from "react-icons/md";
 import { MdModeOfTravel } from "react-icons/md";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { CgWebsite } from "react-icons/cg";
+import { AiFillStar } from "react-icons/ai";
+import { BsFillTelephoneFill } from "react-icons/bs";
+import { AiFillClockCircle } from "react-icons/ai";
 import ShowDirections from "../ShowDirections/ShowDirections";
 
 const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
@@ -16,6 +20,7 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
   const [moveUp, setMoveUp] = useState([]);
   const [remove, setRemove] = useState([]);
   const [moveDown, setMoveDown] = useState([]);
+  const isLastStop = tripstop.indexOf(trip) === tripstop.length - 1;
 
   const handleDirectionsClick = (event) => {
     event.preventDefault();
@@ -57,15 +62,20 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
     poiGMDescriotion:
       "Times Square is a major commercial intersection, tourist destination, entertainment hub, and neighborhood in Midtown Manhattan, New York City, United States. It is formed by the junction of Broad, ... REad More",
     poiGMCategories: ["Shopping", "Museum"],
+    poiGMPhoneNumber: trip.phoneNumber,
   };
 
   const formatTextOfCategory = (text) => {
-      if (text.includes("_or_")) {
-          text = text.split("_or_")[0]
-        return text.charAt(0).toUpperCase() + text.slice(1);
-      }
-      return text.replace(/_/g, " ").split(" ").map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(" ");
-  }
+    if (text.includes("_or_")) {
+      text = text.split("_or_")[0];
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+    return text
+      .replace(/_/g, " ")
+      .split(" ")
+      .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
+      .join(" ");
+  };
 
   return (
     <>
@@ -89,7 +99,7 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
           <div className="flex flex-row items-baseline ">
             <div className="flex flex-col w-9/12 p-2 ">
               <div className="flex flex-row w-full ">
-                <h5>{trip.poiGMName}</h5>
+                <h5 className="font-black">{trip.poiGMName}</h5>
               </div>
               <div className="flex flex-row w-9/12 "></div>
             </div>
@@ -97,16 +107,65 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
               <Label>{formatTextOfCategory(trip.poiGMCategories)}</Label>
             </div>
           </div>
-          <div className="flex flex-row p-2 ">
-            <div className="flex flex-col w-1/12">
+
+          <div className="flex flex-row p-1 border-2 border-solid border-red-600">
+            <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
               <FaMapMarkerAlt />
             </div>
-            <div className="flex flex-col w-11/12">
-              <p className="text-sm font-extralight">
+            <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
+              <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
                 {trip.poiGMMeetingPoint}
               </p>
             </div>
           </div>
+          {trip.poiGMPhoneNumber && (
+            <div className="flex flex-row p-1 border-2 border-solid border-red-600">
+              <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+                <BsFillTelephoneFill />
+              </div>
+              <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
+                <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+                  {trip.poiGMPhoneNumber}
+                </p>
+              </div>
+            </div>
+          )}
+          {trip.poiGMWebsite && (
+            <div className="flex flex-row p-1 border-2 border-solid border-red-600">
+              <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+                <CgWebsite />
+              </div>
+              <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
+                <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+                  {trip.poiGMWebsite}
+                </p>
+              </div>
+            </div>
+          )}
+          {trip.poiGMRating && (
+            <div className="flex flex-row p-1 border-2 border-solid border-red-600">
+              <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+                <AiFillStar />
+              </div>
+              <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
+                <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+                  {trip.poiGMRating}
+                </p>
+              </div>
+            </div>
+          )}
+          {trip.poiGMOpeningHours && (
+            <div className="flex flex-row p-1 border-2 border-solid border-red-600">
+              <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+                <AiFillClockCircle />
+              </div>
+              <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
+                <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+                  {trip.poiGMOpeningHours}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex flex-col w-1/12 justify-center ">
           <div className="flex flex-row w-full justify-center">
@@ -126,31 +185,43 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-center pb-12">
-        <div className="flex flex-col w-1/12 border-2 border-solid border-red-600">
-          <button
-            onClick={handleDirectionsClick}
-            className="flex flex-row justify-around rounded-3xl bg-venture-darkgray p-1 "
-          >
-            <MdModeOfTravel className="text-4xl" />
-            {!arrowClicked ? (
-              <MdOutlineKeyboardArrowDown className="text-4xl" />
-            ) : (
-              <MdOutlineKeyboardArrowRight className="text-4xl" />
-            )}
-          </button>
-        </div>
+      {!isLastStop && (
+        <div className="flex flex-row justify-center pb-12">
+          <div className="flex flex-col w-1/12 border-2 border-solid border-red-600">
+            <button
+              onClick={handleDirectionsClick}
+              className="flex flex-row justify-around rounded-3xl bg-venture-darkgray p-1 "
+            >
+              <MdModeOfTravel className="text-4xl" />
+              {!arrowClicked ? (
+                <MdOutlineKeyboardArrowDown className="text-4xl" />
+              ) : (
+                <MdOutlineKeyboardArrowRight className="text-4xl" />
+              )}
+            </button>
+          </div>
 
-        <div className="flex flex-col w-10/12">
-          {directions ? (
-            <div className="flex flex-col w-full mx-10">
-              <ShowDirections setDirections={setDirections} />
-            </div>
-          ) : (
-            ""
-          )}
+          <div className="flex flex-col w-10/12">
+            {directions ? (
+              <div className="flex flex-col w-full mx-10">
+                <ShowDirections
+                  setDirections={setDirections}
+                  latitute={trip.poiGMNLat}
+                  destinationLatitude={
+                    tripstop[tripstop.indexOf(trip) + 1].poiGMNLat
+                  }
+                  longtitude={trip.poiGMNLng}
+                  destinationLongitude={
+                    tripstop[tripstop.indexOf(trip) + 1].poiGMNLng
+                  }
+                />
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
