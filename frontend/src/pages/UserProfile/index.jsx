@@ -1,6 +1,8 @@
 import Trip from "../../components/Trip/Trip.jsx"
 import UserCard from "../../components/UserCard/UserCard.jsx"
+import Modal from 'react-modal';
 import ProfileDescription from "../../components/ProfileDescription/ProfileDescription.jsx";
+import ProfileEditModal from '../../components/ProfileEditModal/ProfileEditModal';
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {axiosDayVenture} from "../../axios/index.js";
@@ -14,6 +16,7 @@ const UserProfile = () => {
     const [results, setResults] = useState([])
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         setLoading(true)
@@ -58,6 +61,12 @@ const UserProfile = () => {
             })
 
     }, [accessToken, selectedView])
+
+    const onEditProfileClick = () => {
+        setIsModalOpen(true);
+      };
+
+
 //todo: styling of banner picture
     return (
         <>
@@ -81,6 +90,7 @@ const UserProfile = () => {
                         : <h2>nothing to see here 😢</h2> : null // todo: make this look pretty
                 }
             </div>
+            {isModalOpen && <ProfileEditModal setIsModalOpen={setIsModalOpen} />}
         </>
     )
         ;

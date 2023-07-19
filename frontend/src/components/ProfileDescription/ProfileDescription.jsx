@@ -1,5 +1,7 @@
 import Label from "../Label/Label.jsx"
 import {useState} from "react";
+import ProfileEditModal from '../ProfileEditModal/ProfileEditModal';
+import Modal from 'react-modal';
 
 const ProfileDescription = ({user, setSelectedView, setResults}) => {
     const defaultImage = '../../../src/assets/island.png'
@@ -8,6 +10,7 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
     const [styleMyTrips, setStyleMyTrips] = useState(activeStyle)
     const [styleFriends, setStyleFriends] = useState(inactiveStyle)
     const [styleMyFriendsTrips, setStyleMyFriendsTrips] = useState(inactiveStyle)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     const onHandleClickProfile = (event) => {
@@ -32,6 +35,10 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
         }
     }
 
+    const onEditProfileClick = () => {
+        setIsModalOpen(true);
+    };
+
     return (
         <div
             className={"w-[800px] h-[250px] flex flex-row shrink-0 border border-solid rounded-md border-venture-gray"}>
@@ -51,6 +58,7 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
                         className={
                             "bg-venture-green rounded-full px-2 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"
                         }
+                        onClick={onEditProfileClick}
                     >
                         EDIT PROFILE
                     </button>
@@ -104,7 +112,7 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
 
 
             </div>
-
+            {isModalOpen && <ProfileEditModal setIsModalOpen={setIsModalOpen} />}
         </div>
 
 
