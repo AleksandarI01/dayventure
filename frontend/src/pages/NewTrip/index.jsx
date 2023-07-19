@@ -85,6 +85,9 @@ const NewTrip = () => {
       travel_date: dayOfTrip,
       categories: selectedCategories,
     }
+    const sTime = startTime.split(':')
+    const eTime = endTime.split(':')
+    const duration = new Date(0, 0, 0, parseInt(eTime[0]), parseInt(eTime[1])) - new Date(0, 0, 0, parseInt(sTime[0]), parseInt(sTime[1]))
     const poi_data = {
       sequence: 0,
       type: 0,
@@ -102,7 +105,8 @@ const NewTrip = () => {
       },
       transfer: null,
       start_time: startTime,
-      duration: endTime - startTime
+      duration: duration
+
     }
     axiosDayVenture
         .post(`/trips/new/`, trip_data, config)
