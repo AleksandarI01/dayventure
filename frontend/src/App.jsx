@@ -82,7 +82,8 @@ function App() {
                         <Route path="/profile" element={<UserProfile/>}/>
                         <Route path="/about-us" element={<AboutUs/>}/>
                         <Route path="/new-trip" element={<NewTrip/>}/>
-                        <Route path="/trip" element={<Trip/>}/>
+                        {/*<Route path="/trip" element={<Trip/>}/>*/}
+                        <Route path="/trip/:tripId" element={<Trip/>}/>
                     </Route>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>
