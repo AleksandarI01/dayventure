@@ -14,7 +14,6 @@ const initialState = {
   phoneNumber: "",
   photos: "",
   openingHours: [],
-  endTime: "",
   description: "",
   createdBy: "",
   categories: [],
