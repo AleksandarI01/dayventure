@@ -14,6 +14,7 @@ class POI(models.Model):
     gm_category = models.CharField(max_length=50)
     gm_rating = models.FloatField(default=0)
     website = models.TextField(blank=True)
+    phone = models.CharField(max_length=30, blank=True)
     opening_hours = models.TextField(blank=True)
     image = models.ImageField(upload_to=poi_image_directory_path, blank=True, null=True)
     gm_image = models.TextField(blank=True)

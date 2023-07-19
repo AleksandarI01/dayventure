@@ -1,19 +1,14 @@
-import React, {useEffect} from "react";
-import InputField from "../../components/InputField/InputField";
-import Button from "../../components/Button/Button";
-import { useState } from "react";
-import {useDispatch, useSelector} from "react-redux";
-import { add_trip } from "../../store/slices/newTrip";
-import { Link, useNavigate } from "react-router-dom";
-import TripHeader from "../../components/TripHeader/TripHeader";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import GoogleMapReact from "google-map-react";
 import { Autocomplete } from "@react-google-maps/api";
-import {axiosDayVenture} from "../../axios/index.js";
+import { axiosDayVenture } from "../../axios/index.js";
+import InputField from "../../components/InputField/InputField";
+import Button from "../../components/Button/Button";
 
 const NewTrip = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const accessToken = useSelector((state) => state.user.accessToken);
 
   const [categories, setCategories] = useState([])
@@ -40,7 +35,6 @@ const NewTrip = () => {
   const [googlePhoto, setGooglePhoto] = useState("");
   const [googleRating, setGoogleRating] = useState(0);
   const [website, setWebsite] = useState("");
-  //const selectedItems = useSelector((state) => console.log(state.newTrip, "USESELECT"))
   const [phoneNumber, setPhoneNumber] = useState("");
   const [openingHours, setOpeningHours] = useState([]);
   const coords = { lat: 46.807405, lng: 8.223595 };
@@ -101,6 +95,7 @@ const NewTrip = () => {
         gm_category: googleCategories,
         gm_rating: googleRating,
         website: website,
+        phone: phoneNumber,
         opening_hours: openingHours,
         gm_image: googlePhoto
       },
@@ -125,31 +120,6 @@ const NewTrip = () => {
         .catch((error) => {
           console.log(error);
         })
-
-
-
-    // todo: remove dispatch
-    dispatch(
-      add_trip({
-        placeId: placeId,
-        tripName: tripName,
-        activityName: activityName,
-        startTime: startTime,
-        dayOfTrip: dayOfTrip,
-        endTime: endTime,
-        meetingPoint: meetingPoint,
-        categories: googleCategories,
-        lat: coordinates.lat,
-        lng: coordinates.lng,
-        // formattedAddress: formattedAddress,
-        photos: photos,
-        rating: rating,
-        website: website,
-        phoneNumber: phoneNumber,
-        openingHours: openingHours,
-      })
-    );
-
   };
 
   const handleCheckboxChange = (category) => {
@@ -173,40 +143,24 @@ const NewTrip = () => {
   };
 
   const onPlaceChanged = () => {
-    const placeId = autocomplete.getPlace().place_id;
+    setActivityName(autocomplete.getPlace().name);
+    setMeetingPoint(autocomplete.getPlace().formatted_address);
+    setGoogleCategories(autocomplete.getPlace().types[0]);
+    setPlaceId(autocomplete.getPlace().place_id);
+    setGoogleRating(autocomplete.getPlace().rating)
+    setGooglePhoto(autocomplete.getPlace().photos[0].getUrl())
+    setWebsite(autocomplete.getPlace().website)
+    setOpeningHours(autocomplete.getPlace().opening_hours?.weekday_text)
+    setPhoneNumber(autocomplete.getPlace().international_phone_number);
     const lat = autocomplete.getPlace().geometry.location.lat();
+
     const lng = autocomplete.getPlace().geometry.location.lng();
-    const activityName = autocomplete.getPlace().name;
-    // console.log(activityName, "ACTIVITY NAME");
-    const formattedAddress = autocomplete.getPlace().formatted_address;
-    const photo = autocomplete.getPlace().photos[0].getUrl();
-    const categories = autocomplete.getPlace().types[0];
-    const rating = autocomplete.getPlace().rating;
-    const website = autocomplete.getPlace().website;
+    setCoordinates({ lat, lng });
+
     const localityArray = autocomplete.getPlace().address_components
     const locality = localityArray.filter(item => item.types.includes('locality'))[0].short_name
         + ', ' + localityArray.filter(item => item.types.includes('country'))[0].long_name
-    // console.log(website, "WEBSITE");
-    const phoneNumber = autocomplete.getPlace().international_phone_number;
-    // console.log(phoneNumber, "international_phone_number");
-    const openingHours = autocomplete.getPlace().opening_hours?.weekday_text;
-    // console.log(
-    //   autocomplete.getPlace().opening_hours?.weekday_text,
-    //   "OPENING HOURS"
-    // );
-    console.log(autocomplete.getPlace());
-
-    setActivityName(activityName);
-    setMeetingPoint(formattedAddress);
-    setCoordinates({ lat, lng });
-    setGoogleCategories(categories);
-    setPlaceId(placeId);
     setTripLocation(locality)
-    setGoogleRating(rating)
-    setGooglePhoto(photo)
-    setWebsite(website)
-    setOpeningHours(openingHours)
-    setPhoneNumber(phoneNumber);
   };
 
   return (
@@ -304,7 +258,6 @@ const NewTrip = () => {
               </div>
               <div className="flex flex-row justify-center">
                 <div className="grid grid-rows-4 grid-flow-col gap-4">
-
                   {categories.map(cat =>
                           <div key={cat.id} className="flex flex-row justify-start">
                             <input
@@ -321,7 +274,6 @@ const NewTrip = () => {
                             <label htmlFor={cat.name}>{cat.name}</label>
                           </div>
                   )}
-
                 </div>
               </div>
               {error && <p className="text-red-600">{error}</p>}

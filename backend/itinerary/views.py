@@ -33,6 +33,7 @@ class CreateItineraryView(CreateAPIView):
                 'gm_category': poi['gm_category'],
                 'gm_rating': poi['gm_rating'],
                 'website': poi['website'],
+                'phone': poi['phone'],
                 'opening_hours': poi['opening_hours'],
                 'gm_image': poi['gm_image'],
             }
