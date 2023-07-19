@@ -13,7 +13,6 @@ const initialState = {
   formattedAddress: "",
   photos: "",
   openingHours: "",
-  endTime: "",
   description: "",
   createdBy: "",
   categories: [],

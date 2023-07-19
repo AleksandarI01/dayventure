@@ -32,3 +32,15 @@ class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
         fields = '__all__'
+
+
+class CreateTripSerializer(serializers.ModelSerializer):
+    owner = UserSerializer(read_only=True)
+    companions = UserSerializer(read_only=True, many=True)
+    itineraries = ItinerarySerializer(read_only=True, many=True)
+    categories = CategorySerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Trip
+        fields = '__all__'
+        read_only_fields = ['rating_avg', 'rating_count', 'liked_by']

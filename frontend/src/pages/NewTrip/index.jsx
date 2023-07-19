@@ -104,7 +104,7 @@ const NewTrip = () => {
     const activityName = autocomplete.getPlace().name;
     console.log(activityName, "ACTIVITY NAME");
     const formattedAddress = autocomplete.getPlace().formatted_address;
-    const photos = autocomplete.getPlace().photos[0];
+    const photos = autocomplete.getPlace().photos[0];  // todo: use .getUrl
     const categories = autocomplete.getPlace().types[0];
     const rating = autocomplete.getPlace().rating;
     const website = autocomplete.getPlace().website;
