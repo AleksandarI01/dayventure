@@ -38,7 +38,7 @@ class CreateTripSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     companions = UserSerializer(read_only=True, many=True)
     itineraries = ItinerarySerializer(read_only=True, many=True)
-    categories = CategorySerializer(read_only=True, many=True)
+    categories = CategorySerializer(read_only=True, many=True)  # todo: get categories to be saved
 
     class Meta:
         model = Trip
