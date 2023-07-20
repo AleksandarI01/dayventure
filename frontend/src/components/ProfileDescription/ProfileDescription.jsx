@@ -1,7 +1,8 @@
 import Label from "../Label/Label.jsx"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ProfileEditModal from '../ProfileEditModal/ProfileEditModal';
 import Modal from 'react-modal';
+import {axiosDayVenture} from "../../axios/index.js";
 
 const ProfileDescription = ({user, setSelectedView, setResults}) => {
     const defaultImage = '../../../src/assets/island.png'
@@ -11,6 +12,16 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
     const [styleFriends, setStyleFriends] = useState(inactiveStyle)
     const [styleMyFriendsTrips, setStyleMyFriendsTrips] = useState(inactiveStyle)
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [username, setUsername] = useState(user.username);
+    const [firstName, setFirstName] = useState(user.first_name);
+    const [lastName, setLastName] = useState(user.last_name);
+    const [location, setLocation] = useState(user.location);
+    const [about, setAbout] = useState(user.about);
+    const [email, setEmail] = useState(user.email);
+
+    console.log(user)
+    console.log(firstName)
 
 
     const onHandleClickProfile = (event) => {
@@ -39,17 +50,27 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
         setIsModalOpen(true);
     };
 
+    useEffect(() => {
+        setUsername(user.username)
+        setFirstName(user.first_name)
+        setLastName(user.last_name)
+        setLocation(user.location)
+        setAbout(user.about)
+        setEmail(user.email)
+    }, [user])
+
     return (
         <div
             className={"w-[800px] h-[250px] flex flex-row shrink-0 border border-solid rounded-md border-venture-gray"}>
             <div className={"h-[100%] w-[25%] flex flex-col shrink-0 border-r border-solid border-venture-gray"}>
                 <div
                     className="h-[65%] w-[100%] pt-[2%] shrink-0 flex flex-col gap-[0.2rem] justify-center items-center">
-                    <img className={"h-20 w-20 rounded-full"} src={user?.avatar ? user.avatar : defaultImage } alt={"profile picture"}/>
-                        {user?.first_name || user?.last_name ? <p className={"pt-[2%]"}>{user.first_name} {user.last_name}</p>
-                                                            : <p className={"pt-[2%]"}>{user?.username}</p>
-                        }
-                    <p>{user?.location}</p>
+                    <img className={"h-20 w-20 rounded-full"} src={user?.avatar ? user.avatar : defaultImage}
+                         alt={"profile picture"}/>
+                    {user?.first_name || user?.last_name ? <p className={"pt-[2%]"}>{firstName} {lastName}</p>
+                        : <p className={"pt-[2%]"}>{user?.username}</p>
+                    }
+                    <p>{location}</p>
 
 
                 </div>
@@ -73,7 +94,7 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
                             <p className={"text-left p-2"}>About</p>
                         </div>
                         <div className={"w-full h-[85] flex flex-col align-start justify-start"}>
-                            <p className={"text-left p-2"}>{user?.about}</p>
+                            <p className={"text-left p-2"}>{about}</p>
                         </div>
                     </div>
                     <div className={"h-full w-[50%] flex flex-col shrink-0"}>
@@ -82,7 +103,7 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
                         </div>
                         <div
                             className={"w-full h-[85] p-1 flex flex-row gap-[0.2rem] align-start justify-start flex-wrap"}>
-                        {user?.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
+                            {user?.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
                         </div>
 
 
@@ -112,7 +133,11 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
 
 
             </div>
-            {isModalOpen && <ProfileEditModal setIsModalOpen={setIsModalOpen} />}
+            {isModalOpen &&
+                <ProfileEditModal user={user} username={username} setUsername={setUsername} firstName={firstName}
+                                  setFirstName={setFirstName} lastName={lastName} setLastName={setLastName}
+                                  setIsModalOpen={setIsModalOpen} location={location} setLocation={setLocation}
+                                  about={about} setAbout={setAbout} email={email} setEmail={setEmail}/>}
         </div>
 
 

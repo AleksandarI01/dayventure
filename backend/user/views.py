@@ -8,6 +8,8 @@ from rest_framework.response import Response
 # from email_scheduler.models import EmailScheduler
 from user.serializers import UserSerializer
 
+from user_profile.models import UserProfile
+
 User = get_user_model()
 
 
@@ -34,16 +36,8 @@ class RetrieveUpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
-        # # send mail to user
-        # mail_instance = EmailScheduler.objects.all()
-        # subject = 'Luna-3: Profile updated'
-        # message = f'Dear {self.request.user.username}\n\n' \
-        #           f'Your profile on Luna has just been updated.\n' \
-        #           f'If this wasn\'t you, reset your password immediately!\n\n' \
-        #           f'See you soon on luna3!'
-        # mail_instance.create(subject=subject, message=message, recipient_list=self.request.user.email)
-
+        profiles = UserProfile.objects.all()
+        profiles.update_or_create(user=instance, defaults=request.data)
         return Response(serializer.data)
 
     def delete(self, request, *args, **kwargs):

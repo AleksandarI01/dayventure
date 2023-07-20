@@ -4,25 +4,26 @@ import Button from "../Button/Button";
 import InputField from "../InputField/InputField";
 import imageUrl from './../../../src/assets/island.png'
 import { MdClose, MdEdit } from "react-icons/md";
+import {axiosDayVenture} from "../../axios/index.js";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
-function ProfileEditModal({ setIsModalOpen }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [location, setLocation] = useState("");
-  const [phone, setPhone] = useState("");
-  const [about, setAbout] = useState("");
+function ProfileEditModal({ setIsModalOpen, user, username, setUsername, firstName, setFirstName, lastName, setLastName, location, setLocation, about, setAbout, email, setEmail }) {
+  const [isVisible, setIsVisible] = useState(false)
   const [password, setPassword] = useState("");
+  const [passwordRepeat, setPasswordRepeat] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const accessToken = useSelector((state) => state.user.accessToken);
+  const navigate = useNavigate()
 
   const fileInput = useRef(null);
+
 
   const onCloseClick = () => setIsModalOpen(false);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!firstName || !lastName || !username || !password) {
+    if (!firstName || !lastName || !username || !password || !passwordRepeat) {
       setErrorMessage("Required fields are missing.");
       return;
     }
@@ -31,42 +32,6 @@ function ProfileEditModal({ setIsModalOpen }) {
     setErrorMessage("");
   };
 
-  // Add error handling to input onChange functions
-  const handleFirstNameChange = (e) => {
-    if (!e.target.value) {
-      setErrorMessage("First name is a required field.");
-    } else {
-      setErrorMessage("");
-      setFirstName(e.target.value);
-    }
-  };
-
-  const handleLastNameChange = (e) => {
-    if (!e.target.value) {
-      setErrorMessage("Last name is a required field.");
-    } else {
-      setErrorMessage("");
-      setLastName(e.target.value);
-    }
-  };
-
-  const handleUsernameChange = (e) => {
-    if (!e.target.value) {
-      setErrorMessage("Username is a required field.");
-    } else {
-      setErrorMessage("");
-      setUsername(e.target.value);
-    }
-  };
-
-  const handlePasswordChange = (e) => {
-    if (!e.target.value) {
-      setErrorMessage("Password is a required field.");
-    } else {
-      setErrorMessage("");
-      setPassword(e.target.value);
-    }
-  };
 
   
   const handleImageClick = () => {
@@ -84,6 +49,30 @@ function ProfileEditModal({ setIsModalOpen }) {
       reader.readAsDataURL(file);
     }
   };
+
+  const onHandleClickImage = () => {
+    console.log("testing click for image upload")
+  }
+
+
+  const handleSubmitProfile = () => {
+        const config = {headers: {Authorization: `Bearer ${accessToken}`}};
+        console.log(location)
+        axiosDayVenture
+            .patch(`/users/me/`, {username: username, first_name: firstName, last_name: lastName, location: location, about: about}, config)
+            .then((res) => {
+              console.log(res)
+              setIsModalOpen(false)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+
+
+
+
 
   return (
     <Modal
@@ -146,7 +135,7 @@ function ProfileEditModal({ setIsModalOpen }) {
             
             
             <div className="flex flex-col h-full justify-evenly ">
-              <Button>Upload</Button>
+              <Button onClickFunction={onHandleClickImage}>Upload</Button>
               <Button color="venture-gray">Remove</Button>
             </div>
           </div>
@@ -159,12 +148,14 @@ function ProfileEditModal({ setIsModalOpen }) {
           <InputField
             type="text"
             placeholder="First Name"
+            value={firstName}
             onChange={setFirstName}
             
           />
           <InputField
             type="text"
             placeholder="Last Name"
+            value={lastName}
             onChange={setLastName}
             
           />
@@ -175,13 +166,15 @@ function ProfileEditModal({ setIsModalOpen }) {
             type="email"
             placeholder="Email"
             value={email}
-            disabled={setEmail}
+            disabled={true}
+
             
-          />
+          ></InputField>
           <InputField
             type="text"
-            placeholder="Username"
+            placeholder="username"
             onChange={setUsername}
+            value={username}
             
           />
         </div>
@@ -191,40 +184,35 @@ function ProfileEditModal({ setIsModalOpen }) {
             type="location"
             placeholder="Location"
             value={location}
-            disabled={setLocation}
+            onChange={setLocation}
             
           />
-          <InputField
-            type="phone"
-            placeholder="Phone"
-            onChange={setPhone}
-            
-          />
+
         </div>
 
-        <div className="flex flex-col md:flex-row gap-3 items-center w-full justify-around">
+        {isVisible ?         <div className="flex flex-col md:flex-row gap-3 items-center w-full justify-around">
           <InputField
             type="password"
             placeholder="Password"
             onChange={setPassword}
-            
           />
           <InputField
             type="password"
             placeholder="Confirm Password"
-            onChange={setPassword}
-            
+            onChange={setPasswordRepeat}
           />
-        </div>
+        </div> : <Button type={"submit"} onClickFunction={setIsVisible(true)}>Change Password</Button>}
+
 
         <textarea
           placeholder="About"
-          onChange={setAbout}
+          onChange={(e) =>setAbout(e.target.value)}
+          value={about}
           className={`shadow appearance-none border rounded py-2 px-3 text-venture-black leading-tight focus:outline-none focus:shadow-outline h-24 `} 
         />
         <div>
           <div className="flex justify-center  gap-3">
-            <Button type={"submit"}>SAVE</Button>
+            <Button type={"submit"} onClickFunction={handleSubmitProfile}>SAVE</Button>
             <Button color="venture-red">DELETE ACCOUNT</Button>
           </div>
 

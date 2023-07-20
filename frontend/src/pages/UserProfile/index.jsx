@@ -62,10 +62,11 @@ const UserProfile = () => {
 
     }, [accessToken, selectedView])
 
-    const onEditProfileClick = () => {
-        setIsModalOpen(true);
-      };
+    // const onEditProfileClick = () => {
+    //     setIsModalOpen(true);
+    //   };
 
+    console.log(user, "pabloooo")
 
 //todo: styling of banner picture
     return (
@@ -90,7 +91,7 @@ const UserProfile = () => {
                         : <div className={"h-[12rem] flex flex-row justify-center align-middle items-start"}><h2>nothing to see here 😢</h2></div> : null // todo: make this look pretty
                 }
             </div>
-            {isModalOpen && <ProfileEditModal setIsModalOpen={setIsModalOpen} />}
+            {isModalOpen && <ProfileEditModal setResults={setResults} setIsModalOpen={setIsModalOpen} />}
         </>
     )
         ;
