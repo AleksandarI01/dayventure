@@ -14,7 +14,6 @@ function ProfileEditModal({ setIsModalOpen }) {
   const [phone, setPhone] = useState("");
   const [about, setAbout] = useState("");
   const [password, setPassword] = useState("");
-  const [interests, setInterests] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -97,19 +96,18 @@ function ProfileEditModal({ setIsModalOpen }) {
           alignItems: "center",
           justifyContent: "center",
           height: "100%",
+          zIndex: "9999",
         },
         content: {
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
           position: "relative",
           background: "white",
-          width: "30%",
-          height: "80%",
-          minWidth: "350px",
-          maxHeight: "100%",
+          width: "90%",
+          height: "75%",
+          minWidth: "250px",
+          maxWidth: "750px",
           borderRadius: "10px",
           overflow: "auto",
+          margin: "auto",
         },
       }}
     >
@@ -149,7 +147,7 @@ function ProfileEditModal({ setIsModalOpen }) {
             
             <div className="flex flex-col h-full justify-evenly ">
               <Button>Upload</Button>
-              <Button color="venture-red">Remove</Button>
+              <Button color="venture-gray">Remove</Button>
             </div>
           </div>
         </div>

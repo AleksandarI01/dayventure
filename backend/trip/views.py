@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 # from email_scheduler.models import EmailScheduler
 from trip.models import Trip
-from trip.serializers import TripSerializer
+from trip.serializers import TripSerializer, CreateTripSerializer
 from user.serializers import UserSerializer
 
 User = get_user_model()
@@ -52,7 +52,7 @@ class CreateTripView(CreateAPIView):
         post:
         Create new trip
     """
-    serializer_class = TripSerializer
+    serializer_class = CreateTripSerializer
     queryset = Trip.objects.all()
 
     def post(self, request, *args, **kwargs):

@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      zIndex: {
+        '9998': 9998,
+      },
       colors: {
         "venture-green": "#00A987",
         "venture-green-hovered": "#06C9A2",
@@ -25,3 +28,4 @@ export default {
   },
   plugins: [],
 };
+
