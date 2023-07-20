@@ -11,10 +11,11 @@ const NewTrip = () => {
   const navigate = useNavigate();
   const accessToken = useSelector((state) => state.user.accessToken);
 
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
   const [placeId, setPlaceId] = useState("");
+  const [userPosition, setUserPosition] = useState(null);
   const [tripName, setTripName] = useState("");
-  const [tripLocation, setTripLocation] = useState("")
+  const [tripLocation, setTripLocation] = useState("");
   const [activityName, setActivityName] = useState("");
   const currentDate = new Date().toISOString().split("T")[0];
   const [dayOfTrip, setdayOfTrip] = useState(currentDate);
@@ -43,15 +44,16 @@ const NewTrip = () => {
 
   useEffect(() => {
     axiosDayVenture
-        .get("/categories/")
-        .then((res) => {
-          setCategories(res.data.sort((catA, catB) => catB.like_count - catA.like_count));
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-  }, [])
-
+      .get("/categories/")
+      .then((res) => {
+        setCategories(
+          res.data.sort((catA, catB) => catB.like_count - catA.like_count)
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleAddTrip = (e) => {
     e.preventDefault();
@@ -72,17 +74,19 @@ const NewTrip = () => {
     setError("");
 
     // create new trip in backend and then add a first itinerary to it
-    const config = {headers: {Authorization: `Bearer ${accessToken}`}};
-    let trip_id = null
+    const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+    let trip_id = null;
     const trip_data = {
       name: tripName,
       location: tripLocation,
       travel_date: dayOfTrip,
       categories: selectedCategories,
-    }
-    const sTime = startTime.split(':')
-    const eTime = endTime.split(':')
-    const duration = new Date(0, 0, 0, parseInt(eTime[0]), parseInt(eTime[1])) - new Date(0, 0, 0, parseInt(sTime[0]), parseInt(sTime[1]))
+    };
+    const sTime = startTime.split(":");
+    const eTime = endTime.split(":");
+    const duration =
+      new Date(0, 0, 0, parseInt(eTime[0]), parseInt(eTime[1])) -
+      new Date(0, 0, 0, parseInt(sTime[0]), parseInt(sTime[1]));
     const poi_data = {
       sequence: 0,
       type: 0,
@@ -97,29 +101,28 @@ const NewTrip = () => {
         website: website,
         phone: phoneNumber,
         opening_hours: openingHours,
-        gm_image: googlePhoto
+        gm_image: googlePhoto,
       },
       transfer: null,
       start_time: startTime,
-      duration: duration
-
-    }
+      duration: duration,
+    };
     axiosDayVenture
-        .post(`/trips/new/`, trip_data, config)
-        .then((res) => {
-          trip_id = res.data.id
-          axiosDayVenture
-              .post(`/trips/${trip_id}/itinerary/new/`, poi_data, config)
-              .then(() => {
-                navigate(`/trip/${trip_id}/`);
-              })
-              .catch((error) => {
-                console.log(error);
-              })
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+      .post(`/trips/new/`, trip_data, config)
+      .then((res) => {
+        trip_id = res.data.id;
+        axiosDayVenture
+          .post(`/trips/${trip_id}/itinerary/new/`, poi_data, config)
+          .then(() => {
+            navigate(`/trip/${trip_id}/`);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleCheckboxChange = (category) => {
@@ -142,25 +145,51 @@ const NewTrip = () => {
     setAutoComplete(autoC);
   };
 
+  const getUserPosition = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserPosition({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting user position:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    getUserPosition();
+  }, []);
+
   const onPlaceChanged = () => {
     setActivityName(autocomplete.getPlace().name);
     setMeetingPoint(autocomplete.getPlace().formatted_address);
     setGoogleCategories(autocomplete.getPlace().types[0]);
     setPlaceId(autocomplete.getPlace().place_id);
-    setGoogleRating(autocomplete.getPlace().rating)
-    setGooglePhoto(autocomplete.getPlace().photos[0].getUrl())
-    setWebsite(autocomplete.getPlace().website)
-    setOpeningHours(autocomplete.getPlace().opening_hours?.weekday_text)
+    setGoogleRating(autocomplete.getPlace().rating);
+    setGooglePhoto(autocomplete.getPlace().photos[0].getUrl());
+    setWebsite(autocomplete.getPlace().website);
+    setOpeningHours(autocomplete.getPlace().opening_hours?.weekday_text);
     setPhoneNumber(autocomplete.getPlace().international_phone_number);
     const lat = autocomplete.getPlace().geometry.location.lat();
 
     const lng = autocomplete.getPlace().geometry.location.lng();
     setCoordinates({ lat, lng });
 
-    const localityArray = autocomplete.getPlace().address_components
-    const locality = localityArray.filter(item => item.types.includes('locality'))[0].short_name
-        + ', ' + localityArray.filter(item => item.types.includes('country'))[0].long_name
-    setTripLocation(locality)
+    const localityArray = autocomplete.getPlace().address_components;
+    const locality =
+      localityArray.filter((item) => item.types.includes("locality"))[0]
+        .short_name +
+      ", " +
+      localityArray.filter((item) => item.types.includes("country"))[0]
+        .long_name;
+    setTripLocation(locality);
   };
 
   return (
@@ -171,9 +200,9 @@ const NewTrip = () => {
             bootstrapURLKeys={{
               key: import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY,
             }}
-            defaultCenter={coords}
-            center={coords}
-            defaultZoom={7}
+            defaultCenter={userPosition || coords}
+            center={userPosition || coords}
+            defaultZoom={16}
             margin={[50, 50, 50, 50]}
             options={""}
             onChange={""}
@@ -258,22 +287,22 @@ const NewTrip = () => {
               </div>
               <div className="flex flex-row justify-center">
                 <div className="grid grid-rows-4 grid-flow-col gap-4">
-                  {categories.map(cat =>
-                          <div key={cat.id} className="flex flex-row justify-start">
-                            <input
-                                className="mx-1"
-                                type="checkbox"
-                                id={cat.name}
-                                checked={selectedCategories.includes(cat.id)}
-                                onChange={() => handleCheckboxChange(cat.id)}
-                                disabled={
-                              selectedCategories.length >= 3 &&
-                                    !selectedCategories.includes(cat.id)
-                            }
-                            />
-                            <label htmlFor={cat.name}>{cat.name}</label>
-                          </div>
-                  )}
+                  {categories.map((cat) => (
+                    <div key={cat.id} className="flex flex-row justify-start">
+                      <input
+                        className="mx-1"
+                        type="checkbox"
+                        id={cat.name}
+                        checked={selectedCategories.includes(cat.id)}
+                        onChange={() => handleCheckboxChange(cat.id)}
+                        disabled={
+                          selectedCategories.length >= 3 &&
+                          !selectedCategories.includes(cat.id)
+                        }
+                      />
+                      <label htmlFor={cat.name}>{cat.name}</label>
+                    </div>
+                  ))}
                 </div>
               </div>
               {error && <p className="text-red-600">{error}</p>}

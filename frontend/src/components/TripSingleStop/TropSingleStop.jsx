@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import nycMini from "../../assets/images/nycMini.png";
 import Label from "../../components/Label/Label";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
@@ -37,6 +37,43 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
       updatedTripStop[index - 1] = temp;
       setTripStop(updatedTripStop);
     }
+  };
+
+  const PlacePhoto = ({ placeId }) => {
+    const [photoUrl, setPhotoUrl] = useState("");
+  
+    useEffect(() => {
+      if (!placeId) return;
+  
+      const service = new window.google.maps.places.PlacesService(
+        document.createElement("div")
+      );
+  
+      service.getDetails(
+        {
+          placeId: placeId,
+          fields: ["photos"],
+        },
+        (place, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            if (place.photos && place.photos.length > 0) {
+              const photo = place.photos[0];
+              const photoUrl = photo.getUrl({
+                maxWidth: 400, // Set the maximum width for the photo
+              });
+              setPhotoUrl(photoUrl);
+            }
+          }
+        }
+      );
+    }, [placeId]);
+
+    return (
+      <div>
+        {photoUrl && <img src={photoUrl} alt="Place" />}
+        {!photoUrl && <div>No photo available</div>}
+      </div>
+    );
   };
 
   const handleMoveDown = (index) => {

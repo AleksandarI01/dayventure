@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   tripName: "",
   activityName: "",
-  placeId: "",
+  place_id: "",
   startTime: "",
   endTime: "",
   meetingPoint: "",
@@ -28,7 +28,7 @@ const newTripSlice = createSlice({
   initialState,
   reducers: {
     add_trip: (state, action) => {
-      state.placeId = action.payload.placeId;
+      state.place_id = action.payload.place_id;
       state.activityName = action.payload.activityName;
       state.tripName = action.payload.tripName;
       state.startTime = action.payload.startTime;

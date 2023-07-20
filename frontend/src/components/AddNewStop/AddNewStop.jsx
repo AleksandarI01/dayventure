@@ -6,7 +6,6 @@ import InputField from "../../components/InputField/InputField";
 const AddNewStop = ({ trip, tripstop, setTripStop }) => {
   const [autocomplete, setAutoComplete] = useState(null);
   const [activityName, setActivityName] = useState("");
-
   const [activityDurationTime, setActivityDurationTime] = useState("");
   const [placeId, setPlaceId] = useState("");
   const [tripName, setTripName] = useState("");
@@ -42,9 +41,10 @@ const AddNewStop = ({ trip, tripstop, setTripStop }) => {
       {
         startTime: endTime,
         endTime: startTime,
+        poiGMPlaceId: placeId,
         poiGMName: activityName,
         poiGMCategories: googleCategories,
-        poiGMImage: selectedItems.photos,
+        poiGMImage: photos,
         poiGMNLat: coordinates.lat,
         poiGMNLng: coordinates.lng,
         poiGMMeetingPoint: meetingPoint,
