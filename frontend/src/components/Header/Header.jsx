@@ -38,7 +38,6 @@ const Header = () => {
         .then((res) => {
           setFriendRequests(res.data);
           setNotificationNumber((prevState) => prevState + res.data.length);
-          console.log(res.data);
         })
         .catch((error) => {
           console.log(error);
