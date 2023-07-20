@@ -16,6 +16,7 @@ const Trip = () => {
     {
       startTime: selectedItems.startTime,
       endTime: selectedItems.endTime,
+      poiGMPlaceId: selectedItems.place_id,
       poiGMName: selectedItems.activityName,
       poiGMNLat: selectedItems.lat,
       poiGMNLng: selectedItems.lng,
@@ -54,7 +55,7 @@ const Trip = () => {
           <h1 className="p-4">{selectedItems.tripName}</h1>
           <h2 className="p-2">Created by: UseName</h2>
           <h4 className="p-2">
-            Happening on: {selectedItems.dayOfTrip} at {selectedItems.startTime}{" "}
+            Starting on: {selectedItems.dayOfTrip} at {selectedItems.startTime}{" "}
           </h4>
         </div>
         {/* <div className="flex flex-col w-10/12 align-center">
