@@ -12,31 +12,25 @@ import { AiFillStar } from "react-icons/ai";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { AiFillClockCircle } from "react-icons/ai";
 import ShowDirections from "../ShowDirections/ShowDirections";
+import {axiosDayVenture} from "../../axios/index.js";
+import {useSelector} from "react-redux";
 
-const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
-  console.log(trip, "TRIP");
+const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
+  const accessToken = useSelector((state) => state.user.accessToken);
+
+  console.log(itinerary, "TRIP");
   const [directions, setDirections] = useState(false);
   const [arrowClicked, setArrowClicked] = useState(false);
   const [moveUp, setMoveUp] = useState([]);
   const [remove, setRemove] = useState([]);
   const [moveDown, setMoveDown] = useState([]);
-  const isLastStop = tripstop.indexOf(trip) === tripstop.length - 1;
+  const isLastStop = itineraries.indexOf(itinerary) === itineraries.length - 1;
 
   const handleDirectionsClick = (event) => {
     event.preventDefault();
     console.log("click");
     setDirections(!directions);
     setArrowClicked(!arrowClicked);
-  };
-
-  const handleMoveUp = (index) => {
-    if (index > 0) {
-      const updatedTripStop = [...tripstop];
-      const temp = updatedTripStop[index];
-      updatedTripStop[index] = updatedTripStop[index - 1];
-      updatedTripStop[index - 1] = temp;
-      setTripStop(updatedTripStop);
-    }
   };
 
   const PlacePhoto = ({ placeId }) => {
@@ -76,31 +70,92 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
     );
   };
 
+  const handleMoveUp = (index) => {
+    if (index > 0) {
+      const itinerary_id1 = itinerary.id
+      const itinerary_id2 = itineraries[index - 1].id
+      const sequenceNew1 = itineraries[index - 1].sequence
+      const sequenceNew2 = itinerary.sequence
+      const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+      axiosDayVenture
+        .patch(`/trips/itinerary/${itinerary_id1}/`, {'sequence': sequenceNew1}, config)
+        .then(() => {
+          axiosDayVenture
+            .patch(`/trips/itinerary/${itinerary_id2}/`, {'sequence': sequenceNew2}, config)
+            .then(() => {
+              itineraries[index].sequence = sequenceNew1
+              itineraries[index - 1].sequence = sequenceNew2
+              const updatedItineraries = [...itineraries];
+              const temp = updatedItineraries[index];
+              updatedItineraries[index] = updatedItineraries[index - 1];
+              updatedItineraries[index - 1] = temp;
+              setItineraries(updatedItineraries);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   const handleMoveDown = (index) => {
-    if (index < tripstop.length - 1) {
-      const updatedTripStop = [...tripstop];
-      const temp = updatedTripStop[index];
-      updatedTripStop[index] = updatedTripStop[index + 1];
-      updatedTripStop[index + 1] = temp;
-      setTripStop(updatedTripStop);
+    if (index < itineraries.length - 1) {
+      const itinerary_id1 = itinerary.id
+      const itinerary_id2 = itineraries[index + 1].id
+      const sequenceNew1 = itineraries[index + 1].sequence
+      const sequenceNew2 = itinerary.sequence
+      const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+      axiosDayVenture
+        .patch(`/trips/itinerary/${itinerary_id1}/`, {'sequence': sequenceNew1}, config)
+        .then(() => {
+          axiosDayVenture
+            .patch(`/trips/itinerary/${itinerary_id2}/`, {'sequence': sequenceNew2}, config)
+            .then(() => {
+              itineraries[index].sequence = sequenceNew1
+              itineraries[index + 1].sequence = sequenceNew2
+              const updatedItineraries = [...itineraries];
+              const temp = updatedItineraries[index];
+              updatedItineraries[index] = updatedItineraries[index + 1];
+              updatedItineraries[index + 1] = temp;
+              setItineraries(updatedItineraries);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
   const handleRemove = (index) => {
-    const updatedTripStop = [...tripstop];
-    updatedTripStop.splice(index, 1);
-    setTripStop(updatedTripStop);
+    const itinerary_id = itinerary.id
+    const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+    axiosDayVenture
+      .delete(`/trips/itinerary/${itinerary_id}/`, config)
+      .then(() => {
+        const updatedItineraries = [...itineraries];
+        updatedItineraries.splice(index, 1);
+        setItineraries(updatedItineraries);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const firstStop = {
-    startTime: "08:30AM",
-    endTime: "12:30PM",
-    poiGMName: "Times Square",
-    poiGMDescriotion:
-      "Times Square is a major commercial intersection, tourist destination, entertainment hub, and neighborhood in Midtown Manhattan, New York City, United States. It is formed by the junction of Broad, ... REad More",
-    poiGMCategories: ["Shopping", "Museum"],
-    poiGMPhoneNumber: trip.phoneNumber,
-  };
+  // const firstStop = {
+  //   startTime: "08:30AM",
+  //   endTime: "12:30PM",
+  //   poiGMName: "Times Square",
+  //   poiGMDescriotion:
+  //     "Times Square is a major commercial intersection, tourist destination, entertainment hub, and neighborhood in Midtown Manhattan, New York City, United States. It is formed by the junction of Broad, ... REad More",
+  //   poiGMCategories: ["Shopping", "Museum"],
+  //   poiGMPhoneNumber: itinerary.poi.phone,
+  // };
 
   const formatTextOfCategory = (text) => {
     if (text.includes("_or_")) {
@@ -119,29 +174,29 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
       <div className="flex flex-row ">
         <div className="flex flex-col w-2/12 ">
           <div className="flex flex-row w-full justify-center h-1/6">
-            <h5>{trip.startTime}</h5>
+            <h5>{itinerary.start_time}</h5>
           </div>
           <div className="flex flex-row h-4/6">
             <div className="flex flex-col w-1/2 border-r-2 border-venture-black"></div>
             <div className="flex flex-col w-1/2 "></div>
           </div>
           <div className="flex flex-row w-full justify-center h-1/6">
-            <h5>{trip.endTime}</h5>
+            <h5>{itinerary.end_time}</h5>
           </div>
         </div>
         <div className="flex flex-col w-3/12  p-2">
-          <img className="" src={nycMini} />
+          <img className="" src={itinerary.image || itinerary.gm_image || nycMini} />
         </div>
         <div className="flex flex-col w-6/12 ">
           <div className="flex flex-row items-baseline ">
             <div className="flex flex-col w-9/12 p-2 ">
               <div className="flex flex-row w-full ">
-                <h5 className="font-black">{trip.poiGMName}</h5>
+                <h5 className="font-black">{itinerary.poi.name}</h5>
               </div>
               <div className="flex flex-row w-9/12 "></div>
             </div>
             <div className="flex flex-row justify-end w-6/12 p-1 gap-1 ">
-              <Label>{formatTextOfCategory(trip.poiGMCategories)}</Label>
+              <Label>{formatTextOfCategory(itinerary.poi.gm_category)}</Label>
             </div>
           </div>
 
@@ -151,54 +206,54 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
             </div>
             <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
               <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
-                {trip.poiGMMeetingPoint}
+                {itinerary.poi.address}
               </p>
             </div>
           </div>
-          {trip.poiGMPhoneNumber && (
+          {itinerary.poi.phone && (
             <div className="flex flex-row p-1 border-2 border-solid border-red-600">
               <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
                 <BsFillTelephoneFill />
               </div>
               <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
                 <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
-                  {trip.poiGMPhoneNumber}
+                  {itinerary.poi.phone}
                 </p>
               </div>
             </div>
           )}
-          {trip.poiGMWebsite && (
+          {itinerary.poi.website && (
             <div className="flex flex-row p-1 border-2 border-solid border-red-600">
               <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
                 <CgWebsite />
               </div>
               <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
                 <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
-                  {trip.poiGMWebsite}
+                  {itinerary.poi.website}
                 </p>
               </div>
             </div>
           )}
-          {trip.poiGMRating && (
+          {itinerary.poi.gm_rating && (
             <div className="flex flex-row p-1 border-2 border-solid border-red-600">
               <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
                 <AiFillStar />
               </div>
               <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
                 <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
-                  {trip.poiGMRating}
+                  {itinerary.poi.gm_rating}
                 </p>
               </div>
             </div>
           )}
-          {trip.poiGMOpeningHours && (
+          {itinerary.poi.opening_hours && (
             <div className="flex flex-row p-1 border-2 border-solid border-red-600">
               <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
                 <AiFillClockCircle />
               </div>
               <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
                 <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
-                  {trip.poiGMOpeningHours}
+                  {itinerary.poi.opening_hours}
                 </p>
               </div>
             </div>
@@ -206,17 +261,17 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
         </div>
         <div className="flex flex-col w-1/12 justify-center ">
           <div className="flex flex-row w-full justify-center">
-            <button onClick={() => handleMoveUp(tripstop.indexOf(trip))}>
+            <button onClick={() => handleMoveUp(itineraries.indexOf(itinerary))}>
               <MdOutlineKeyboardArrowUp className="text-7xl text-venture-green" />
             </button>
           </div>
           <div className="flex flex-row w-full justify-center">
-            <button onClick={() => handleRemove(tripstop.indexOf(trip))}>
+            <button onClick={() => handleRemove(itineraries.indexOf(itinerary))}>
               <MdRemoveCircle className="text-4xl text-venture-red" />
             </button>
           </div>
           <div className="flex flex-row w-full justify-center">
-            <button onClick={() => handleMoveDown(tripstop.indexOf(trip))}>
+            <button onClick={() => handleMoveDown(itineraries.indexOf(itinerary))}>
               <MdOutlineKeyboardArrowDown className="text-7xl text-venture-green" />
             </button>
           </div>
@@ -243,13 +298,13 @@ const TripSingleStop = ({ trip, tripstop, setTripStop }) => {
               <div className="flex flex-col w-full mx-10">
                 <ShowDirections
                   setDirections={setDirections}
-                  latitute={trip.poiGMNLat}
+                  latitute={itinerary.poi.lat}
                   destinationLatitude={
-                    tripstop[tripstop.indexOf(trip) + 1].poiGMNLat
+                    itineraries[itineraries.indexOf(itinerary) + 1].poi.lat
                   }
-                  longtitude={trip.poiGMNLng}
+                  longtitude={itinerary.poi.lng}
                   destinationLongitude={
-                    tripstop[tripstop.indexOf(trip) + 1].poiGMNLng
+                    itineraries[itineraries.indexOf(itinerary) + 1].poi.lng
                   }
                 />
               </div>

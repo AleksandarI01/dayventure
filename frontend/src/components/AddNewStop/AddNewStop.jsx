@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { Autocomplete } from "@react-google-maps/api";
 import InputField from "../../components/InputField/InputField";
+import {axiosDayVenture} from "../../axios/index.js";
+import {useSelector} from "react-redux";
 
-const AddNewStop = ({ trip, tripstop, setTripStop }) => {
+const AddNewStop = ({ trip, itineraries, setItineraries }) => {
+  const accessToken = useSelector((state) => state.user.accessToken);
+
   const [autocomplete, setAutoComplete] = useState(null);
   const [activityName, setActivityName] = useState("");
   const [activityDurationTime, setActivityDurationTime] = useState("");
@@ -27,8 +31,8 @@ const AddNewStop = ({ trip, tripstop, setTripStop }) => {
   const [googleCategories, setGoogleCategories] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [website, setWebsite] = useState("");
-  const [rating, setRating] = useState(0);
-  const [photos, setPhotos] = useState("");
+  const [googleRating, setGoogleRating] = useState(0);
+  const [googlePhoto, setGooglePhoto] = useState("");
   const [openingHours, setOpeningHours] = useState([]);
   const coords = { lat: 46.807405, lng: 8.223595 };
   const [error, setError] = useState("");
@@ -36,25 +40,49 @@ const AddNewStop = ({ trip, tripstop, setTripStop }) => {
   const handleConfirmNewStop = (e) => {
     console.log(">>>>>>>>>>>>>>>>>>>hello");
     e.preventDefault();
-    setTripStop((current) => [
-      ...current,
-      {
-        startTime: endTime,
-        endTime: startTime,
-        poiGMPlaceId: placeId,
-        poiGMName: activityName,
-        poiGMCategories: googleCategories,
-        poiGMImage: photos,
-        poiGMNLat: coordinates.lat,
-        poiGMNLng: coordinates.lng,
-        poiGMMeetingPoint: meetingPoint,
-        poiGMPhoneNumber: phoneNumber,
-        poiGMImage: photos,
-        poiGMWebsite: website,
-        poiGMRating: rating,
-        poiGMOpeningHours: openingHours,
+
+    // create new itinerary in BE
+    const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+    let trip_id = trip.id;
+    const nextSequence = Math.max(itineraries.map(itin => itin.sequence)) + 1
+    const sTime = startTime.split(":");
+    const eTime = endTime.split(":");
+    const duration =
+      new Date(0, 0, 0, parseInt(eTime[0]), parseInt(eTime[1])) -
+      new Date(0, 0, 0, parseInt(sTime[0]), parseInt(sTime[1]));
+    const poi_data = {
+      sequence: nextSequence,
+      type: 0,
+      poi: {
+        name: activityName,
+        gm_place_id: placeId,
+        address: meetingPoint,
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+        gm_category: googleCategories,
+        gm_rating: googleRating,
+        website: website,
+        phone: phoneNumber,
+        opening_hours: openingHours,
+        gm_image: googlePhoto,
       },
-    ]);
+      transfer: null,
+      start_time: startTime,
+      duration: duration,
+    };
+
+    axiosDayVenture
+        .post(`/trips/${trip_id}/itinerary/new/`, poi_data, config)
+        .then((res) => {
+          poi_data['id'] = res.data.id
+          setItineraries((current) => [
+            ...current,
+            poi_data,
+          ]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   };
 
   const handleOnChangeMeetingPoint = (e) => {
@@ -95,9 +123,9 @@ const AddNewStop = ({ trip, tripstop, setTripStop }) => {
       setPlaceId(placeId);
       setPhoneNumber(phoneNumber);
       setWebsite(website);
-      setRating(rating);
+      setGoogleRating(rating);
       setOpeningHours(openingHours);
-      setPhotos(photos);
+      setGooglePhoto(photos);
     } else {
       // Handle the case when autocomplete is null (optional)
       console.error("Autocomplete is not ready yet.");

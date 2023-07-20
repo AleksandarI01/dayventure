@@ -18,5 +18,6 @@ class ItinerarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Itinerary
-        fields = ['sequence', 'type', 'poi', 'transfer', 'start_time', 'duration', 'end_time', 'cost', 'cost_currency']
+        fields = ['id', 'sequence', 'type', 'poi', 'transfer', 'start_time', 'duration', 'end_time',
+                  'cost', 'cost_currency']
         read_only_fields = ['end_time', ]
