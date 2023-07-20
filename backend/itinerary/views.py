@@ -24,22 +24,10 @@ class CreateItineraryView(CreateAPIView):
         it_poi = None
         it_transfer = None
         if it_type == 0:
-            poi = request.data['poi']
-            data = {
-                'name': poi['name'],
-                'address': poi['address'],
-                'lat': poi['lat'],
-                'lng': poi['lng'],
-                'gm_category': poi['gm_category'],
-                'gm_rating': poi['gm_rating'],
-                'website': poi['website'],
-                'phone': poi['phone'],
-                'opening_hours': poi['opening_hours'],
-                'gm_image': poi['gm_image'],
-            }
+            data = request.data['poi']
             poi_instance = POI.objects.all()
-            poi_instance.update_or_create(gm_place_id=poi['gm_place_id'], defaults=data)
-            it_poi = POI.objects.get(gm_place_id=poi['gm_place_id'])
+            poi_instance.update_or_create(gm_place_id=data['gm_place_id'], defaults=data)
+            it_poi = POI.objects.get(gm_place_id=data['gm_place_id'])
         elif it_type == 1:
             # todo: Transfer data
             transfer = request.data['transfer']
