@@ -21,6 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
     friends_trips_count = serializers.SerializerMethodField()
     sent_friendrequest_state = serializers.SerializerMethodField()
     received_friendrequest_state = serializers.SerializerMethodField()
+    friendrequest_id = serializers.SerializerMethodField()
 
     def get_location(self, user):
         if hasattr(user, 'user_profile'):
@@ -92,12 +93,23 @@ class UserSerializer(serializers.ModelSerializer):
             return None
         return friendrequest.state
 
+    def get_friendrequest_id(self, user):
+        if self.context['request'].user.id is None:
+            return None
+        friendrequest = user.friendrequests_sent.filter(receiver=self.context['request'].user).first()
+        if not friendrequest:
+            friendrequest = user.friendrequests_received.filter(sender=self.context['request'].user).first()
+            if not friendrequest:
+                return None
+            return friendrequest.id
+        return friendrequest.id
+
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'date_joined',
                   'location', 'about', 'score', 'level', 'avatar', 'banner', 'liked_categories',
                   'trips_count', 'friends_count', 'friends_trips_count',
-                  'sent_friendrequest_state', 'received_friendrequest_state']
+                  'sent_friendrequest_state', 'received_friendrequest_state', 'friendrequest_id']
         read_only_fields = ['email', 'date_joined', 'id', 'score', 'level',
                             'trips_count', 'friends_count', 'friends_trips_count',
-                            'sent_friendrequest_state', 'received_friendrequest_state']
+                            'sent_friendrequest_state', 'received_friendrequest_state', 'friendrequest_id']
