@@ -3,7 +3,7 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { Autocomplete } from "@react-google-maps/api";
 import InputField from "../../components/InputField/InputField";
 
-const AddNewStop = ({ trip, tripstop, setTripStop }) => {
+const AddNewStop = ({ trip, itineraries, setItineraries }) => {
   const [autocomplete, setAutoComplete] = useState(null);
   const [activityName, setActivityName] = useState("");
   const [activityDurationTime, setActivityDurationTime] = useState("");
@@ -36,7 +36,7 @@ const AddNewStop = ({ trip, tripstop, setTripStop }) => {
   const handleConfirmNewStop = (e) => {
     console.log(">>>>>>>>>>>>>>>>>>>hello");
     e.preventDefault();
-    setTripStop((current) => [
+    setItineraries((current) => [
       ...current,
       {
         startTime: endTime,

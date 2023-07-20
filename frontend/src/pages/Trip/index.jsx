@@ -1,36 +1,41 @@
-import Button from "../../components/Button/Button";
-import { useState } from "react";
-import nycMini from "../../assets/images/nycMini.png";
-import AddNewStop from "../../components/AddNewStop/AddNewStop";
-import TripSingleStop from "../../components/TripSingleStop/TropSingleStop";
+import {useEffect, useState} from "react";
+import { useSelector } from "react-redux";
+import {useParams} from "react-router-dom";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
-import { useSelector } from "react-redux";
+import Button from "../../components/Button/Button";
+import AddNewStop from "../../components/AddNewStop/AddNewStop";
+import TripSingleStop from "../../components/TripSingleStop/TripSingleStop.jsx";
+import {axiosDayVenture} from "../../axios/index.js";
 
 const Trip = () => {
-  const selectedItems = useSelector((state) => state.newTrip);
-  console.log(selectedItems);
+  const { tripId } = useParams();
+  const accessToken = useSelector((state) => state.user.accessToken);
+
+  const [trip, setTrip] = useState(null);
   const [addNewStop, setAddNewStop] = useState(false);
   // const coordinates = { lat: 76.09, lng: -86.09 };
-  const [tripstop, setTripStop] = useState([
-    {
-      startTime: selectedItems.startTime,
-      endTime: selectedItems.endTime,
-      poiGMPlaceId: selectedItems.place_id,
-      poiGMName: selectedItems.activityName,
-      poiGMNLat: selectedItems.lat,
-      poiGMNLng: selectedItems.lng,
-      poiGMMeetingPoint: selectedItems.meetingPoint,
-      poiGMDescription:
-        "Times Square is a major commercial intersection, tourist destination, entertainment hub, and neighborhood in Midtown Manhattan, New York City, United States. It is formed by the junction of Broad, ... REad More",
-      poiGMCategories: selectedItems.categories,
-      poiGMImage: selectedItems.photos,
-      poiGMPhoneNumber: selectedItems.phoneNumber,
-      poiGMWebsite: selectedItems.website,
-      poiGMRating: selectedItems.rating,
-      poiGMOpeningHours: selectedItems.openingHours,
-    },
-  ]);
+  const [itineraries, setItineraries] = useState([]);
+
+      useEffect(() => {
+        if (tripId) {
+            let config = null
+            if (accessToken) {
+                config = {headers: {Authorization: `Bearer ${accessToken}`}};
+            }
+            let url = `/trips/${tripId}`
+            axiosDayVenture
+                .get(url, config)
+                .then((res) => {
+                  setTrip(res.data)
+                  setItineraries(res.data.itineraries.sort((itA, itB) => itA.sequence - itB.sequence))
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+      }, [accessToken, tripId])
+
 
   const handleAddNewStopClick = (event) => {
     event.preventDefault();
@@ -52,10 +57,10 @@ const Trip = () => {
           ></GoogleMapReact> */}
         </div>
         <div className="flex flex-col w-10/12 align-center p-4">
-          <h1 className="p-4">{selectedItems.tripName}</h1>
-          <h2 className="p-2">Created by: UseName</h2>
+          <h1 className="p-4">{trip?.name}</h1>
+          <h2 className="p-2">Created by: {trip?.owner.username}</h2>
           <h4 className="p-2">
-            Starting on: {selectedItems.dayOfTrip} at {selectedItems.startTime}{" "}
+            Starting on: {trip?.travel_date} at {itineraries[0]?.start_time}{" "}
           </h4>
         </div>
         {/* <div className="flex flex-col w-10/12 align-center">
@@ -72,13 +77,13 @@ const Trip = () => {
             <div className="flex flex-col w-1/2 align-center border-r-2 border-venture-darkgray  h-full"></div>
           </div>
           <div className="flex flex-col w-10/12 align-center p-4">
-            {tripstop.map((trip, index) => {
+            {itineraries.map((itinerary, index) => {
               return (
                 <TripSingleStop
                   key={index}
-                  trip={trip}
-                  tripstop={tripstop}
-                  setTripStop={setTripStop}
+                  itinerary={itinerary}
+                  itineraries={itineraries}
+                  setItineraries={setItineraries}
                   index={index}
                 />
               );
@@ -97,9 +102,9 @@ const Trip = () => {
             {addNewStop ? (
               <div className="flex flex-col w-9/12 ">
                 <AddNewStop
-                  trip={selectedItems}
-                  tripstop={tripstop}
-                  setTripStop={setTripStop}
+                  trip={trip}
+                  itineraries={itineraries}
+                  setItineraries={setItineraries}
                 />
               </div>
             ) : (
