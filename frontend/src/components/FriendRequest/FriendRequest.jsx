@@ -39,8 +39,6 @@ const FriendRequest = ({ friendRequest, setLoadNotifications }) => {
     return ""; // Default status message or handle other cases if needed
   };
 
-  // todo: prettify together with Notification
-
   return (
     <>
       <div className="flex flex-row w-full pt-2">

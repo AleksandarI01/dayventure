@@ -12,8 +12,12 @@ import { AiFillStar } from "react-icons/ai";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { AiFillClockCircle } from "react-icons/ai";
 import ShowDirections from "../ShowDirections/ShowDirections";
+import {axiosDayVenture} from "../../axios/index.js";
+import {useSelector} from "react-redux";
 
 const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
+  const accessToken = useSelector((state) => state.user.accessToken);
+
   console.log(itinerary, "TRIP");
   const [directions, setDirections] = useState(false);
   const [arrowClicked, setArrowClicked] = useState(false);
@@ -66,30 +70,81 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
     );
   };
 
-  const handleMoveUp = (index) => {  // todo: handle this in backend!
+  const handleMoveUp = (index) => {
     if (index > 0) {
-      const updatedItineraries = [...itineraries];
-      const temp = updatedItineraries[index];
-      updatedItineraries[index] = updatedItineraries[index - 1];
-      updatedItineraries[index - 1] = temp;
-      setItineraries(updatedItineraries);
+      const itinerary_id1 = itinerary.id
+      const itinerary_id2 = itineraries[index - 1].id
+      const sequenceNew1 = itineraries[index - 1].sequence
+      const sequenceNew2 = itinerary.sequence
+      const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+      axiosDayVenture
+        .patch(`/trips/itinerary/${itinerary_id1}/`, {'sequence': sequenceNew1}, config)
+        .then(() => {
+          axiosDayVenture
+            .patch(`/trips/itinerary/${itinerary_id2}/`, {'sequence': sequenceNew2}, config)
+            .then(() => {
+              itineraries[index].sequence = sequenceNew1
+              itineraries[index - 1].sequence = sequenceNew2
+              const updatedItineraries = [...itineraries];
+              const temp = updatedItineraries[index];
+              updatedItineraries[index] = updatedItineraries[index - 1];
+              updatedItineraries[index - 1] = temp;
+              setItineraries(updatedItineraries);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
-  const handleMoveDown = (index) => {  // todo: handle this in backend!
+  const handleMoveDown = (index) => {
     if (index < itineraries.length - 1) {
-      const updatedItineraries = [...itineraries];
-      const temp = updatedItineraries[index];
-      updatedItineraries[index] = updatedItineraries[index + 1];
-      updatedItineraries[index + 1] = temp;
-      setItineraries(updatedItineraries);
+      const itinerary_id1 = itinerary.id
+      const itinerary_id2 = itineraries[index + 1].id
+      const sequenceNew1 = itineraries[index + 1].sequence
+      const sequenceNew2 = itinerary.sequence
+      const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+      axiosDayVenture
+        .patch(`/trips/itinerary/${itinerary_id1}/`, {'sequence': sequenceNew1}, config)
+        .then(() => {
+          axiosDayVenture
+            .patch(`/trips/itinerary/${itinerary_id2}/`, {'sequence': sequenceNew2}, config)
+            .then(() => {
+              itineraries[index].sequence = sequenceNew1
+              itineraries[index + 1].sequence = sequenceNew2
+              const updatedItineraries = [...itineraries];
+              const temp = updatedItineraries[index];
+              updatedItineraries[index] = updatedItineraries[index + 1];
+              updatedItineraries[index + 1] = temp;
+              setItineraries(updatedItineraries);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
-  const handleRemove = (index) => {  // todo: handle this in backend!
-    const updatedItineraries = [...itineraries];
-    updatedItineraries.splice(index, 1);
-    setItineraries(updatedItineraries);
+  const handleRemove = (index) => {
+    const itinerary_id = itinerary.id
+    const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+    axiosDayVenture
+      .delete(`/trips/itinerary/${itinerary_id}/`, config)
+      .then(() => {
+        const updatedItineraries = [...itineraries];
+        updatedItineraries.splice(index, 1);
+        setItineraries(updatedItineraries);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // const firstStop = {
