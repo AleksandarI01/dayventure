@@ -34,13 +34,13 @@ class UserSerializer(serializers.ModelSerializer):
         return None
 
     def get_avatar(self, user):
-        if hasattr(user, 'user_profile') and user.user_profile.avatar.name != '':
+        if hasattr(user, 'user_profile') and user.user_profile.avatar.name:
             request = self.context.get("request")
             return request.build_absolute_uri(user.user_profile.avatar.url)
         return None
 
     def get_banner(self, user):
-        if hasattr(user, 'user_profile') and user.user_profile.banner.name != '':
+        if hasattr(user, 'user_profile') and user.user_profile.banner.name:
             request = self.context.get("request")
             return request.build_absolute_uri(user.user_profile.banner.url)
         return None
