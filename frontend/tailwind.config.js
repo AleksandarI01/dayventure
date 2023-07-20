@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      zIndex: {
+        '9998': 9998,
+      },
       colors: {
         "venture-green": "#00A987",
         "venture-green-hovered": "#06C9A2",
@@ -11,6 +14,7 @@ export default {
         "venture-white": "#FFFFFF",
         "venture-darkgray": "#979797",
         "venture-red": "#FF0000",
+        "venture-red-hovered": "#FF3700",
       },
       backgroundImage: {
         KayakHomeHeader: "url(/src/assets/images/KayakHomeHeader.png)",
@@ -24,3 +28,4 @@ export default {
   },
   plugins: [],
 };
+
