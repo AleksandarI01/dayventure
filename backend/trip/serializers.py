@@ -25,6 +25,8 @@ class TripSerializer(serializers.ModelSerializer):
         return trip.liked_by.count()
 
     def get_has_reviewed(self, trip):
+        if self.context['request'].user.id is None:
+            return None
         if not trip.reviews.filter(user=self.context['request'].user):
             return False
         return True
@@ -32,6 +34,7 @@ class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
         fields = '__all__'
+        read_only_fields = ['liked_count', 'has_reviewed']
 
 
 class CreateTripSerializer(serializers.ModelSerializer):

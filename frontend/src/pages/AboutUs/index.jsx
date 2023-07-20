@@ -41,7 +41,7 @@ const AboutUs = () => {
 
       <div className=" flex flex-col md:flex-row items-center w-full justify-center p-8 gap-20">
         <TeamCard />
-          {aboutUsTripId ? <Trip trip={aboutUsTrip}/> : null}
+          {aboutUsTrip ? <Trip trip={aboutUsTrip}/> : null}
         <ContactUsCard />
       </div>
     </div>
