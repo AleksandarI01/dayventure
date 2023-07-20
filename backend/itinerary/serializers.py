@@ -8,8 +8,8 @@ from transfer.serializers import TransferSerializer
 
 
 class ItinerarySerializer(serializers.ModelSerializer):
-    poi = POISerializer()
-    transfer = TransferSerializer()
+    poi = POISerializer(read_only=True)
+    transfer = TransferSerializer(read_only=True)
     end_time = serializers.SerializerMethodField()
 
     def get_end_time(self, itinerary):
