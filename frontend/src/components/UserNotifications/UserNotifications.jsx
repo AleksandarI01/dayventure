@@ -76,11 +76,11 @@ const UserNotifications = ({
         <button onClick={toggleExpandView}>
             {expandView ? (
               <>
-                View Less <MdOutlineKeyboardArrowDown className="inline align-text-bottom" style={{ fontSize: "1.5em" }} />
+                View Less <MdOutlineKeyboardArrowUp className="inline align-text-bottom" style={{ fontSize: "1.5em" }} />
               </>
             ) : (
               <>
-                View More <MdOutlineKeyboardArrowUp className="inline align-text-bottom" style={{ fontSize: "1.5em" }} />
+                View More <MdOutlineKeyboardArrowDown className="inline align-text-bottom" style={{ fontSize: "1.5em" }} />
               </>
             )}
           </button>
