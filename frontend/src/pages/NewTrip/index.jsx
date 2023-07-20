@@ -166,7 +166,7 @@ const NewTrip = () => {
   return (
     <>
       <div className="flex flex-col items-center w-full ">
-        <div className="w-full h-80">
+        <div className="w-full h-80 relative">
           <GoogleMapReact
             bootstrapURLKeys={{
               key: import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY,
