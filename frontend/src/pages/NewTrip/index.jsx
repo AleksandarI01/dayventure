@@ -25,7 +25,7 @@ const NewTrip = () => {
     minute: "2-digit",
   });
   const [startTime, setStartTime] = useState(currentTime);
-  const [endTime, setEndTime] = useState(currentTime);
+  const [duration, setDuration] = useState('01:00');
   const [coordinates, setCoordinates] = useState({
     lat: 46.807405,
     lng: 8.223595,
@@ -63,7 +63,7 @@ const NewTrip = () => {
       !tripName.trim() ||
       !dayOfTrip ||
       !startTime ||
-      !endTime ||
+      !duration ||
       !meetingPoint ||
       selectedCategories.length === 0
     ) {
@@ -85,14 +85,6 @@ const NewTrip = () => {
       // default_transfer: XXX,   // [1(default): Public transport, 2: Car, 3: by Foot] todo: do we want to send something here?
       // privacy: XXX,            //  ['P' (default), 'F', 'E']
     };
-    const sTime = startTime.split(":").map((n) => parseInt(n));
-    const eTime = endTime.split(":").map((n) => parseInt(n));
-    const duration = (eTime[0] - sTime[0]) * 60 + (eTime[1] - sTime[1]);
-
-    console.log("startTime:", startTime);
-    console.log("endTime:", endTime);
-    console.log("duration:", duration);
-
     const poi_data = {
       sequence: 0,
       type: 0, // must allways be 0 !!!
@@ -250,22 +242,13 @@ const NewTrip = () => {
                 />
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
-                <label>First activity start time</label>
-                <input
+                <label>At what time do you want to start the Trip?</label>
+                <InputField
                   type={"time"}
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
                   className="shadow appearance-none border rounded py-2 px-3 text-venture-black leading-tight focus:outline-none focus:shadow-outline"
                   placeholder={"start time"}
-                />
-              </div>
-              <div className="flex flex-row justify-center gap-5 items-baseline">
-                <label>First activity end time</label>
-                <input
-                  className="shadow appearance-none border rounded py-2 px-3 text-venture-black leading-tight focus:outline-none focus:shadow-outline2"
-                  type={"time"}
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
                 />
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
@@ -283,6 +266,15 @@ const NewTrip = () => {
                     onChange={handleOnChangeMeetingPoint}
                   />
                 </Autocomplete>
+              </div>
+              <div className="flex flex-row justify-center gap-5 items-baseline">
+                <label>How long do you want to stay there?</label>
+                <InputField
+                  type="time"
+                  value={duration}
+                  onChange={(e) => setDuration(e)}
+                  className="flex flex-row w-full "
+                />
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
                 <label>Trip location</label>

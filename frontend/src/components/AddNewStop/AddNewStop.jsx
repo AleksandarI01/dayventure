@@ -20,14 +20,12 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
     minute: "2-digit",
   });
 
-  const [startTime, setStartTime] = useState(currentTime);
-  const [endTime, setEndTime] = useState(currentTime);
+  const [duration, setDuration] = useState();
   const [coordinates, setCoordinates] = useState({
     lat: 46.807405,
     lng: 8.223595,
   });
   const [meetingPoint, setMeetingPoint] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [googleCategories, setGoogleCategories] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [website, setWebsite] = useState("");
@@ -44,13 +42,7 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
     // create new itinerary in BE
     const config = { headers: { Authorization: `Bearer ${accessToken}` } };
     let trip_id = trip.id;
-    const nextSequence =
-      Math.max(...itineraries.map((itin) => itin.sequence)) + 1;
-    const sTime = startTime.split(":");
-    const eTime = endTime.split(":");
-    const duration =
-      new Date(0, 0, 0, parseInt(eTime[0]), parseInt(eTime[1])) -
-      new Date(0, 0, 0, parseInt(sTime[0]), parseInt(sTime[1]));
+    const nextSequence = Math.max(...itineraries.map(itin => itin.sequence)) + 1
     const poi_data = {
       sequence: nextSequence,
       type: 0,
@@ -157,7 +149,11 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
         </div>
         <div className="flex flex-row items-baseline justify-center gap-5 ">
           <p>How long do you want to stay?</p>
-          <InputField type="time" className="flex flex-row w-full"  />
+          <InputField type="time"
+                      className="flex flex-row w-full "
+                      value={duration}
+                      onChange={setDuration}
+          />
         </div>
         <button
           className="bg-venture-green rounded-full px-5 py-2 whitespace-nowrap text-venture-white hover:bg-venture-green-hovered"
