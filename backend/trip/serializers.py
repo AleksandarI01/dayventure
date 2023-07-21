@@ -10,11 +10,15 @@ class TripSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     companions = UserSerializer(read_only=True, many=True)
     itineraries = ItinerarySerializer(many=True)
-    categories = CategorySerializer(read_only=True, many=True)
     parent_trip = serializers.SerializerMethodField(read_only=True)
     liked_by = UserSerializer(read_only=True, many=True)
     liked_count = serializers.SerializerMethodField()
     has_reviewed = serializers.SerializerMethodField()
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['categories'] = CategorySerializer(instance.categories, many=True).data
+        return representation
 
     def get_parent_trip(self, trip):
         if trip.parent_trip is not None:
@@ -41,7 +45,11 @@ class CreateTripSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     companions = UserSerializer(read_only=True, many=True)
     itineraries = ItinerarySerializer(read_only=True, many=True)
-    categories = CategorySerializer(read_only=True, many=True)  # todo: get categories to be saved
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['categories'] = CategorySerializer(instance.categories, many=True).data
+        return representation
 
     class Meta:
         model = Trip
