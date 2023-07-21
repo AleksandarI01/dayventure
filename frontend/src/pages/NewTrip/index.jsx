@@ -175,10 +175,11 @@ const NewTrip = () => {
     setGoogleCategories(autocomplete.getPlace().types[0]);
     setPlaceId(autocomplete.getPlace().place_id);
     setGoogleRating(autocomplete.getPlace().rating);
-    setGooglePhoto(autocomplete.getPlace().photos[0].getUrl());
     setWebsite(autocomplete.getPlace().website);
     setOpeningHours(autocomplete.getPlace().opening_hours?.weekday_text);
     setPhoneNumber(autocomplete.getPlace().international_phone_number);
+    const photos = autocomplete.getPlace().photos
+    if (photos) setGooglePhoto(photos[0].getUrl());
     const lat = autocomplete.getPlace().geometry.location.lat();
 
     const lng = autocomplete.getPlace().geometry.location.lng();
