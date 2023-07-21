@@ -44,14 +44,14 @@ const Trip = () => {
   return (
     <>
       <div className="flex flex-col items-center">
-        <div className="w-full h-80 relative">
+        <div className="w-full h-100 relative">
           <TripMap itineraries={itineraries} />
         </div>
         <div className="flex flex-col w-10/12 align-center p-4">
           <h1 className="p-4">{trip?.name}</h1>
           <h2 className="p-2">Created by: {trip?.owner.username}</h2>
           <h4 className="p-2">
-            Starting on: {trip?.travel_date} at {itineraries[0]?.start_time}{" "}
+            Starting on: {trip?.travel_date} at {trip?.start_time}{" "}
           </h4>
         </div>
         {/* <div className="flex flex-col w-10/12 align-center">
@@ -71,6 +71,7 @@ const Trip = () => {
             {itineraries.map((itinerary, index) => {
               return (
                 <TripSingleStop
+                  trip={trip}
                   key={index}
                   itinerary={itinerary}
                   itineraries={itineraries}

@@ -67,7 +67,7 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
         opening_hours: openingHours,
         gm_image: googlePhoto,
       },
-      transfer: 1,  // [1(default): Public transport, 2: Car, 3: by Foot] todo: do we want to send something here?,
+      transfer: 1, // [1(default): Public transport, 2: Car, 3: by Foot] todo: do we want to send something here?,
       // transfer_duration: XXX,   // todo: needs to be calculated!
       duration: duration,
     };
@@ -157,7 +157,7 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
         </div>
         <div className="flex flex-row items-baseline justify-center gap-5 ">
           <p>How long do you want to stay?</p>
-          <InputField type="time" className="flex flex-row w-full " />
+          <InputField type="time" className="flex flex-row w-full"  />
         </div>
         <button
           className="bg-venture-green rounded-full px-5 py-2 whitespace-nowrap text-venture-white hover:bg-venture-green-hovered"

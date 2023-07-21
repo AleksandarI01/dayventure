@@ -16,8 +16,9 @@ import ShowDirections from "../ShowDirections/ShowDirections";
 import { axiosDayVenture } from "../../axios/index.js";
 import { useSelector } from "react-redux";
 
-const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
-  console.log(itinerary, "irinerary from trip single stop");
+const TripSingleStop = ({ trip, itinerary, itineraries, setItineraries }) => {
+  console.log(itinerary, "itinerary from trip single stop");
+  console.log(trip, "TRIP ON TRIP SINGLE STOP");
   const accessToken = useSelector((state) => state.user.accessToken);
 
   console.log(itinerary, "TRIP");
@@ -27,6 +28,42 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
   const [remove, setRemove] = useState([]);
   const [moveDown, setMoveDown] = useState([]);
   const isLastStop = itineraries.indexOf(itinerary) === itineraries.length - 1;
+
+  function formatDuration(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours.toString().padStart(2, "0")}:${mins
+      .toString()
+      .padStart(2, "0")}`;
+  }
+
+  // // calculates end time
+  // const calculateEndTime = (start_time, duration) => {
+  //   // Convert start_time to minutes
+  //   const [startHour, startMinute] = start_time.split(":").map(Number);
+  //   const startMinutes = startHour * 60 + startMinute;
+
+  //   // Convert duration to minutes
+  //   const [durationHour, durationMinute] = duration.split(":").map(Number);
+  //   const durationMinutes = durationHour * 60 + durationMinute;
+
+  //   // Calculate end time in minutes
+  //   const endTimeMinutes = startMinutes + durationMinutes;
+
+  //   // Convert end time back to hours and minutes
+  //   const endHour = Math.floor(endTimeMinutes / 60);
+  //   const endMinute = endTimeMinutes % 60;
+
+  //   // Format end time as "HH:mm" (e.g., "14:30")
+  //   const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute
+  //     .toString()
+  //     .padStart(2, "0")}`;
+
+  //   return endTime;
+  // };
+  // const endTime = calculateEndTime(trip.start_time, itinerary.duration);
+
+  // //ends calculate end time
 
   const handleDirectionsClick = (event) => {
     event.preventDefault();
@@ -166,16 +203,6 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
       });
   };
 
-  // const firstStop = {
-  //   startTime: "08:30AM",
-  //   endTime: "12:30PM",
-  //   poiGMName: "Times Square",
-  //   poiGMDescriotion:
-  //     "Times Square is a major commercial intersection, tourist destination, entertainment hub, and neighborhood in Midtown Manhattan, New York City, United States. It is formed by the junction of Broad, ... REad More",
-  //   poiGMCategories: ["Shopping", "Museum"],
-  //   poiGMPhoneNumber: itinerary.poi.phone,
-  // };
-
   const formatTextOfCategory = (text) => {
     if (text.includes("_or_")) {
       text = text.split("_or_")[0];
@@ -193,14 +220,14 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
       <div className="flex flex-row ">
         <div className="flex flex-col w-2/12 ">
           <div className="flex flex-row w-full justify-center h-1/6">
-            <h5>{itinerary.start_time}</h5>
+            <h5>{trip.start_time}</h5>
           </div>
           <div className="flex flex-row h-4/6">
             <div className="flex flex-col w-1/2 border-r-2 border-venture-black"></div>
             <div className="flex flex-col w-1/2 "></div>
           </div>
           <div className="flex flex-row w-full justify-center h-1/6">
-            <h5>{itinerary.end_time}</h5>
+            <h5>{itinerary.duration}</h5>
           </div>
         </div>
         <div className="flex flex-col items-center w-3/12 h-2/3 p-2">

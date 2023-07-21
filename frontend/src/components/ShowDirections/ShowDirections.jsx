@@ -8,6 +8,7 @@ const ShowDirections = ({
   longtitude,
   destinationLongitude,
 }) => {
+  
   const [directions, setDirections] = useState(null);
   const lat = parseFloat(latitute);
   const lng = parseFloat(longtitude);
@@ -89,15 +90,6 @@ const ShowDirections = ({
               }}
               zoom={12}
               center={{ lat: latitute, lng: longtitude }} // Use the `origin` object here
-              options={{
-                mapTypeControl: false,
-                mapTypeControlOptions: {
-                  mapTypeIds: [],
-                },
-                fullscreenControl: false,
-                streetViewControl: false,
-                mapTypeId: "roadmap",
-              }}
             >
               {directions && <DirectionsRenderer directions={directions} />}
             </GoogleMap>

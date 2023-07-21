@@ -85,14 +85,17 @@ const NewTrip = () => {
       // default_transfer: XXX,   // [1(default): Public transport, 2: Car, 3: by Foot] todo: do we want to send something here?
       // privacy: XXX,            //  ['P' (default), 'F', 'E']
     };
-    const sTime = startTime.split(":");
-    const eTime = endTime.split(":");
-    const duration =
-      new Date(0, 0, 0, parseInt(eTime[0]), parseInt(eTime[1])) -
-      new Date(0, 0, 0, parseInt(sTime[0]), parseInt(sTime[1]));
+    const sTime = startTime.split(":").map((n) => parseInt(n));
+    const eTime = endTime.split(":").map((n) => parseInt(n));
+    const duration = (eTime[0] - sTime[0]) * 60 + (eTime[1] - sTime[1]);
+
+    console.log("startTime:", startTime);
+    console.log("endTime:", endTime);
+    console.log("duration:", duration);
+
     const poi_data = {
       sequence: 0,
-      type: 0,  // must allways be 0 !!!
+      type: 0, // must allways be 0 !!!
       poi: {
         name: activityName,
         gm_place_id: placeId,
@@ -106,9 +109,12 @@ const NewTrip = () => {
         opening_hours: openingHours,
         gm_image: googlePhoto,
       },
-      transfer: 1,    // same as default_transfer on trip_data (20 lines up)
-      duration: duration,
+      transfer: 1, // same as default_transfer on trip_data (20 lines up)
+      duration: `${Math.floor(duration / 60)
+        .toString()
+        .padStart(2, "0")}:${(duration % 60).toString().padStart(2, "0")}:00`,
     };
+    console.log(poi_data, "POI_DATA");
     axiosDayVenture
       .post(`/trips/new/`, trip_data, config)
       .then((res) => {
@@ -178,7 +184,7 @@ const NewTrip = () => {
     setWebsite(autocomplete.getPlace().website);
     setOpeningHours(autocomplete.getPlace().opening_hours?.weekday_text);
     setPhoneNumber(autocomplete.getPlace().international_phone_number);
-    const photos = autocomplete.getPlace().photos
+    const photos = autocomplete.getPlace().photos;
     if (photos) setGooglePhoto(photos[0].getUrl());
     const lat = autocomplete.getPlace().geometry.location.lat();
 
@@ -245,21 +251,21 @@ const NewTrip = () => {
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
                 <label>First activity start time</label>
-                <InputField
+                <input
                   type={"time"}
                   value={startTime}
-                  onChange={(e) => setStartTime(e)}
-                  className="flex flex-row w-full "
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className="shadow appearance-none border rounded py-2 px-3 text-venture-black leading-tight focus:outline-none focus:shadow-outline"
                   placeholder={"start time"}
                 />
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
                 <label>First activity end time</label>
-                <InputField
+                <input
+                  className="shadow appearance-none border rounded py-2 px-3 text-venture-black leading-tight focus:outline-none focus:shadow-outline2"
                   type={"time"}
                   value={endTime}
-                  onChange={(e) => setEndTime(e)}
-                  className="flex flex-row w-full "
+                  onChange={(e) => setEndTime(e.target.value)}
                 />
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
