@@ -25,7 +25,7 @@ const NewTrip = () => {
     minute: "2-digit",
   });
   const [startTime, setStartTime] = useState(currentTime);
-  const [duration, setDuration] = useState('01:00');
+  const [duration, setDuration] = useState();
   const [coordinates, setCoordinates] = useState({
     lat: 46.807405,
     lng: 8.223595,
@@ -87,7 +87,7 @@ const NewTrip = () => {
     };
     const poi_data = {
       sequence: 0,
-      type: 0,  // must allways be 0 !!!
+      type: 0, // must allways be 0 !!!
       poi: {
         name: activityName,
         gm_place_id: placeId,
@@ -101,9 +101,12 @@ const NewTrip = () => {
         opening_hours: openingHours,
         gm_image: googlePhoto,
       },
-      transfer: 1,    // same as default_transfer on trip_data (20 lines up)
-      duration: duration,
+      transfer: 1, // same as default_transfer on trip_data (20 lines up)
+      duration: `${Math.floor(duration / 60)
+        .toString()
+        .padStart(2, "0")}:${(duration % 60).toString().padStart(2, "0")}:00`,
     };
+    console.log(poi_data, "POI_DATA");
     axiosDayVenture
       .post(`/trips/new/`, trip_data, config)
       .then((res) => {
@@ -173,7 +176,7 @@ const NewTrip = () => {
     setWebsite(autocomplete.getPlace().website);
     setOpeningHours(autocomplete.getPlace().opening_hours?.weekday_text);
     setPhoneNumber(autocomplete.getPlace().international_phone_number);
-    const photos = autocomplete.getPlace().photos
+    const photos = autocomplete.getPlace().photos;
     if (photos) setGooglePhoto(photos[0].getUrl());
     const lat = autocomplete.getPlace().geometry.location.lat();
 
@@ -243,14 +246,18 @@ const NewTrip = () => {
                 <InputField
                   type={"time"}
                   value={startTime}
-                  onChange={(e) => setStartTime(e)}
-                  className="flex flex-row w-full "
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className="shadow appearance-none border rounded py-2 px-3 text-venture-black leading-tight focus:outline-none focus:shadow-outline"
                   placeholder={"start time"}
                 />
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
                 <label>Meeting Point</label>
-                <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                <Autocomplete
+                  onLoad={onLoad}
+                  onPlaceChanged={onPlaceChanged}
+                  language="en"
+                >
                   <input
                     type="text"
                     className="flex flex-row w-full"

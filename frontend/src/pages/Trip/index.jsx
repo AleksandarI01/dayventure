@@ -1,41 +1,40 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { AiFillPlusCircle } from "react-icons/ai";
-import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 import Button from "../../components/Button/Button";
+import TripMap from "../../components/TripMap/TripMap.jsx";
 import AddNewStop from "../../components/AddNewStop/AddNewStop";
 import TripSingleStop from "../../components/TripSingleStop/TripSingleStop.jsx";
-import {axiosDayVenture} from "../../axios/index.js";
+import { axiosDayVenture } from "../../axios/index.js";
 
 const Trip = () => {
   const { tripId } = useParams();
   const accessToken = useSelector((state) => state.user.accessToken);
-
   const [trip, setTrip] = useState(null);
   const [addNewStop, setAddNewStop] = useState(false);
-  // const coordinates = { lat: 76.09, lng: -86.09 };
   const [itineraries, setItineraries] = useState([]);
 
-      useEffect(() => {
-        if (tripId) {
-            let config = null
-            if (accessToken) {
-                config = {headers: {Authorization: `Bearer ${accessToken}`}};
-            }
-            let url = `/trips/${tripId}`
-            axiosDayVenture
-                .get(url, config)
-                .then((res) => {
-                  setTrip(res.data)
-                  setItineraries(res.data.itineraries.sort((itA, itB) => itA.sequence - itB.sequence))
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
-      }, [accessToken, tripId])
-
+  useEffect(() => {
+    if (tripId) {
+      let config = null;
+      if (accessToken) {
+        config = { headers: { Authorization: `Bearer ${accessToken}` } };
+      }
+      let url = `/trips/${tripId}`;
+      axiosDayVenture
+        .get(url, config)
+        .then((res) => {
+          setTrip(res.data);
+          setItineraries(
+            res.data.itineraries.sort((itA, itB) => itA.sequence - itB.sequence)
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [accessToken, tripId]);
 
   const handleAddNewStopClick = (event) => {
     event.preventDefault();
@@ -45,22 +44,14 @@ const Trip = () => {
   return (
     <>
       <div className="flex flex-col items-center">
-        <div className="w-full h-80  bg-TripHeader bg-no-repeat bg-cover">
-          {/* <GoogleMapReact
-            bootstrapURLKeys={{
-              key: import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY,
-            }}
-            defaultCenter={coordinates}
-            center={coordinates}
-            defaultZoom={14}
-            margin={[50, 50, 50, 50]}
-          ></GoogleMapReact> */}
+        <div className="w-full h-100 relative">
+          <TripMap itineraries={itineraries} />
         </div>
         <div className="flex flex-col w-10/12 align-center p-4">
           <h1 className="p-4">{trip?.name}</h1>
           <h2 className="p-2">Created by: {trip?.owner.username}</h2>
           <h4 className="p-2">
-            Starting on: {trip?.travel_date} at {itineraries[0]?.start_time}{" "}
+            Starting on: {trip?.travel_date} at {trip?.start_time}{" "}
           </h4>
         </div>
         {/* <div className="flex flex-col w-10/12 align-center">
@@ -80,6 +71,7 @@ const Trip = () => {
             {itineraries.map((itinerary, index) => {
               return (
                 <TripSingleStop
+                  trip={trip}
                   key={index}
                   itinerary={itinerary}
                   itineraries={itineraries}
