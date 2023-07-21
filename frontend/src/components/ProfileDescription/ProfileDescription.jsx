@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import {axiosDayVenture} from "../../axios/index.js";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import FriendRequestButton from "../FriendRequestButton/FriendRequestButton.jsx";
 
 const ProfileDescription = ({user, setSelectedView, setResults, isActiveUser}) => {
     const accessToken = useSelector((state) => state.user.accessToken);
@@ -169,60 +170,7 @@ const ProfileDescription = ({user, setSelectedView, setResults, isActiveUser}) =
 
                     </div>
                     :
-                    <div
-                        className="h-[33%] w-[100%] shrink-0 flex flex-row gap-[0.2rem] justify-center items-center">
-                        {friendRequestState === "D" ? <button
-                            className={"bg-venture-green rounded-full px-5 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"}
-                            onClick={onHandleUserActionClick}>
-                            Send Friend Request
-                        </button> : friendRequestState === "PS" ? isHovered ? <button
-                                    className={"bg-venture-green rounded-full px-5 py-1 font-medium text-venture-white hover:bg-venture-red"}
-                                    onClick={onHandleUserActionClick}
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}>
-                                    Withdraw Friend Request
-                                </button> :
-                                <button
-                                    className={"bg-venture-green rounded-full px-5 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"}
-                                    // onClick={onHandleUserActionClick}
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}>
-                                    Friend Request Pending
-                                </button>
-                            : friendRequestState === "PR" ? isHovered ?
-                                <div className={"flex flex-row gap-[0.2rem]"}
-                                     onMouseLeave={handleMouseLeave}
-                                >
-                                    <button
-                                        className={"bg-venture-green rounded-full px-5 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"}
-                                        onClick={onHandleReceiverAccept}
-
-                                    >
-                                        Accept
-                                    </button>
-                                    <button
-                                        className={"bg-venture-red rounded-full px-5 py-1 font-medium text-venture-white hover:bg-venture-red-hovered"}
-                                        onClick={onHandleReceiverReject}
-
-                                    >
-                                        Reject
-                                    </button>
-                                </div> : <button
-                                    className={"bg-venture-green-hovered rounded-full px-5 py-1 font-medium text-venture-white"}
-                                    onMouseEnter={handleMouseEnter}
-                                >
-                                    Friend Request Pending
-                                </button> : friendRequestState === "A" || friendRequestState === "AS" || friendRequestState === "AR" ?
-                                <button
-                                    className={"bg-venture-green-hovered rounded-full px-5 py-1 font-medium text-venture-white"}
-                                >
-                                    You are friends
-                                </button> : friendRequestState === "R" ? <button
-                                    className={"bg-venture-red rounded-full px-5 py-1 font-medium text-venture-white"}
-                                >
-                                    Not friends
-                                </button> : null}
-                    </div>
+                    <FriendRequestButton user={user}/>
                 }
             </div>
             <div className={"h-[100%] w-[75%] flex flex-col shrink-0"}>
