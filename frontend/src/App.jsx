@@ -78,8 +78,8 @@ function App() {
                         <Route path="/signup" element={<Signup/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/search" element={<Search/>}/>
-                        <Route path="/search/users/:userId" element={<UserProfile/>}/>
                         <Route path="/profile" element={<UserProfile/>}/>
+                        <Route path="/profile/:userId" element={<UserProfile/>}/>
                         <Route path="/about-us" element={<AboutUs/>}/>
                         <Route path="/new-trip" element={<NewTrip/>}/>
                         <Route path="/trip/:tripId" element={<Trip/>}/>
