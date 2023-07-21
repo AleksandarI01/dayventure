@@ -1,31 +1,19 @@
 import Label from "../Label/Label.jsx";
 import StarRatings from "react-star-ratings";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import {axiosDayVenture} from "../../axios/index.js";
 import Data from "../../assets/island.png";
 import {useNavigate} from "react-router-dom";
 import { motion } from "framer-motion"
 
-//todo: make it look nice with all the data...
 const Trip = ({ trip }) => {
-    const [rating, setRating] = useState(0);
+    const [rating, setRating] = useState(trip.rating_avg);
     const navigate = useNavigate();
 
     const fadeInVariants = {
         hidden: {opacity: 0},
         visible: {opacity: 1},
     }
-
-    // Fetch rating when the component mounts
-    useEffect(() => {
-        axiosDayVenture.get(`/api/trips/${trip.id}/rating/`) // replace with the actual endpoint
-            .then((res) => {
-                setRating(res.data.rating);
-            })
-            .catch((error) => {
-                console.error(error);
-            })
-    }, [trip.id]); // Pass `trip.id` as a dependency so that the effect runs again if `trip.id` changes
 
     const changeRating = (newRating) => {
         // Update the state immediately
