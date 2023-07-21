@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from itinerary.models import Itinerary
 from itinerary.serializers import ItinerarySerializer
 from poi.models import POI
-from transfer.models import Transfer
 from trip.models import Trip
 
 

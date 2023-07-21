@@ -1,5 +1,3 @@
-from datetime import datetime, date
-
 from rest_framework import serializers
 
 from itinerary.models import Itinerary
@@ -10,7 +8,6 @@ from transfer.serializers import TransferSerializer
 class ItinerarySerializer(serializers.ModelSerializer):
     poi = POISerializer(read_only=True)
     transfer = TransferSerializer(read_only=True)
-
 
     class Meta:
         model = Itinerary
