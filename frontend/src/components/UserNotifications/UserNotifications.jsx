@@ -31,7 +31,7 @@ const UserNotifications = ({
           <h4>
             Notifications ({notifications.length + friendRequests.length})
           </h4>
-          <button>Mark all as Read</button>
+
         </div>
         <div className="flex flex-row justify-center py-2 ">
           {friendRequests.length > 0 && <h5>FRIEND REQUESTS</h5>}
