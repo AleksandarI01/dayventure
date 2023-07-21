@@ -18,7 +18,7 @@ class Itinerary(models.Model):
     poi = models.ForeignKey(to=POI, blank=True, null=True, on_delete=models.CASCADE)
     duration = models.DurationField(default=timedelta(hours=1))
     transfer = models.ForeignKey(to=Transfer, blank=True, null=True, on_delete=models.CASCADE)
-    transfer_duration = models.DurationField(default=timedelta(hours=1))
+    transfer_duration = models.DurationField(default=timedelta(hours=0))
     cost = models.FloatField(default=0.0)
     cost_currency = models.CharField(max_length=3, default='CHF')
 
