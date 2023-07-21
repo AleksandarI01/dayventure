@@ -2,6 +2,7 @@ import Label from "../Label/Label.jsx"
 import {useState} from "react";
 import {axiosDayVenture} from "../../axios/index.js";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 
 const UserCard = ({user}) => {
@@ -16,6 +17,7 @@ const UserCard = ({user}) => {
     const [isHovered, setIsHovered] = useState(false);
     const [friendrequestId, setFriendresquestId] = useState(user.friendrequest_id)
     const accessToken = useSelector((state) => state.user.accessToken);
+    const navigate = useNavigate()
 
     console.log(user)
     //console.log(user.received_friendrequest_state)
@@ -49,6 +51,10 @@ const UserCard = ({user}) => {
     }
 
     const handleSentFriendrequest = () => {
+        if (!accessToken) {
+            navigate('/login/')
+            return
+        }
         const config = {headers: {Authorization: `Bearer ${accessToken}`}};
         axiosDayVenture
             .post(`/friends/request/${user.id}/`, {state: 'P'}, config)  // P=Pending
@@ -168,7 +174,7 @@ const UserCard = ({user}) => {
                                     className={"bg-venture-green-hovered rounded-full px-5 py-1 font-medium text-venture-white"}
                                     onMouseEnter={handleMouseEnter}
                                 >
-                                    Friend Request PendingRR
+                                    Friend Request Pending
                                 </button> : friendRequestState === "A" || friendRequestState === "AS" || friendRequestState === "AR" ?
                                 <button
                                     className={"bg-venture-green-hovered rounded-full px-5 py-1 font-medium text-venture-white"}

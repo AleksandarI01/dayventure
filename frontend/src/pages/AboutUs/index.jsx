@@ -12,7 +12,6 @@ const AboutUs = () => {
 
 
     useEffect(() => {
-        console.log(aboutUsTripId)
         if (aboutUsTripId) {
             let config = null
             if (accessToken) {

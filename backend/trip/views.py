@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 
+from notification.models import Notification
 # from email_scheduler.models import EmailScheduler
 from trip.models import Trip
 from trip.serializers import TripSerializer, CreateTripSerializer
@@ -90,6 +91,28 @@ class RemoveTripCompanionView(GenericAPIView):
         current_user = request.user
         if current_user in trip.companions.all():
             trip.companions.remove(current_user)
+        return Response(status=status.HTTP_200_OK)
+
+
+class TripCompanionView(GenericAPIView):
+    """
+        patch:
+        update list of companions
+        expects a list of user_id
+    """
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+    lookup_url_kwarg = 'trip_id'    # todo: permission owner only
+
+    def patch(self, request, *args, **kwargs):
+        trip = self.get_object()
+        old_companions = trip.companions.all()
+        users = User.objects.filter(id__in=request.data['user_ids'])
+        trip.companions.set(users)
+        for user in users:
+            if user not in old_companions:
+                note_instance = Notification.objects.all()
+                note_instance.create(type=0, recipient=user, trip=trip)
         return Response(status=status.HTTP_200_OK)
 
 

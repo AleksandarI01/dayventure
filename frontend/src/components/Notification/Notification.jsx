@@ -48,7 +48,7 @@ const Notification = ({notification, setLoadNotifications}) => {
           })
 
     }
-// todo: prettify together with FriendRequest
+
   return (
     <>
       <div className="flex flex-row w-full pt-2">

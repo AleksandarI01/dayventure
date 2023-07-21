@@ -1,18 +1,24 @@
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Button from "../../components/Button/Button";
 import InputField from "../../components/InputField/InputField";
 import {MdAccountCircle, MdLock} from "react-icons/md";
 import {axiosDayVenture} from "../../axios/index.js";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {login} from "../../store/slices/user.js";
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState();
     const dispatch = useDispatch();
+
+      // Save the previous location when the current location changes
+  useEffect(() => {
+    localStorage.setItem("prevLocation", location.pathname);
+  }, [location]);
 
     const handleLogIn = (e) => {
         e.preventDefault();
@@ -28,7 +34,7 @@ const Login = () => {
                     localStorage.setItem("refreshToken", refreshToken);
                     setErrorMessage(null);
                     dispatch(login(accessToken));
-                    navigate("/", {replace: true});
+                    navigate(-1);
                 }
             })
             .catch((err) => {

@@ -6,4 +6,4 @@ from transfer.models import Transfer
 class TransferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transfer
-        fields = '__all__'
+        fields = ['id', 'means', 'icon']
