@@ -15,7 +15,7 @@ const FriendRequestButton = ({user}) => {
                     : user.sent_friendrequest_state === 'R' ? 'R'
                         : user.received_friendrequest_state === 'R' ? 'R'
                         : 'D')
-    const [friendrequestId, setFriendresquestId] = useState(user.friendrequest_id)
+    const [friendrequestId, setFriendrequestId] = useState(user.friendrequest_id)
     const [isHovered, setIsHovered] = useState(false);
 
     const onHandleUserActionClick = () => {
@@ -33,7 +33,6 @@ const FriendRequestButton = ({user}) => {
             setFriendRequestState("A")
             handleReceivedFriendrequest();
         }
-
     }
 
     const onHandleReceiverAccept = () => {
@@ -55,7 +54,7 @@ const FriendRequestButton = ({user}) => {
         axiosDayVenture
             .post(`/friends/request/${user.id}/`, {state: 'P'}, config)  // P=Pending
             .then((result) => {
-                setFriendresquestId(result.data.id)
+                setFriendrequestId(result.data.id)
             })
             .catch((error) => {
                 console.log(error);

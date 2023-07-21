@@ -7,12 +7,6 @@ const UserCard = ({user}) => {
     const imageUrl = '../../../src/assets/island.png'
     const navigate = useNavigate()
 
-    console.log(user)
-    //console.log(user.received_friendrequest_state)
-    //console.log(friendRequestState)
-    // console.log(user.friendrequest_id)
-
-
     return (
         <>
             <div
