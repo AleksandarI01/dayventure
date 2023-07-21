@@ -35,7 +35,45 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
     setArrowClicked(!arrowClicked);
   };
 
+  // const PlacePhoto = ({ placeId }) => {
+  //   const [photoUrl, setPhotoUrl] = useState("");
+
+  //   useEffect(() => {
+  //     if (!placeId) return;
+
+  //     const service = new window.google.maps.places.PlacesService(
+  //       document.createElement("div")
+  //     );
+
+  //     service.getDetails(
+  //       {
+  //         placeId: placeId,
+  //         fields: ["photos"],
+  //       },
+  //       (place, status) => {
+  //         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+  //           if (place.photos && place.photos.length > 0) {
+  //             const photo = place.photos[0];
+  //             const photoUrl = photo.getUrl({
+  //               maxWidth: 400, // Set the maximum width for the photo
+  //             });
+  //             setPhotoUrl(photoUrl);
+  //           }
+  //         }
+  //       }
+  //     );
+  //   }, [placeId]);
+
+  //   return (
+  //     <div>
+  //       {photoUrl && <img src={photoUrl} alt="Place" />}
+  //       {!photoUrl && <div>No photo available</div>}
+  //     </div>
+  //   );
+  // };
+
   const handleMoveUp = (index) => {
+    // todo: calculate and set all necessary transfer_durations!
     if (index > 0) {
       const itinerary_id1 = itinerary.id;
       const itinerary_id2 = itineraries[index - 1].id;
