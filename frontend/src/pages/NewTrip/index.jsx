@@ -261,7 +261,11 @@ const NewTrip = () => {
               </div>
               <div className="flex flex-row justify-center gap-5 items-baseline">
                 <label>Meeting Point</label>
-                <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                <Autocomplete
+                  onLoad={onLoad}
+                  onPlaceChanged={onPlaceChanged}
+                  language="en"
+                >
                   <input
                     type="text"
                     className="flex flex-row w-full"

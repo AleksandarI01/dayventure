@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import nycMini from "../../assets/images/nycMini.png";
 import Label from "../../components/Label/Label";
+import PlacePhoto from "../../components/PlacePhoto/PlacePhoto";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
@@ -12,10 +13,11 @@ import { AiFillStar } from "react-icons/ai";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { AiFillClockCircle } from "react-icons/ai";
 import ShowDirections from "../ShowDirections/ShowDirections";
-import {axiosDayVenture} from "../../axios/index.js";
-import {useSelector} from "react-redux";
+import { axiosDayVenture } from "../../axios/index.js";
+import { useSelector } from "react-redux";
 
 const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
+  console.log(itinerary, "irinerary from trip single stop");
   const accessToken = useSelector((state) => state.user.accessToken);
 
   console.log(itinerary, "TRIP");
@@ -33,58 +35,29 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
     setArrowClicked(!arrowClicked);
   };
 
-  const PlacePhoto = ({ placeId }) => {
-    const [photoUrl, setPhotoUrl] = useState("");
-  
-    useEffect(() => {
-      if (!placeId) return;
-  
-      const service = new window.google.maps.places.PlacesService(
-        document.createElement("div")
-      );
-  
-      service.getDetails(
-        {
-          placeId: placeId,
-          fields: ["photos"],
-        },
-        (place, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            if (place.photos && place.photos.length > 0) {
-              const photo = place.photos[0];
-              const photoUrl = photo.getUrl({
-                maxWidth: 400, // Set the maximum width for the photo
-              });
-              setPhotoUrl(photoUrl);
-            }
-          }
-        }
-      );
-    }, [placeId]);
-
-    return (
-      <div>
-        {photoUrl && <img src={photoUrl} alt="Place" />}
-        {!photoUrl && <div>No photo available</div>}
-      </div>
-    );
-  };
-
   const handleMoveUp = (index) => {
     if (index > 0) {
-      const itinerary_id1 = itinerary.id
-      const itinerary_id2 = itineraries[index - 1].id
-      const sequenceNew1 = itineraries[index - 1].sequence
-      const sequenceNew2 = itinerary.sequence
+      const itinerary_id1 = itinerary.id;
+      const itinerary_id2 = itineraries[index - 1].id;
+      const sequenceNew1 = itineraries[index - 1].sequence;
+      const sequenceNew2 = itinerary.sequence;
       const config = { headers: { Authorization: `Bearer ${accessToken}` } };
       axiosDayVenture
-        .patch(`/trips/itinerary/${itinerary_id1}/`, {'sequence': sequenceNew1}, config)
+        .patch(
+          `/trips/itinerary/${itinerary_id1}/`,
+          { sequence: sequenceNew1 },
+          config
+        )
         .then(() => {
           axiosDayVenture
-            .patch(`/trips/itinerary/${itinerary_id2}/`, {'sequence': sequenceNew2}, config)
+            .patch(
+              `/trips/itinerary/${itinerary_id2}/`,
+              { sequence: sequenceNew2 },
+              config
+            )
             .then(() => {
-              itineraries[index].sequence = sequenceNew1
-              itineraries[index - 1].sequence = sequenceNew2
+              itineraries[index].sequence = sequenceNew1;
+              itineraries[index - 1].sequence = sequenceNew2;
               const updatedItineraries = [...itineraries];
               const temp = updatedItineraries[index];
               updatedItineraries[index] = updatedItineraries[index - 1];
@@ -103,19 +76,27 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
 
   const handleMoveDown = (index) => {
     if (index < itineraries.length - 1) {
-      const itinerary_id1 = itinerary.id
-      const itinerary_id2 = itineraries[index + 1].id
-      const sequenceNew1 = itineraries[index + 1].sequence
-      const sequenceNew2 = itinerary.sequence
+      const itinerary_id1 = itinerary.id;
+      const itinerary_id2 = itineraries[index + 1].id;
+      const sequenceNew1 = itineraries[index + 1].sequence;
+      const sequenceNew2 = itinerary.sequence;
       const config = { headers: { Authorization: `Bearer ${accessToken}` } };
       axiosDayVenture
-        .patch(`/trips/itinerary/${itinerary_id1}/`, {'sequence': sequenceNew1}, config)
+        .patch(
+          `/trips/itinerary/${itinerary_id1}/`,
+          { sequence: sequenceNew1 },
+          config
+        )
         .then(() => {
           axiosDayVenture
-            .patch(`/trips/itinerary/${itinerary_id2}/`, {'sequence': sequenceNew2}, config)
+            .patch(
+              `/trips/itinerary/${itinerary_id2}/`,
+              { sequence: sequenceNew2 },
+              config
+            )
             .then(() => {
-              itineraries[index].sequence = sequenceNew1
-              itineraries[index + 1].sequence = sequenceNew2
+              itineraries[index].sequence = sequenceNew1;
+              itineraries[index + 1].sequence = sequenceNew2;
               const updatedItineraries = [...itineraries];
               const temp = updatedItineraries[index];
               updatedItineraries[index] = updatedItineraries[index + 1];
@@ -133,7 +114,7 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
   };
 
   const handleRemove = (index) => {
-    const itinerary_id = itinerary.id
+    const itinerary_id = itinerary.id;
     const config = { headers: { Authorization: `Bearer ${accessToken}` } };
     axiosDayVenture
       .delete(`/trips/itinerary/${itinerary_id}/`, config)
@@ -184,8 +165,8 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
             <h5>{itinerary.end_time}</h5>
           </div>
         </div>
-        <div className="flex flex-col w-3/12  p-2">
-          <img className="" src={itinerary.image || itinerary.gm_image || nycMini} />
+        <div className="flex flex-col items-center w-3/12 h-2/3 p-2">
+          <PlacePhoto photo={itinerary.poi.gm_image} />
         </div>
         <div className="flex flex-col w-6/12 ">
           <div className="flex flex-row items-baseline ">
@@ -200,59 +181,59 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
             </div>
           </div>
 
-          <div className="flex flex-row p-1 border-2 border-solid border-red-600">
-            <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+          <div className="flex flex-row p-1">
+            <div className="flex flex-col justify-center items-center w-1/12 ">
               <FaMapMarkerAlt />
             </div>
-            <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
-              <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+            <div className="flex flex-col w-11/12">
+              <p className="text-sm text-left font-extralight">
                 {itinerary.poi.address}
               </p>
             </div>
           </div>
           {itinerary.poi.phone && (
-            <div className="flex flex-row p-1 border-2 border-solid border-red-600">
-              <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+            <div className="flex flex-row p-1">
+              <div className="flex flex-col justify-center items-center w-1/12 ">
                 <BsFillTelephoneFill />
               </div>
-              <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
-                <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+              <div className="flex flex-col w-11/12 ">
+                <p className="text-sm text-left font-extralight ">
                   {itinerary.poi.phone}
                 </p>
               </div>
             </div>
           )}
           {itinerary.poi.website && (
-            <div className="flex flex-row p-1 border-2 border-solid border-red-600">
-              <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+            <div className="flex flex-row p-1 ">
+              <div className="flex flex-col justify-center items-center w-1/12  ">
                 <CgWebsite />
               </div>
-              <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
-                <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+              <div className="flex flex-col w-11/12 ">
+                <p className="text-sm text-left font-extralight ">
                   {itinerary.poi.website}
                 </p>
               </div>
             </div>
           )}
           {itinerary.poi.gm_rating && (
-            <div className="flex flex-row p-1 border-2 border-solid border-red-600">
-              <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+            <div className="flex flex-row p-1 ">
+              <div className="flex flex-col justify-center items-center w-1/12 ">
                 <AiFillStar />
               </div>
-              <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
-                <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+              <div className="flex flex-col w-11/12 ">
+                <p className="text-sm text-left font-extralight">
                   {itinerary.poi.gm_rating}
                 </p>
               </div>
             </div>
           )}
           {itinerary.poi.opening_hours && (
-            <div className="flex flex-row p-1 border-2 border-solid border-red-600">
-              <div className="flex flex-col justify-center items-center w-1/12 border-2 border-solid border-blue-600 ">
+            <div className="flex flex-row p-1 ">
+              <div className="flex flex-col justify-center items-center w-1/12  ">
                 <AiFillClockCircle />
               </div>
-              <div className="flex flex-col w-11/12 border-2 border-solid border-green-600">
-                <p className="text-sm text-left font-extralight border-2 border-solid border-green-600">
+              <div className="flex flex-col w-11/12 ">
+                <p className="text-sm text-left font-extralight ">
                   {itinerary.poi.opening_hours}
                 </p>
               </div>
@@ -261,17 +242,23 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
         </div>
         <div className="flex flex-col w-1/12 justify-center ">
           <div className="flex flex-row w-full justify-center">
-            <button onClick={() => handleMoveUp(itineraries.indexOf(itinerary))}>
+            <button
+              onClick={() => handleMoveUp(itineraries.indexOf(itinerary))}
+            >
               <MdOutlineKeyboardArrowUp className="text-7xl text-venture-green" />
             </button>
           </div>
           <div className="flex flex-row w-full justify-center">
-            <button onClick={() => handleRemove(itineraries.indexOf(itinerary))}>
+            <button
+              onClick={() => handleRemove(itineraries.indexOf(itinerary))}
+            >
               <MdRemoveCircle className="text-4xl text-venture-red" />
             </button>
           </div>
           <div className="flex flex-row w-full justify-center">
-            <button onClick={() => handleMoveDown(itineraries.indexOf(itinerary))}>
+            <button
+              onClick={() => handleMoveDown(itineraries.indexOf(itinerary))}
+            >
               <MdOutlineKeyboardArrowDown className="text-7xl text-venture-green" />
             </button>
           </div>
@@ -279,7 +266,7 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
       </div>
       {!isLastStop && (
         <div className="flex flex-row justify-center pb-12">
-          <div className="flex flex-col w-1/12 border-2 border-solid border-red-600">
+          <div className="flex flex-col w-1/12">
             <button
               onClick={handleDirectionsClick}
               className="flex flex-row justify-around rounded-3xl bg-venture-darkgray p-1 "

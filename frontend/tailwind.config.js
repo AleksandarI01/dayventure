@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       zIndex: {
-        '9998': 9998,
+        9998: 9998,
       },
       colors: {
         "venture-green": "#00A987",
@@ -28,4 +28,3 @@ export default {
   },
   plugins: [],
 };
-
