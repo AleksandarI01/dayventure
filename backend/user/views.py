@@ -1,11 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 
-# from email_scheduler.models import EmailScheduler
 from user.serializers import UserSerializer
 from user_profile.models import UserProfile
 
@@ -58,11 +56,12 @@ class RetrieveUpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
 
         return Response(serializer.data)
 
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.is_active = False
-        instance.save()
-        return Response(status=status.HTTP_200_OK)
+    # This will set users inactive instead of deleting them. at the moment inactive users are still shown in views!
+    # def delete(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     instance.is_active = False
+    #     instance.save()
+    #     return Response(status=status.HTTP_200_OK)
 
     @swagger_auto_schema(auto_schema=None)
     def put(self, request, *args, **kwargs):
