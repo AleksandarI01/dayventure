@@ -58,11 +58,11 @@ class RetrieveUpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
 
         return Response(serializer.data)
 
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.is_active = False
-        instance.save()
-        return Response(status=status.HTTP_200_OK)
+    # def delete(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     instance.is_active = False
+    #     instance.save()
+    #     return Response(status=status.HTTP_200_OK)
 
     @swagger_auto_schema(auto_schema=None)
     def put(self, request, *args, **kwargs):
