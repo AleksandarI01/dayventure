@@ -118,7 +118,9 @@ const UserCard = ({user}) => {
                     <div
                         className="h-[67%] w-[100%] shrink-0 flex flex-col justify-center items-center">
                         <img className={"h-20 w-20 rounded-full"} src={user?.avatar || imageUrl}
-                             alt={"profile picture"}/>
+                             alt={"profile picture"}
+                             onClick={() => navigate(`/profile/${user.id}`)}
+                        />
                         {user.first_name || user.last_name ? <p>{user.first_name} {user.last_name}</p>
                             : <p>{user.username}</p>
                         }
@@ -127,13 +129,6 @@ const UserCard = ({user}) => {
 
                     <div
                         className="h-[33%] w-[100%] shrink-0 flex flex-row gap-[0.2rem] justify-center items-center">
-                        {/*<button*/}
-                        {/*    className={*/}
-                        {/*        "bg-venture-green rounded-full px-2 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"*/}
-                        {/*    }*/}
-                        {/*>*/}
-                        {/*    Following*/}
-                        {/*</button>*/}
                         {friendRequestState === "D" ? <button
                             className={"bg-venture-green rounded-full px-5 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"}
                             onClick={onHandleUserActionClick}>

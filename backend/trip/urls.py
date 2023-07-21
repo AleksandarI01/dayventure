@@ -14,7 +14,7 @@ urlpatterns = [
     path('itinerary/<itinerary_id>/', RetrieveUpdateDeleteItineraryView.as_view()),
     path('togglelike/<int:trip_id>/', ToggleLikeTripView.as_view()),
     path('review/<int:trip_id>/', CreateTripReviewView.as_view()),
-    path('owner/<int:user_id>', ListOwnerTripsView.as_view()),
+    path('owner/<int:user_id>/', ListOwnerTripsView.as_view()),
     path('my/', ListOwnedTripsView.as_view()),
     path('companion/', ListCompanionTripsView.as_view()),
     path('companion/<int:trip_id>/', TripCompanionView.as_view()),
