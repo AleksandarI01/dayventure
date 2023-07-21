@@ -81,6 +81,9 @@ const NewTrip = () => {
       location: tripLocation,
       travel_date: dayOfTrip,
       categories: selectedCategories,
+      start_time: startTime,
+      // default_transfer: XXX,   // [1(default): Public transport, 2: Car, 3: by Foot] todo: do we want to send something here?
+      // privacy: XXX,            //  ['P' (default), 'F', 'E']
     };
     const sTime = startTime.split(":");
     const eTime = endTime.split(":");
@@ -89,7 +92,7 @@ const NewTrip = () => {
       new Date(0, 0, 0, parseInt(sTime[0]), parseInt(sTime[1]));
     const poi_data = {
       sequence: 0,
-      type: 0,
+      type: 0,  // must allways be 0 !!!
       poi: {
         name: activityName,
         gm_place_id: placeId,
@@ -103,8 +106,7 @@ const NewTrip = () => {
         opening_hours: openingHours,
         gm_image: googlePhoto,
       },
-      transfer: null,
-      start_time: startTime,
+      transfer: 1,    // same as default_transfer on trip_data (20 lines up)
       duration: duration,
     };
     axiosDayVenture
