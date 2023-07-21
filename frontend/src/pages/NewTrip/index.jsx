@@ -25,7 +25,7 @@ const NewTrip = () => {
     minute: "2-digit",
   });
   const [startTime, setStartTime] = useState(currentTime);
-  const [duration, setDuration] = useState('01:00');
+  const [duration, setDuration] = useState();
   const [coordinates, setCoordinates] = useState({
     lat: 46.807405,
     lng: 8.223595,
