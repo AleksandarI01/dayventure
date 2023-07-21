@@ -6,7 +6,7 @@ const LoadingSpinner = () => {
                 <div className={"w-full h-[50%]"}>
                 </div>
                 <div className="w-full flex flex-col justify-center items-center align-middle gap-6">
-                    <h2>Loading...</h2>
+                    <h2 className={"animate-pulse"}>Loading...</h2>
                     <div className="loading-spinner"></div>
                 </div>
             </div>

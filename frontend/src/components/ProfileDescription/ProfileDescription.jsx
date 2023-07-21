@@ -4,7 +4,7 @@ import ProfileEditModal from '../ProfileEditModal/ProfileEditModal';
 import Modal from 'react-modal';
 import {axiosDayVenture} from "../../axios/index.js";
 
-const ProfileDescription = ({user, setSelectedView, setResults}) => {
+const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, imageBanner, imageBannerShow, setImageBannerShow }) => {
     const defaultImage = '../../../src/assets/island.png'
     const activeStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
     const inactiveStyle = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
@@ -19,6 +19,7 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
     const [location, setLocation] = useState(user.location);
     const [about, setAbout] = useState(user.about);
     const [email, setEmail] = useState(user.email);
+    const [avatar, setAvatar] = useState(user.avatar);
 
     console.log(user)
     console.log(firstName)
@@ -57,6 +58,7 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
         setLocation(user.location)
         setAbout(user.about)
         setEmail(user.email)
+        setAvatar(user.avatar)
     }, [user])
 
     return (
@@ -137,7 +139,8 @@ const ProfileDescription = ({user, setSelectedView, setResults}) => {
                 <ProfileEditModal user={user} username={username} setUsername={setUsername} firstName={firstName}
                                   setFirstName={setFirstName} lastName={lastName} setLastName={setLastName}
                                   setIsModalOpen={setIsModalOpen} location={location} setLocation={setLocation}
-                                  about={about} setAbout={setAbout} email={email} setEmail={setEmail}/>}
+                                  about={about} setAbout={setAbout} email={email} setEmail={setEmail} avatar={avatar}
+                                  setAvatar={setAvatar} setImageBanner={setImageBanner} imageBanner={imageBanner} imageBannerShow={imageBannerShow} setImageBannerShow={setImageBannerShow}/>}
         </div>
 
 

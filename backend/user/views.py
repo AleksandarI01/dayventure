@@ -7,7 +7,6 @@ from rest_framework.response import Response
 
 # from email_scheduler.models import EmailScheduler
 from user.serializers import UserSerializer
-
 from user_profile.models import UserProfile
 
 User = get_user_model()
@@ -37,7 +36,16 @@ class RetrieveUpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         profiles = UserProfile.objects.all()
-        profiles.update_or_create(user=instance, defaults=request.data)
+        profile_data = request.data
+        if 'username' in profile_data:
+            del profile_data['username']
+        if 'first_name' in profile_data:
+            del profile_data['first_name']
+        if 'last_name' in profile_data:
+            del profile_data['last_name']
+        if 'email' in profile_data:
+            del profile_data['email']
+        profiles.update_or_create(user=instance, defaults=profile_data)
         return Response(serializer.data)
 
     def delete(self, request, *args, **kwargs):

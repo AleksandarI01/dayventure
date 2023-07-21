@@ -17,6 +17,9 @@ const UserProfile = () => {
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [imageBanner, setImageBanner] = useState(null)
+    const [imageBannerShow, setImageBannerShow] = useState(user.banner)
 
     useEffect(() => {
         setLoading(true)
@@ -54,6 +57,7 @@ const UserProfile = () => {
             .get(url, config)
             .then((res) => {
                 setUser(res.data);
+                setImageBannerShow(res.data.banner)
                 console.log(res.data);
             })
             .catch((error) => {
@@ -66,17 +70,27 @@ const UserProfile = () => {
     //     setIsModalOpen(true);
     //   };
 
-    console.log(user, "pabloooo")
+      useEffect(() => {
+    axiosDayVenture
+      .get("/categories/")
+      .then((res) => {
+        setCategories(
+          res.data.sort((catA, catB) => catB.like_count - catA.like_count)
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-//todo: styling of banner picture
     return (
         <>
             <div className={"w-full flex flex-col shrink-0 gap-6"}>
                 <div className={"bg-red-400 w-full h-48 bg-no-repeat bg-cover"}>
-                    <img className={"w-full h-full bg-no-repeat bg-cover"} src={user?.banner ? user.banner : defaultImage } alt="user banner picture"/>
+                    <img className={"w-full h-full bg-no-repeat bg-cover"} src={imageBannerShow ? imageBannerShow : defaultImage } alt="user banner picture"/>
                 </div>
                 <div className={"w-full flex shrink-0 justify-center items-center"}>
-                    <ProfileDescription user={user} setSelectedView={setSelectedView} setResults={setResults}/>
+                    <ProfileDescription user={user} setSelectedView={setSelectedView} setResults={setResults} setImageBanner={setImageBanner} imageBanner={imageBanner} imageBannerShow={imageBannerShow} setImageBannerShow={setImageBannerShow}/>
                 </div>
                 {selectedView === 'myTrips' || selectedView === 'friendsTrips' ?
                     <div className={"w-full flex shrink-0 justify-center items-center mb-[6%]"}>
@@ -91,7 +105,7 @@ const UserProfile = () => {
                         : <div className={"h-[12rem] flex flex-row justify-center align-middle items-start"}><h2>nothing to see here 😢</h2></div> : null // todo: make this look pretty
                 }
             </div>
-            {isModalOpen && <ProfileEditModal setResults={setResults} setIsModalOpen={setIsModalOpen} />}
+            {isModalOpen && <ProfileEditModal ShowsetResults={setResults} setIsModalOpen={setIsModalOpen} />}
         </>
     )
         ;
