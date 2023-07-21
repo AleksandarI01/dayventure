@@ -16,9 +16,9 @@ class Itinerary(models.Model):
     sequence = models.IntegerField()
     type = models.IntegerField(choices=TYPE_CHOICES, default=0)
     poi = models.ForeignKey(to=POI, blank=True, null=True, on_delete=models.CASCADE)
-    transfer = models.ForeignKey(to=Transfer, blank=True, null=True, on_delete=models.CASCADE)
-    start_time = models.TimeField()
     duration = models.DurationField(default=timedelta(hours=1))
+    transfer = models.ForeignKey(to=Transfer, blank=True, null=True, on_delete=models.CASCADE)
+    transfer_duration = models.DurationField(default=timedelta(hours=1))
     cost = models.FloatField(default=0.0)
     cost_currency = models.CharField(max_length=3, default='CHF')
 

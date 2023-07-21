@@ -1,8 +1,12 @@
+import datetime
+import time
+
 from django.db import models
 
 from django.contrib.auth import get_user_model
 
 from category.models import Category
+from transfer.models import Transfer
 
 User = get_user_model()
 
@@ -31,6 +35,8 @@ class Trip(models.Model):
     location = models.CharField(max_length=250)
     travel_date = models.DateField()
     total_cost = models.FloatField(default=0.0)
+    start_time = models.TimeField(default='08:00')
+    default_transfer = models.ForeignKey(to=Transfer, default=1, on_delete=models.SET_DEFAULT)
     cost_currency = models.CharField(max_length=3, default='CHF')
     categories = models.ManyToManyField(to=Category, related_name='trips')
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='P')
