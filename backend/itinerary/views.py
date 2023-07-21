@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from itinerary.models import Itinerary
 from itinerary.serializers import ItinerarySerializer
 from poi.models import POI
-from transfer.models import Transfer
 from trip.models import Trip
 
 
@@ -29,14 +28,8 @@ class CreateItineraryView(CreateAPIView):
             poi_instance.update_or_create(gm_place_id=data['gm_place_id'], defaults=data)
             it_poi = POI.objects.get(gm_place_id=data['gm_place_id'])
         elif it_type == 1:
-            # todo: Transfer data
-            transfer = request.data['transfer']
-            data = {
-                'means': transfer['means'],
-            }
-            transfer_instance = Transfer.objects.all()
-            transfer_instance.update_or_create(means=transfer['means'], defaults=data)
-            it_transfer = Transfer.objects.get(means=transfer['means'])
+            # Deprecated
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 

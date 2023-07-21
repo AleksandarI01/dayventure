@@ -66,8 +66,8 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
         opening_hours: openingHours,
         gm_image: googlePhoto,
       },
-      transfer: null,
-      start_time: startTime,
+      transfer: 1,  // [1(default): Public transport, 2: Car, 3: by Foot] todo: do we want to send something here?,
+      // transfer_duration: XXX,   // todo: needs to be calculated!
       duration: duration,
     };
 
