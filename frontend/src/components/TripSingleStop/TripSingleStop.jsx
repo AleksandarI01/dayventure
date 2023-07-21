@@ -70,7 +70,7 @@ const TripSingleStop = ({ itinerary, itineraries, setItineraries }) => {
     );
   };
 
-  const handleMoveUp = (index) => {
+  const handleMoveUp = (index) => {       // todo: calculate and set all necessary transfer_durations!
     if (index > 0) {
       const itinerary_id1 = itinerary.id
       const itinerary_id2 = itineraries[index - 1].id

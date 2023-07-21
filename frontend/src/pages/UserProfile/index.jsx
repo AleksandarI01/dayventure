@@ -7,11 +7,16 @@ import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {axiosDayVenture} from "../../axios/index.js";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner.jsx";
+import {useParams} from "react-router-dom";
 
 const UserProfile = () => {
     const defaultImage = '../../../src/assets/island.png'
     const accessToken = useSelector((state) => state.user.accessToken);
+    const loggedInUserId = useSelector((state) => state.user.id);
 
+    const { userId } = useParams();
+
+    const [isActiveUser, setIsActiveUser] = useState(false)
     const [selectedView, setSelectedView] = useState('myTrips')
     const [results, setResults] = useState([])
     const [user, setUser] = useState({})
@@ -22,11 +27,40 @@ const UserProfile = () => {
     const [imageBannerShow, setImageBannerShow] = useState(user.banner)
 
     useEffect(() => {
+        let config = null
+        if (accessToken) {
+            config = {headers: {Authorization: `Bearer ${accessToken}`}};
+        }
+        let url = '/users/'
+        if (loggedInUserId && (!userId || parseInt(userId) === loggedInUserId)) {
+            url += 'me/'
+            setIsActiveUser(true)
+        } else {
+            url += `${userId}/`
+            setIsActiveUser(false)
+        }
+        axiosDayVenture
+            .get(url, config)
+            .then((res) => {
+                setUser(res.data);
+                setImageBannerShow(res.data.banner);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+    }, [accessToken, loggedInUserId, userId])
+
+    useEffect(() => {
         setLoading(true)
         let url = '/trips/'
         switch (selectedView) {
             case 'myTrips':
-                url = '/trips/my/';
+                if (isActiveUser) {
+                    url = '/trips/my/';
+                } else {
+                    url = `/trips/owner/${userId}/`
+                }
                 break;
             case 'friendsTrips':
                 url = '/trips/friends/';
@@ -48,27 +82,12 @@ const UserProfile = () => {
                 console.log(error);
             })
 
-    }, [accessToken, selectedView])
+    }, [accessToken, isActiveUser, selectedView, userId])
 
-    useEffect(() => {
-        let url = '/users/me/'
-        const config = {headers: {Authorization: `Bearer ${accessToken}`}};
-        axiosDayVenture
-            .get(url, config)
-            .then((res) => {
-                setUser(res.data);
-                setImageBannerShow(res.data.banner)
-                console.log(res.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
 
-    }, [accessToken, selectedView])
-
-    // const onEditProfileClick = () => {
-    //     setIsModalOpen(true);
-    //   };
+    const onEditProfileClick = () => {
+        setIsModalOpen(true);
+      };
 
       useEffect(() => {
     axiosDayVenture
@@ -90,7 +109,7 @@ const UserProfile = () => {
                     <img className={"w-full h-full bg-no-repeat bg-cover"} src={imageBannerShow ? imageBannerShow : defaultImage } alt="user banner picture"/>
                 </div>
                 <div className={"w-full flex shrink-0 justify-center items-center"}>
-                    <ProfileDescription user={user} setSelectedView={setSelectedView} setResults={setResults} setImageBanner={setImageBanner} imageBanner={imageBanner} imageBannerShow={imageBannerShow} setImageBannerShow={setImageBannerShow}/>
+                    <ProfileDescription user={user} setSelectedView={setSelectedView} setResults={setResults} setImageBanner={setImageBanner} imageBanner={imageBanner} imageBannerShow={imageBannerShow} setImageBannerShow={setImageBannerShow} isActiveUser={isActiveUser}/>
                 </div>
                 {selectedView === 'myTrips' || selectedView === 'friendsTrips' ?
                     <div className={"w-full flex shrink-0 justify-center items-center mb-[6%]"}>

@@ -1,10 +1,11 @@
 import Label from "../Label/Label.jsx"
 import {useEffect, useState} from "react";
 import ProfileEditModal from '../ProfileEditModal/ProfileEditModal';
+import FriendRequestButton from "../FriendRequestButton/FriendRequestButton.jsx";
 import Modal from 'react-modal';
 import {axiosDayVenture} from "../../axios/index.js";
 
-const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, imageBanner, imageBannerShow, setImageBannerShow }) => {
+const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, imageBanner, imageBannerShow, setImageBannerShow, isActiveUser }) => {
     const defaultImage = '../../../src/assets/island.png'
     const activeStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
     const inactiveStyle = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
@@ -20,9 +21,6 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
     const [about, setAbout] = useState(user.about);
     const [email, setEmail] = useState(user.email);
     const [avatar, setAvatar] = useState(user.avatar);
-
-    console.log(user)
-    console.log(firstName)
 
 
     const onHandleClickProfile = (event) => {
@@ -76,18 +74,21 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
 
 
                 </div>
-                <div className={"h-[35%] w-[100%] shrink-0 flex flex-row justify-center items-center"}>
-                    <button
-                        className={
-                            "bg-venture-green rounded-full px-2 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"
-                        }
-                        onClick={onEditProfileClick}
-                    >
-                        EDIT PROFILE
-                    </button>
+                {isActiveUser ?
+                    <div className={"h-[35%] w-[100%] shrink-0 flex flex-row justify-center items-center"}>
+                        <button
+                            className={
+                                "bg-venture-green rounded-full px-2 py-1 font-medium text-venture-white hover:bg-venture-green-hovered"
+                            }
+                            onClick={onEditProfileClick}
+                        >
+                            EDIT PROFILE
+                        </button>
 
-                </div>
-
+                    </div>
+                    :
+                    <FriendRequestButton user={user}/>
+                }
             </div>
             <div className={"h-[100%] w-[75%] flex flex-col shrink-0"}>
                 <div className={"h-[60%] w-full flex flex-row shrink-0 border-b border-solid border-venture-gray"}>
@@ -108,7 +109,6 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
                             {user?.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
                         </div>
 
-
                     </div>
                 </div>
                 <div className={"h-[40%] w-full flex flex-col shrink-0"}>
@@ -119,21 +119,23 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
                             >
                                 {user?.trips_count} <br/>my trips
                             </li>
-                            <li id={"my-friends"} onClick={onHandleClickProfile}
-                                className={styleFriends}>
-                                {user?.friends_count} <br/>friends
-                            </li>
-                            <li id={"my-friends-trips"} onClick={onHandleClickProfile}
-                                className={styleMyFriendsTrips}>
-                                {user?.friends_trips_count} <br/>my friends' trips
-                            </li>
+                            {isActiveUser ?
+                                <li id={"my-friends"} onClick={onHandleClickProfile}
+                                    className={styleFriends}>
+                                    {user?.friends_count} <br/>friends
+                                </li>
+                                : null
+                            }
+                            {isActiveUser ?
+                                <li id={"my-friends-trips"} onClick={onHandleClickProfile}
+                                    className={styleMyFriendsTrips}>
+                                    {user?.friends_trips_count} <br/>my friends' trips
+                                </li>
+                                : null
+                            }
                         </ul>
                     </div>
-
-
                 </div>
-
-
             </div>
             {isModalOpen &&
                 <ProfileEditModal user={user} username={username} setUsername={setUsername} firstName={firstName}
@@ -142,8 +144,6 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
                                   about={about} setAbout={setAbout} email={email} setEmail={setEmail} avatar={avatar}
                                   setAvatar={setAvatar} setImageBanner={setImageBanner} imageBanner={imageBanner} imageBannerShow={imageBannerShow} setImageBannerShow={setImageBannerShow}/>}
         </div>
-
-
     );
 };
 
