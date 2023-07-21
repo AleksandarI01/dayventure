@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { Autocomplete } from "@react-google-maps/api";
 import InputField from "../../components/InputField/InputField";
-import {axiosDayVenture} from "../../axios/index.js";
-import {useSelector} from "react-redux";
+import { axiosDayVenture } from "../../axios/index.js";
+import { useSelector } from "react-redux";
 
 const AddNewStop = ({ trip, itineraries, setItineraries }) => {
   const accessToken = useSelector((state) => state.user.accessToken);
@@ -42,7 +42,7 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
     // create new itinerary in BE
     const config = { headers: { Authorization: `Bearer ${accessToken}` } };
     let trip_id = trip.id;
-    const nextSequence = Math.max(itineraries.map(itin => itin.sequence)) + 1
+    const nextSequence = Math.max(...itineraries.map(itin => itin.sequence)) + 1
     const poi_data = {
       sequence: nextSequence,
       type: 0,
@@ -59,23 +59,20 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
         opening_hours: openingHours,
         gm_image: googlePhoto,
       },
-      transfer: 1,  // [1(default): Public transport, 2: Car, 3: by Foot] todo: do we want to send something here?,
+      transfer: 1, // [1(default): Public transport, 2: Car, 3: by Foot] todo: do we want to send something here?,
       // transfer_duration: XXX,   // todo: needs to be calculated!
       duration: duration,
     };
 
     axiosDayVenture
-        .post(`/trips/${trip_id}/itinerary/new/`, poi_data, config)
-        .then((res) => {
-          poi_data['id'] = res.data.id
-          setItineraries((current) => [
-            ...current,
-            poi_data,
-          ]);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      .post(`/trips/${trip_id}/itinerary/new/`, poi_data, config)
+      .then((res) => {
+        poi_data["id"] = res.data.id;
+        setItineraries((current) => [...current, poi_data]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleOnChangeMeetingPoint = (e) => {
@@ -96,7 +93,7 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
       const activityName = autocomplete.getPlace().name;
       console.log(activityName, "ACTIVITY NAME");
       const formattedAddress = autocomplete.getPlace().formatted_address;
-      const photos = autocomplete.getPlace().photos[0];
+      const photos = autocomplete.getPlace().photos[0].getUrl();
       const categories = autocomplete.getPlace().types[0];
       const rating = autocomplete.getPlace().rating;
       const website = autocomplete.getPlace().website;
