@@ -1,10 +1,11 @@
 import Label from "../Label/Label.jsx"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ProfileEditModal from '../ProfileEditModal/ProfileEditModal';
 import FriendRequestButton from "../FriendRequestButton/FriendRequestButton.jsx";
+import Modal from 'react-modal';
+import {axiosDayVenture} from "../../axios/index.js";
 
-const ProfileDescription = ({user, setSelectedView, setResults, isActiveUser}) => {
-
+const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, imageBanner, imageBannerShow, setImageBannerShow, isActiveUser }) => {
     const defaultImage = '../../../src/assets/island.png'
     const activeStyle = "cursor-pointer flex h-100 py-5 float-left mx-7 border-b-4 border-1 border-solid border-venture-green"
     const inactiveStyle = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
@@ -12,6 +13,15 @@ const ProfileDescription = ({user, setSelectedView, setResults, isActiveUser}) =
     const [styleFriends, setStyleFriends] = useState(inactiveStyle)
     const [styleMyFriendsTrips, setStyleMyFriendsTrips] = useState(inactiveStyle)
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [username, setUsername] = useState(user.username);
+    const [firstName, setFirstName] = useState(user.first_name);
+    const [lastName, setLastName] = useState(user.last_name);
+    const [location, setLocation] = useState(user.location);
+    const [about, setAbout] = useState(user.about);
+    const [email, setEmail] = useState(user.email);
+    const [avatar, setAvatar] = useState(user.avatar);
+
 
     const onHandleClickProfile = (event) => {
         event.preventDefault();
@@ -39,17 +49,30 @@ const ProfileDescription = ({user, setSelectedView, setResults, isActiveUser}) =
         setIsModalOpen(true);
     };
 
+    useEffect(() => {
+        setUsername(user.username)
+        setFirstName(user.first_name)
+        setLastName(user.last_name)
+        setLocation(user.location)
+        setAbout(user.about)
+        setEmail(user.email)
+        setAvatar(user.avatar)
+    }, [user])
+
     return (
         <div
             className={"w-[800px] h-[250px] flex flex-row shrink-0 border border-solid rounded-md border-venture-gray"}>
             <div className={"h-[100%] w-[25%] flex flex-col shrink-0 border-r border-solid border-venture-gray"}>
                 <div
                     className="h-[65%] w-[100%] pt-[2%] shrink-0 flex flex-col gap-[0.2rem] justify-center items-center">
-                    <img className={"h-20 w-20 rounded-full"} src={user?.avatar || defaultImage } alt={"profile picture"}/>
-                        {user?.first_name || user?.last_name ? <p className={"pt-[2%]"}>{user.first_name} {user.last_name}</p>
-                                                            : <p className={"pt-[2%]"}>{user?.username}</p>
-                        }
-                    <p>{user?.location}</p>
+                    <img className={"h-20 w-20 rounded-full"} src={user?.avatar ? user.avatar : defaultImage}
+                         alt={"profile picture"}/>
+                    {user?.first_name || user?.last_name ? <p className={"pt-[2%]"}>{firstName} {lastName}</p>
+                        : <p className={"pt-[2%]"}>{user?.username}</p>
+                    }
+                    <p>{location}</p>
+
+
                 </div>
                 {isActiveUser ?
                     <div className={"h-[35%] w-[100%] shrink-0 flex flex-row justify-center items-center"}>
@@ -74,7 +97,7 @@ const ProfileDescription = ({user, setSelectedView, setResults, isActiveUser}) =
                             <p className={"text-left p-2"}>About</p>
                         </div>
                         <div className={"w-full h-[85] flex flex-col align-start justify-start"}>
-                            <p className={"text-left p-2"}>{user?.about}</p>
+                            <p className={"text-left p-2"}>{about}</p>
                         </div>
                     </div>
                     <div className={"h-full w-[50%] flex flex-col shrink-0"}>
@@ -83,8 +106,9 @@ const ProfileDescription = ({user, setSelectedView, setResults, isActiveUser}) =
                         </div>
                         <div
                             className={"w-full h-[85] p-1 flex flex-row gap-[0.2rem] align-start justify-start flex-wrap"}>
-                        {user?.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
+                            {user?.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
                         </div>
+
                     </div>
                 </div>
                 <div className={"h-[40%] w-full flex flex-col shrink-0"}>
@@ -113,7 +137,12 @@ const ProfileDescription = ({user, setSelectedView, setResults, isActiveUser}) =
                     </div>
                 </div>
             </div>
-            {isModalOpen && <ProfileEditModal setIsModalOpen={setIsModalOpen} />}
+            {isModalOpen &&
+                <ProfileEditModal user={user} username={username} setUsername={setUsername} firstName={firstName}
+                                  setFirstName={setFirstName} lastName={lastName} setLastName={setLastName}
+                                  setIsModalOpen={setIsModalOpen} location={location} setLocation={setLocation}
+                                  about={about} setAbout={setAbout} email={email} setEmail={setEmail} avatar={avatar}
+                                  setAvatar={setAvatar} setImageBanner={setImageBanner} imageBanner={imageBanner} imageBannerShow={imageBannerShow} setImageBannerShow={setImageBannerShow}/>}
         </div>
     );
 };
