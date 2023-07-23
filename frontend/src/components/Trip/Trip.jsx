@@ -46,7 +46,7 @@ const Trip = ({ trip }) => {
                 </p>
               </div>
             </div>
-            <div className="h-full w-1/2 border border-solid border-orange flex items-center justify-center">
+            <div className="h-full w-1/2  flex items-center justify-center">
               <RatingStar tripId={trip.id} />
             </div>
           </div>
