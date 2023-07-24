@@ -7,6 +7,7 @@ import TripMap from "../../components/TripMap/TripMap.jsx";
 import AddNewStop from "../../components/AddNewStop/AddNewStop";
 import TripSingleStop from "../../components/TripSingleStop/TripSingleStop.jsx";
 import { axiosDayVenture } from "../../axios/index.js";
+import RatingStar from "../../components/StarRating/StarRating.jsx";
 
 const Trip = () => {
   const { tripId } = useParams();
@@ -54,9 +55,9 @@ const Trip = () => {
             Starting on: {trip?.travel_date} at {trip?.start_time}{" "}
           </h4>
         </div>
-        {/* <div className="flex flex-col w-10/12 align-center">
-          <h2 className="p-4">Star Rating by Aleks</h2>
-        </div> */}
+        <div className="flex flex-col w-10/12 align-center">
+          {trip && <RatingStar tripId={trip.id} rating={trip.rating_avg} edit={!trip.has_reviewed} size={2}/>}
+        </div>
         <div className="flex flex-row w-4/12 justify-center gap-8 p-4">
           <Button>Share</Button>
           <Button>Add Friend</Button>
