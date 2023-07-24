@@ -21,7 +21,7 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
     const [about, setAbout] = useState(user.about);
     const [email, setEmail] = useState(user.email);
     const [avatar, setAvatar] = useState(user.avatar);
-
+    const [likedCategories, setLikedCategories] = useState(user.liked_categories)
 
     const onHandleClickProfile = (event) => {
         event.preventDefault();
@@ -57,6 +57,7 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
         setAbout(user.about)
         setEmail(user.email)
         setAvatar(user.avatar)
+        setLikedCategories(user.liked_categories)
     }, [user])
 
     return (
@@ -106,7 +107,7 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
                         </div>
                         <div
                             className={"w-full h-[85] p-1 flex flex-row gap-[0.2rem] align-start justify-start flex-wrap"}>
-                            {user?.liked_categories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
+                            {likedCategories?.map((cat) => <Label key={cat.id}>{cat.name}</Label>)}
                         </div>
 
                     </div>
@@ -142,7 +143,10 @@ const ProfileDescription = ({user, setSelectedView, setResults, setImageBanner, 
                                   setFirstName={setFirstName} lastName={lastName} setLastName={setLastName}
                                   setIsModalOpen={setIsModalOpen} location={location} setLocation={setLocation}
                                   about={about} setAbout={setAbout} email={email} setEmail={setEmail} avatar={avatar}
-                                  setAvatar={setAvatar} setImageBanner={setImageBanner} imageBanner={imageBanner} imageBannerShow={imageBannerShow} setImageBannerShow={setImageBannerShow}/>}
+                                  setAvatar={setAvatar} setImageBanner={setImageBanner} imageBanner={imageBanner}
+                                  imageBannerShow={imageBannerShow} setImageBannerShow={setImageBannerShow}
+                                  likedCategories={likedCategories} setLikedCategories={setLikedCategories}
+                />}
         </div>
     );
 };

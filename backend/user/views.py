@@ -35,6 +35,7 @@ class RetrieveUpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
         serializer.save()
         profiles = UserProfile.objects.all()
         profile_data = request.data
+        liked_cat = None
         if 'username' in profile_data:
             del profile_data['username']
         if 'first_name' in profile_data:
@@ -43,7 +44,13 @@ class RetrieveUpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
             del profile_data['last_name']
         if 'email' in profile_data:
             del profile_data['email']
+        if 'liked_categories' in profile_data:
+            liked_cat = profile_data['liked_categories']
+            del profile_data['liked_categories']
         profiles.update_or_create(user=instance, defaults=profile_data)
+        profile = profiles.get(user=instance)
+        if liked_cat:
+            profile.liked_categories.set(liked_cat)
         return Response(serializer.data)
 
     # This will set users inactive instead of deleting them. at the moment inactive users are still shown in views!

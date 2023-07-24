@@ -35,14 +35,17 @@ const UserProfile = () => {
         if (loggedInUserId && (!userId || parseInt(userId) === loggedInUserId)) {
             url += 'me/'
             setIsActiveUser(true)
-        } else {
+        } else if (userId) {
             url += `${userId}/`
             setIsActiveUser(false)
+        } else {
+            return
         }
         axiosDayVenture
             .get(url, config)
             .then((res) => {
                 setUser(res.data);
+                console.log(res.data)
                 setImageBannerShow(res.data.banner);
             })
             .catch((error) => {
@@ -58,8 +61,10 @@ const UserProfile = () => {
             case 'myTrips':
                 if (isActiveUser) {
                     url = '/trips/my/';
-                } else {
+                } else if (userId) {
                     url = `/trips/owner/${userId}/`
+                } else {
+                    return
                 }
                 break;
             case 'friendsTrips':

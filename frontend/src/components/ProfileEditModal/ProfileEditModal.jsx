@@ -13,21 +13,15 @@ import Label from "../Label/Label.jsx";
 function ProfileEditModal({
                               setIsModalOpen,
                               user,
-                              username,
-                              setUsername,
-                              firstName,
-                              setFirstName,
-                              lastName,
-                              setLastName,
-                              location,
-                              setLocation,
-                              about,
-                              setAbout,
-                              email,
-                              setEmail,
-                              avatar,
-                              setAvatar,
+                              username, setUsername,
+                              firstName, setFirstName,
+                              lastName, setLastName,
+                              location, setLocation,
+                              about, setAbout,
+                              email, setEmail,
+                              avatar, setAvatar,
                               setImageBanner, imageBanner, imageBannerShow, setImageBannerShow,
+                              likedCategories, setLikedCategories
                           }) {
     const [isVisible, setIsVisible] = useState(false)
     const [password, setPassword] = useState("");
@@ -40,7 +34,7 @@ function ProfileEditModal({
     const [imageUser, setImageUser] = useState(null)
     const [imageUserShow, setImageUserShow] = useState(user.avatar)
     const [categories, setCategories] = useState([])
-    const [selectedCategory, setSelectedCategory] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState(likedCategories.map(cat => cat.id))
 
 
     const fileInput = useRef(null);
@@ -81,7 +75,8 @@ function ProfileEditModal({
                 first_name: firstName,
                 last_name: lastName,
                 location: location,
-                about: about
+                about: about,
+                liked_categories: selectedCategory
             }, config)
             .then((res) => {
                 console.log(res)
@@ -179,15 +174,13 @@ function ProfileEditModal({
     }
 
 
-    const clickCategory = (e) => {
-        let sliced = e.target.id.slice(0, -2);
-        if (selectedCategory.includes(sliced)) {
-            setSelectedCategory(cat => cat.filter((c) => (c != sliced)))
-
+    const clickCategory = (categoryId) => {
+        if (selectedCategory.includes(categoryId)) {
+            setSelectedCategory(cat => cat.filter((c) => (c != categoryId)))
         } else {
-            setSelectedCategory(oldArray => [...oldArray, sliced]);
+            setSelectedCategory(oldArray => [...oldArray, categoryId]);
         }
-        console.log(selectedCategory)
+        setLikedCategories(categories.filter(cat => selectedCategory.includes(cat.id)))
     }
 
     useEffect(() => {
@@ -363,9 +356,12 @@ function ProfileEditModal({
                     <p className={"pl-2 py-1 font-bold text-sm"}>Categories I like</p>
                     <div className="flex flex-row py-3 flex-wrap gap-[0.7rem]">
                         {categories.map((cat) => (
-                            <Label key={cat.id} onClickFunction={clickCategory}
-                                   active={selectedCategory.includes(cat.name)}
-                                   clickable={true}>{cat.name} </Label>))}
+                            <Label key={cat.id}
+                                   onClickFunction={() => clickCategory(cat.id)}
+                                   active={selectedCategory.includes(cat.id)}
+                                   clickable={true}
+                            >{cat.name} </Label>
+                        ))}
                     </div>
                 </div>
                 <div className={"flex flex-col justify-start"}>
