@@ -21,13 +21,17 @@ class Command(BaseCommand):
                 from_email = email.from_email
                 recipient_list_text = email.recipient_list
                 recipient_list = [x.strip() for x in recipient_list_text.split(';')]
+                if email.html:
+                    html_message = email.html
+                else:
+                    html_message = None
 
                 send_mail(
-                    subject,
-                    message,
-                    from_email,
-                    recipient_list,
-                    fail_silently=False,
+                    subject=subject,
+                    message=message,
+                    from_email=from_email,
+                    recipient_list=recipient_list,
+                    html_message=html_message,
                 )
                 email.sent_date = timezone.now()
                 email.save()
