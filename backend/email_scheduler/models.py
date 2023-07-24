@@ -7,6 +7,7 @@ class EmailScheduler(models.Model):
     recipient_list = models.TextField(blank=True)
     subject = models.CharField(max_length=150, blank=True)
     message = models.TextField(blank=True)
+    html = models.TextField(blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     scheduled_date = models.DateTimeField(default=timezone.now)
     sent_date = models.DateTimeField(default=None, blank=True, null=True)
