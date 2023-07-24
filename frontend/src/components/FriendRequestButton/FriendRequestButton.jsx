@@ -97,7 +97,6 @@ const FriendRequestButton = ({user}) => {
     }
 
     const handleMouseEnter = (e) => {
-        console.log(e)
         setIsHovered(true);
     }
     const handleMouseLeave = () => {
