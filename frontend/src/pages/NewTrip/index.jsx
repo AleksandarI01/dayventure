@@ -102,9 +102,7 @@ const NewTrip = () => {
         gm_image: googlePhoto,
       },
       transfer: 1, // same as default_transfer on trip_data (20 lines up)
-      duration: `${Math.floor(duration / 60)
-        .toString()
-        .padStart(2, "0")}:${(duration % 60).toString().padStart(2, "0")}:00`,
+      duration: duration,
     };
     console.log(poi_data, "POI_DATA");
     axiosDayVenture
@@ -128,10 +126,7 @@ const NewTrip = () => {
   const handleCheckboxChange = (category) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories(selectedCategories.filter((c) => c !== category));
-    } else if (
-      selectedCategories.length < 3 ||
-      selectedCategories.length === 0
-    ) {
+    } else if (selectedCategories.length < 3) {
       setSelectedCategories([...selectedCategories, category]);
     }
   };
@@ -288,7 +283,7 @@ const NewTrip = () => {
                 />
               </div>
               <div className="flex flex-row justify-center p-4">
-                <h3>Pick a category</h3>
+                <h3>Pick up to 3 categories</h3>
               </div>
               <div className="flex flex-row justify-center">
                 <div className="grid grid-rows-4 grid-flow-col gap-4">
