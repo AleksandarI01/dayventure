@@ -42,7 +42,8 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
     // create new itinerary in BE
     const config = { headers: { Authorization: `Bearer ${accessToken}` } };
     let trip_id = trip.id;
-    const nextSequence = Math.max(...itineraries.map(itin => itin.sequence)) + 1
+    const nextSequence =
+      Math.max(...itineraries.map((itin) => itin.sequence), -1) + 1;
     const poi_data = {
       sequence: nextSequence,
       type: 0,
@@ -149,10 +150,11 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
         </div>
         <div className="flex flex-row items-baseline justify-center gap-5 ">
           <p>How long do you want to stay?</p>
-          <InputField type="time"
-                      className="flex flex-row w-full "
-                      value={duration}
-                      onChange={setDuration}
+          <InputField
+            type="time"
+            className="flex flex-row w-full "
+            value={duration}
+            onChange={setDuration}
           />
         </div>
         <button
