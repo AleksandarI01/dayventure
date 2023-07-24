@@ -47,7 +47,7 @@ const Trip = ({ trip }) => {
               </div>
             </div>
             <div className="h-full w-1/2  flex items-center justify-center">
-              <RatingStar tripId={trip.id} />
+              <RatingStar tripId={trip?.id} rating={trip?.rating_avg} edit={false}/>
             </div>
           </div>
           <div className="h-[60%] w-[100%] flex flex-col shrink-0">
