@@ -1,11 +1,11 @@
+import {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
+import {useSearchParams} from "react-router-dom";
+import {axiosDayVenture} from "../../axios/index.js";
 import SearchHeader from "../../components/SearchHeader/SearchHeader.jsx";
 import Label from "../../components/Label/Label.jsx";
 import UserCard from "../../components/UserCard/UserCard.jsx";
 import Trip from "../../components/Trip/Trip.jsx";
-import {useEffect, useState} from "react";
-import {axiosDayVenture} from "../../axios/index.js";
-import {useSelector} from "react-redux";
-// import config from "tailwindcss/defaultConfig.js";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner.jsx";
 
 
@@ -14,17 +14,16 @@ const Search = () => {
     const inactiveStyleSearch = "underline-effect underline-effect-color cursor-pointer flex h-100 py-5 float-left mx-7"
 
     const accessToken = useSelector((state) => state.user.accessToken);
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    const [searchType, setSearchType] = useState('trips')
+    const [searchType, setSearchType] = useState(searchParams.get('type') || 'trips')
     const [styleUsers, setStyleUsers] = useState(inactiveStyleSearch)
     const [styleTrips, setStyleTrips] = useState(activeStyleSearch)
     const [categories, setCategories] = useState([])
-    const [selectedCategory, setSelectedCategory] = useState(null)
-    const [searchString, setSearchString] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category'))
+    const [searchString, setSearchString] = useState(searchParams.get('search_string'))
     const [results, setResults] = useState([])
     const [loading, setLoading] = useState(true)
-
-    // todo: accept searchString and/or categories via navigate (from home)
 
     useEffect(() => {
         axiosDayVenture
@@ -40,8 +39,20 @@ const Search = () => {
     const clickCategory = (e) => {
         if (selectedCategory === e.target.id) {
             setSelectedCategory(null)
+                        setSearchParams(params => {
+                params.delete('category')
+                if (searchString) params.set('search_string', searchString)
+                else params.delete('search_string')
+                return params
+            })
         } else {
             setSelectedCategory(e.target.id)
+            setSearchParams(params => {
+                params.set('category', e.target.id)
+                if (searchString) params.set('search_string', searchString)
+                else params.delete('search_string')
+                return params
+            })
         }
     }
 
@@ -54,10 +65,23 @@ const Search = () => {
             setStyleUsers(activeStyleSearch);
             setStyleTrips(inactiveStyleSearch);
             setSelectedCategory(null);
+            setSearchParams(params => {
+                params.set('type', 'users')
+                params.delete('category')
+                if (searchString) params.set('search_string', searchString)
+                else params.delete('search_string')
+                return params
+            })
         } else {
             setSearchType('trips');
             setStyleUsers(inactiveStyleSearch);
             setStyleTrips(activeStyleSearch);
+            setSearchParams(params => {
+                params.set('type', 'trips')
+                if (searchString) params.set('search_string', searchString)
+                else params.delete('search_string')
+                return params
+            })
         }
     }
 
@@ -84,9 +108,14 @@ const Search = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         fetchSearchResults();
+        setSearchParams(params => {
+            if (searchString) params.set('search_string', searchString)
+            else params.delete('search_string')
+            return params
+        })
     }
 
-        useEffect(fetchSearchResults, [accessToken, searchType, selectedCategory])
+    useEffect(fetchSearchResults, [accessToken, searchType, selectedCategory])
 
 
     return (

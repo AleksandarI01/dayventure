@@ -4,7 +4,6 @@ import Data from "../../assets/island.png";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-//todo: make it look nice with all the data...
 const Trip = ({ trip }) => {
   const navigate = useNavigate();
 
@@ -57,7 +56,7 @@ const Trip = ({ trip }) => {
           <div className="h-[60%] w-[100%] flex flex-col shrink-0">
             <div className="h-[35%] w-[100%]">
               <p className="text-left pl-2 font-medium text-xs text-venture-darkgray">
-                created by: {trip?.owner.username} 4 lv
+                created by: {trip?.owner.username}
               </p>
             </div>
             <div className="h-[65%] w-[100%] pl-1 flex flex-row shrink-0 justify-center items-center gap-[0.2rem] flex-wrap">
