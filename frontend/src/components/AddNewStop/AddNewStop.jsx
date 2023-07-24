@@ -10,7 +10,6 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
 
   const [autocomplete, setAutoComplete] = useState(null);
   const [activityName, setActivityName] = useState("");
-  const [activityDurationTime, setActivityDurationTime] = useState("");
   const [placeId, setPlaceId] = useState("");
   const [tripName, setTripName] = useState("");
   const currentDate = new Date().toISOString().split("T")[0];
@@ -21,10 +20,9 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
   });
 
   const [duration, setDuration] = useState();
-  const [coordinates, setCoordinates] = useState({
-    lat: 46.807405,
-    lng: 8.223595,
-  });
+
+  const [coordinates, setCoordinates] = useState();
+
   const [meetingPoint, setMeetingPoint] = useState("");
   const [googleCategories, setGoogleCategories] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -32,7 +30,7 @@ const AddNewStop = ({ trip, itineraries, setItineraries }) => {
   const [googleRating, setGoogleRating] = useState(0);
   const [googlePhoto, setGooglePhoto] = useState("");
   const [openingHours, setOpeningHours] = useState([]);
-  const coords = { lat: 46.807405, lng: 8.223595 };
+
   const [error, setError] = useState("");
 
   const handleConfirmNewStop = (e) => {

@@ -1,29 +1,36 @@
-import {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import StarRatings from 'react-star-ratings';
 import {axiosDayVenture} from '../../axios/index.js';
-import {useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
 
-const RatingStar = ({tripId, rating: ratingSup, edit  =true, size = 1}) => {
-    const accessToken = useSelector((state) => state.user.accessToken);
-    const navigate = useNavigate()
-    const [rating, setRating] = useState(ratingSup);
+const RatingStar = ({tripId}) => {
+    const [rating, setRating] = useState(0);
+
+    // Fetch rating when the component mounts
+    useEffect(() => {
+        axiosDayVenture.get(`/api/trips/${tripId}/rating/`) // replace with the actual endpoint
+            .then((res) => {
+                setRating(res.data.rating);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    }, [tripId]); // Pass `tripId` as a dependency so that the effect runs again if `tripId` changes
 
     const changeRating = (newRating) => {
-        if (accessToken) {
-            if (edit) {
-                const config = {headers: {Authorization: `Bearer ${accessToken}`}};
-                axiosDayVenture.post(`/trips/review/${tripId}/`, {rating: newRating}, config)
-                    .then(() => {
-                        setRating(newRating)
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            }
-        } else {
-            navigate('/login')
-        }
+        // Update the state immediately
+        setRating(newRating);
+
+        // Send the updated rating to the server
+        axiosDayVenture.put(`/api/trips/${tripId}/rating/`, {rating: newRating}) // replace with the actual endpoint
+            .then((res) => {
+                // If the server sends back the final rating, update it
+                if (res.data.rating !== undefined) {
+                    setRating(res.data.rating);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     return (
@@ -34,8 +41,8 @@ const RatingStar = ({tripId, rating: ratingSup, edit  =true, size = 1}) => {
             changeRating={changeRating}
             numberOfStars={5}
             name="rating"
-            starDimension={`${20 * size}px`}
-            starSpacing={`${2 * size}px`}
+            starDimension="20px"
+            starSpacing="2px"
             starEmptyColor="#EBEBEB" // venture-gray
             starSelectingHoverColor="#FF3700" // venture-red-hovered
         />

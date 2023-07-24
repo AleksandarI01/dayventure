@@ -3,12 +3,17 @@ import GoogleMapReact from "google-map-react";
 import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 
 const TripMap = ({ itineraries }) => {
+  console.log(itineraries);
   const [directions, setDirections] = useState(null);
   const [travelInstructions, setTravelInstructions] = useState([]);
   const [latitute, setLatitude] = useState(0);
   const [longtitude, setLongitude] = useState(0);
 
   useEffect(() => {
+    if(itineraries[0]){
+      setLatitude(itineraries[0].poi.lat)
+      setLongitude(itineraries[0].poi.lng)
+    }
     const directionsService = new window.google.maps.DirectionsService();
     if (itineraries) {
       const stops = itineraries.map((itinerary) => ({
