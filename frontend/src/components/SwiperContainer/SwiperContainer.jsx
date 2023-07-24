@@ -10,6 +10,7 @@ const SwiperContainer = ({trips}) => {
   return (
     <div className="flex justify-center items-center w-full">
       <Swiper
+  style={{height: '450px'}}
   modules={[Navigation, Autoplay]}
   centeredSlides
   slidesPerView={3}
