@@ -44,16 +44,6 @@ class RetrieveUpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
         if 'email' in profile_data:
             del profile_data['email']
         profiles.update_or_create(user=instance, defaults=profile_data)
-
-        # # send mail to user
-        # mail_instance = EmailScheduler.objects.all()
-        # subject = 'Luna-3: Profile updated'
-        # message = f'Dear {self.request.user.username}\n\n' \
-        #           f'Your profile on Luna has just been updated.\n' \
-        #           f'If this wasn\'t you, reset your password immediately!\n\n' \
-        #           f'See you soon on luna3!'
-        # mail_instance.create(subject=subject, message=message, recipient_list=self.request.user.email)
-
         return Response(serializer.data)
 
     # This will set users inactive instead of deleting them. at the moment inactive users are still shown in views!

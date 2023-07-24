@@ -37,77 +37,12 @@ const TripSingleStop = ({ trip, itinerary, itineraries, setItineraries }) => {
       .padStart(2, "0")}`;
   }
 
-  // // calculates end time
-  // const calculateEndTime = (start_time, duration) => {
-  //   // Convert start_time to minutes
-  //   const [startHour, startMinute] = start_time.split(":").map(Number);
-  //   const startMinutes = startHour * 60 + startMinute;
-
-  //   // Convert duration to minutes
-  //   const [durationHour, durationMinute] = duration.split(":").map(Number);
-  //   const durationMinutes = durationHour * 60 + durationMinute;
-
-  //   // Calculate end time in minutes
-  //   const endTimeMinutes = startMinutes + durationMinutes;
-
-  //   // Convert end time back to hours and minutes
-  //   const endHour = Math.floor(endTimeMinutes / 60);
-  //   const endMinute = endTimeMinutes % 60;
-
-  //   // Format end time as "HH:mm" (e.g., "14:30")
-  //   const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute
-  //     .toString()
-  //     .padStart(2, "0")}`;
-
-  //   return endTime;
-  // };
-  // const endTime = calculateEndTime(trip.start_time, itinerary.duration);
-
-  // //ends calculate end time
-
   const handleDirectionsClick = (event) => {
     event.preventDefault();
     console.log("click");
     setDirections(!directions);
     setArrowClicked(!arrowClicked);
   };
-
-  // const PlacePhoto = ({ placeId }) => {
-  //   const [photoUrl, setPhotoUrl] = useState("");
-
-  //   useEffect(() => {
-  //     if (!placeId) return;
-
-  //     const service = new window.google.maps.places.PlacesService(
-  //       document.createElement("div")
-  //     );
-
-  //     service.getDetails(
-  //       {
-  //         placeId: placeId,
-  //         fields: ["photos"],
-  //       },
-  //       (place, status) => {
-  //         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-  //           if (place.photos && place.photos.length > 0) {
-  //             const photo = place.photos[0];
-  //             const photoUrl = photo.getUrl({
-  //               maxWidth: 400, // Set the maximum width for the photo
-  //             });
-  //             setPhotoUrl(photoUrl);
-  //           }
-  //         }
-  //       }
-  //     );
-  //   }, [placeId]);
-
-  //   return (
-  //     <div>
-  //       {photoUrl && <img src={photoUrl} alt="Place" />}
-  //       {!photoUrl && <div>No photo available</div>}
-  //     </div>
-  //   );
-  // };
 
   const handleMoveUp = (index) => {
     // todo: calculate and set all necessary transfer_durations!

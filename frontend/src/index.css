@@ -6,10 +6,13 @@
     width: 272px;
     height: 400px;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transition: all 0.2s;
 }
 
 .card-height-width:hover {
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.17), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transform: scale(1.02);
+
 }
 
 .no-style-on-focus:focus {
